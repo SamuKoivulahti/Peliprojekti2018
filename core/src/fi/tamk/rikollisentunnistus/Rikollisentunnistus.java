@@ -21,6 +21,7 @@ public class Rikollisentunnistus extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+		// testaan vielä tätä pushaamista
 		batch.draw(img, 0, 0);
 		batch.end();
 	}
