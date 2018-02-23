@@ -1,34 +1,46 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Rikollisentunnistus extends ApplicationAdapter {
+public class Rikollisentunnistus extends Game {
+    CriminalScreen criminalScreen;
+    RowScreen rowScreen;
+
 	SpriteBatch batch;
-	Texture img;
 	
 	@Override
 	public void create () {
+        criminalScreen = new CriminalScreen(this);
+        rowScreen = new RowScreen(this);
+
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		setCriminalScreen();
 	}
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public void setRowScreen() {
+        setScreen(rowScreen);
+    }
+
+    public void setCriminalScreen() {
+        setScreen(criminalScreen);
+    }
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		// en nyt onnistunut tassa joten koitetaan viela
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }
