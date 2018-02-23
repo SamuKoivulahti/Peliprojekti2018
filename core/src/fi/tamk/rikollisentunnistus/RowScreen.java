@@ -1,11 +1,13 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -40,11 +42,55 @@ public class RowScreen implements Screen {
 
             xCrd = xCrd + 230;
         }
+
+        criminalRow[2].toggleActive();
     }
 
     @Override
     public void show() {
 
+    }
+
+    public void moveSelectionRight() {
+        int help = 0;
+
+        for (int i = 0; i < 5; i++) {
+            if (criminalRow[i].active) {
+                help = i;
+            }
+        }
+
+        if (help <= 3) {
+            MoveToAction moveDown = new MoveToAction();
+            moveDown.setPosition(criminalRow[help].getX(), 0);
+            moveDown.setDuration(1f);
+
+            criminalRow[help].clearActions();
+            criminalRow[help].addAction(moveDown);
+            criminalRow[help].toggleActive();
+            criminalRow[help + 1].toggleActive();
+        }
+    }
+
+    public void moveSelectionLeft() {
+        int help = 0;
+
+        for (int i = 0; i < 5; i++) {
+            if (criminalRow[i].active) {
+                help = i;
+            }
+        }
+
+        if (help >= 1) {
+            MoveToAction moveDown = new MoveToAction();
+            moveDown.setPosition(criminalRow[help].getX(), 0);
+            moveDown.setDuration(0.5f);
+
+            criminalRow[help].clearActions();
+            criminalRow[help].addAction(moveDown);
+            criminalRow[help].toggleActive();
+            criminalRow[help - 1].toggleActive();
+        }
     }
 
     @Override
@@ -56,8 +102,26 @@ public class RowScreen implements Screen {
 
         game.batch.begin();
 
+        for (Face criminal : criminalRow) {
+            if (criminal.active) {
+                MoveToAction moveUp = new MoveToAction();
+                moveUp.setPosition(criminal.getX(), 100);
+                moveUp.setDuration(0.5f);
+                criminal.addAction(moveUp);
+            }
+        }
+
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            moveSelectionRight();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            moveSelectionLeft();
+        }
+
         Gdx.app.log("Row Screen", "ok");
 
         game.batch.end();

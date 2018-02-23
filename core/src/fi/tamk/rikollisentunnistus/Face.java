@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Face extends Actor {
     private Texture spriteImage;
     private int idCode;                 // muutetaan myöhemmin stringiksi
-    private boolean active;
+    boolean active;
 
     public Face(Texture img, int id) {
         super();
