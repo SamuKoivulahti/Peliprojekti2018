@@ -17,7 +17,7 @@ public class RowScreen implements Screen {
     public RowScreen(Rikollisentunnistus g) {
         game = g;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,800,480);
+        camera.setToOrtho(false,1200,650);
     }
 
     @Override
