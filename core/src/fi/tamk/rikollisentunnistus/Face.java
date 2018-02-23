@@ -19,8 +19,10 @@ public class Face extends Actor {
         spriteImage = img;
         idCode = id;
         active = false;
+    }
 
-        this.setBounds(250,40,spriteImage.getWidth(),spriteImage.getHeight());
+    public void setLocation(float x, float y) {
+        this.setBounds(x,y,spriteImage.getWidth(),spriteImage.getHeight());
     }
 
     public void toggleActive() {

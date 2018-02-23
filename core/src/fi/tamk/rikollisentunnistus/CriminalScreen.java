@@ -33,6 +33,7 @@ public class CriminalScreen implements Screen {
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = new Face(new Texture("testinaama1.png"),1);
+        criminal.setLocation(450, 125);
 
         stage.addActor(criminal);
     }
@@ -63,6 +64,7 @@ public class CriminalScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
+            game.setCriminals(criminal);
             game.setRowScreen();
         }
 

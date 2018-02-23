@@ -5,19 +5,39 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
- * Created by pohja on 23/02/2018.
+ * Created by Essi Supponen on 23/02/2018.
  */
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
+    private Face[] criminalRow;
+    private int rightSuspectID;
+    private Stage stage;
 
     public RowScreen(Rikollisentunnistus g) {
         game = g;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
+
+        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+    }
+
+    public void setCriminals(Face[] criminals, int suspectID) {
+        criminalRow = criminals;
+        rightSuspectID = suspectID;
+        float xCrd = 0;
+
+        for (Face criminal : criminalRow) {
+            criminal.setLocation(xCrd, 0);
+            stage.addActor(criminal);
+
+            xCrd = xCrd + 230;
+        }
     }
 
     @Override
@@ -34,6 +54,8 @@ public class RowScreen implements Screen {
 
         game.batch.begin();
 
+        stage.act();
+        stage.draw();
         Gdx.app.log("Row Screen", "ok");
 
         game.batch.end();
