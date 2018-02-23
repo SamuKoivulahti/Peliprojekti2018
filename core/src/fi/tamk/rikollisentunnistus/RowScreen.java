@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * Created by Essi Supponen on 23/02/2018.
  */
 
+// change
+
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
