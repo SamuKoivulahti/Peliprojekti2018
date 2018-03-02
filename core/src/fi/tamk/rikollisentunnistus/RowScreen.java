@@ -63,7 +63,7 @@ public class RowScreen implements Screen {
         if (help <= 3) {
             MoveToAction moveDown = new MoveToAction();
             moveDown.setPosition(criminalRow[help].getX(), 0);
-            moveDown.setDuration(1f);
+            moveDown.setDuration(0.5f);
 
             criminalRow[help].clearActions();
             criminalRow[help].addAction(moveDown);
@@ -103,7 +103,7 @@ public class RowScreen implements Screen {
         game.batch.begin();
 
         for (Face criminal : criminalRow) {
-            if (criminal.active) {
+            if (criminal.active && !criminal.hasActions()) {
                 MoveToAction moveUp = new MoveToAction();
                 moveUp.setPosition(criminal.getX(), 100);
                 moveUp.setDuration(0.5f);
