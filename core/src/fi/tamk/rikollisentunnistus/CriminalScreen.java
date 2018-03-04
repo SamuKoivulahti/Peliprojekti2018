@@ -47,23 +47,29 @@ public class CriminalScreen implements Screen {
     public void render(float delta) {
         game.batch.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(0,0,1,1);
+        Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
 
         if (status == SHOWING) {
-            Gdx.app.log("Criminal Screen","Showing");
+            Gdx.app.log("Criminal Screen", "Showing");
 
             stage.act();
             stage.draw();
         } else if (status == WAITING) {
-            Gdx.app.log("Criminal Screen","Waiting");
+            Gdx.app.log("Criminal Screen", "Waiting");
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
+            game.setCriminals(criminal);
+            game.setRowScreen();
+        }
+        if (Gdx.input.isTouched() && status == SHOWING) {
+            status = WAITING;
+        } else if (Gdx.input.isTouched() && status == WAITING) {
             game.setCriminals(criminal);
             game.setRowScreen();
         }
