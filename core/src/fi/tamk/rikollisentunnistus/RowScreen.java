@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -14,14 +16,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * Created by Essi Supponen on 23/02/2018.
  */
 
-// change
-
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
     private Face[] criminalRow;
     private int rightSuspectID;
     private Stage stage;
+
+    boolean win;
+    boolean lose;
+
+    private TextActor winText;
+    private TextActor loseText;
 
 
     public RowScreen(Rikollisentunnistus g) {
@@ -30,9 +36,13 @@ public class RowScreen implements Screen {
         camera.setToOrtho(false,1200,650);
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+        win = false;
+        lose = false;
 
-
-
+        winText = new TextActor("Right, you won!");
+        loseText = new TextActor("Wrong, you lose.");
+        winText.setPosition(550,600);
+        loseText.setPosition(550,600);
     }
 
     public void setCriminals(Face[] criminals, int suspectID) {
@@ -55,7 +65,37 @@ public class RowScreen implements Screen {
 
     }
 
-    public void moveSelectionRight() {
+    public void select() {
+        int selectedID = -1;
+
+        for (Face criminal : criminalRow) {
+            if (criminal.active) {
+                selectedID = criminal.getIdCode();
+            }
+        }
+
+        if (selectedID == rightSuspectID) {
+            win = true;
+            stage.addActor(winText);
+        } else {
+            lose = true;
+            stage.addActor(loseText);
+        }
+    }
+
+    public void cancel() {
+        for (Face criminal : criminalRow) {
+            if (criminal.active) {
+                criminal.toggleActive();
+            }
+        }
+
+        stage.clear();
+        game.resetCriminalScreen();
+        game.setCriminalScreen();
+    }
+
+    public void moveRight() {
         int help = 0;
 
         for (int i = 0; i < 5; i++) {
@@ -76,7 +116,7 @@ public class RowScreen implements Screen {
         }
     }
 
-    public void moveSelectionLeft() {
+    public void moveLeft() {
         int help = 0;
 
         for (int i = 0; i < 5; i++) {
@@ -119,14 +159,20 @@ public class RowScreen implements Screen {
         stage.draw();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            moveSelectionRight();
+            moveRight();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            moveSelectionLeft();
+            moveLeft();
         }
 
-        Gdx.app.log("Row Screen", "ok");
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            select();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            cancel();
+        }
         game.batch.end();
     }
 

@@ -52,6 +52,10 @@ public class Rikollisentunnistus extends Game {
         rowScreen.setCriminals(criminals,rightId);
     }
 
+    public void resetCriminalScreen() {
+	    criminalScreen.reset();
+    }
+
     public Face[] shuffleArray(Face[] array) {
         List<Face> list = new ArrayList();
         for (Face i : array) {

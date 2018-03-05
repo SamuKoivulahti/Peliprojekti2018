@@ -38,6 +38,12 @@ public class CriminalScreen implements Screen {
         stage.addActor(criminal);
     }
 
+    public void reset() {
+        status = SHOWING;
+        criminal.setLocation(450, 125);
+        stage.addActor(criminal);
+    }
+
     @Override
     public void show() {
 
