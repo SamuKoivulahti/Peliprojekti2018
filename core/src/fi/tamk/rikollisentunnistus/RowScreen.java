@@ -5,14 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import javax.print.DocFlavor;
 
 /**
  * Created by Essi Supponen on 23/02/2018.
@@ -73,6 +68,7 @@ public class RowScreen implements Screen {
         for (Face criminal : criminalRow) {
             if (criminal.active) {
                 selectedID = criminal.getIdCode();
+                break;
             }
         }
 
@@ -89,6 +85,7 @@ public class RowScreen implements Screen {
         for (Face criminal : criminalRow) {
             if (criminal.active) {
                 criminal.toggleActive();
+                break;
             }
         }
 
@@ -103,6 +100,7 @@ public class RowScreen implements Screen {
         for (int i = 0; i < 5; i++) {
             if (criminalRow[i].active) {
                 help = i;
+                break;
             }
         }
 
@@ -124,6 +122,7 @@ public class RowScreen implements Screen {
         for (int i = 0; i < 5; i++) {
             if (criminalRow[i].active) {
                 help = i;
+                break;
             }
         }
 
@@ -160,19 +159,19 @@ public class RowScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Controls.moveRight()) {
             moveRight();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Controls.moveLeft()) {
             moveLeft();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Controls.moveUp()) {
             select();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Controls.moveDown()) {
             cancel();
         }
         game.batch.end();

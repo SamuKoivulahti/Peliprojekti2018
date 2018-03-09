@@ -1,68 +1,114 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 
 /**
  * Created by Koivulahti on 5.3.2018.
  */
 
 public class Controls {
-    float accelX;
-    float accelY;
-    float accelZ;
-    boolean overLR;
-    boolean overUD;
-    float moveR;
-    float moveL;
-    float moveU;
-    float moveD;
-    float hysteresisR;
-    float hysteresisL;
-    float hysteresisU;
-    float hysteresisD;
 
-    public Controls() {
-        overLR = false;
-        overUD = false;
+    static float accelX;
+    static float accelY;
 
-        // Later set by users input
-        moveR = 3;
-        moveL = -3;
-        moveU = -3;
-        moveD = 3;
-        hysteresisR = 1.5f;
-        hysteresisL = -1.5f;
-        hysteresisU = -1.5f;
-        hysteresisD = 1.5f;
+    static float moveRight = 5f;
+    static float moveLeft = -5f;
+    static float moveUp = -9f;
+    static float moveDown = 9f;
 
+    static float hysteresisRight = 3f;
+    static float hysteresisLeft = -3f;
+    static float hysteresisUp = -1.5f;
+    static float hysteresisDown = 1.5f;
+
+    static boolean startTimer = false;
+    static float elapsedTime = 0;
+
+    static boolean isAbleMoveLeft = true;
+    static boolean isAbleMoveRight = true;
+    static boolean isAbleMoveUp = true;
+    static boolean isAbleMoveDown = true;
+
+    static float accelerometerX() {
         accelX = Gdx.input.getAccelerometerX();
-        accelY = Gdx.input.getAccelerometerY();
-        accelZ = Gdx.input.getAccelerometerZ();
-
-        if (accelY >= moveR && !overLR) {
-            overLR = true;
-            //moveSelectionRight() etc.
-        } else if (accelY <= moveL && !overLR) {
-            overLR = true;
-            //moveSelectionLeft() etc
-        }
-
-        if (accelY < hysteresisR && accelY > hysteresisL) {
-            overLR = false;
-        }
-
-        if (accelX <= moveU && !overUD) {
-            // selection
-            overUD = true;
-        } else if (accelX >= moveD && !overUD) {
-            // cancel selection
-            overUD = true;
-        }
-
-        if (accelX > hysteresisU && accelX < hysteresisD) {
-            overUD = false;
-        }
+        //Gdx.app.log("TAG", "X:" + accelX);
+        return accelX;
     }
 
+    static float accelerometerY() {
+        accelY = Gdx.input.getAccelerometerY();
+        //Gdx.app.log("TAG", "Y:" + accelY);
+        return accelY;
+    }
 
+    static boolean moveRight() {
+        accelerometerY();
+        if (accelY > moveRight && isAbleMoveRight) {
+            isAbleMoveRight = false;
+            //Gdx.app.log("TAG", "R");
+            return true;
+        } else if (!isAbleMoveRight && accelY < hysteresisRight && accelY > 0) {
+            isAbleMoveRight = true;
+            //Gdx.app.log("TAG", "Rback");
+        }
+        return false;
+    }
+
+    static boolean moveLeft() {
+        accelerometerY();
+        if (accelY < moveLeft && isAbleMoveLeft) {
+            isAbleMoveLeft = false;
+            //Gdx.app.log("TAG", "L");
+            return true;
+        } else if (!isAbleMoveLeft && accelY > hysteresisLeft && accelY < 0) {
+            isAbleMoveLeft = true;
+            //Gdx.app.log("TAG", "Lback");
+        }
+        return false;
+    }
+
+    static boolean moveUp() {
+        accelerometerX();
+        if (accelX < moveUp && isAbleMoveUp) {
+            //Gdx.app.log("TAG", "L");
+            startTimer = true;
+            isAbleMoveUp = false;
+        } else if (!isAbleMoveUp && accelX > hysteresisUp && accelX < 0) {
+            isAbleMoveUp = true;
+            //Gdx.app.log("TAG", "Lback");
+        } else if (accelX < moveUp && !isAbleMoveUp && startTimer) {
+            elapsedTime += Gdx.graphics.getDeltaTime();
+            Gdx.app.log("moveUp", "moveup" + elapsedTime);
+            if (elapsedTime >= 3) {
+                elapsedTime = 0;
+                startTimer = false;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean moveDown() {
+        accelerometerX();
+        if (accelX > moveDown && isAbleMoveDown) {
+            //Gdx.app.log("TAG", "L");
+            startTimer = true;
+            isAbleMoveDown = false;
+        } else if (!isAbleMoveDown && accelX < hysteresisDown && accelX > 0) {
+            isAbleMoveDown = true;
+            //Gdx.app.log("TAG", "Lback");
+        } else if (accelX > moveDown && !isAbleMoveDown && startTimer) {
+            elapsedTime += Gdx.graphics.getDeltaTime();
+            Gdx.app.log("moveDown", "movedown" + elapsedTime);
+            if (elapsedTime >= 3) {
+                elapsedTime = 0;
+                startTimer = false;
+                return true;
+            }
+        }
+        return false;
+    }
 }
