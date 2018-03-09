@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import javax.print.DocFlavor;
+
 /**
  * Created by Essi Supponen on 23/02/2018.
  */
@@ -20,7 +22,7 @@ public class RowScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
     private Face[] criminalRow;
-    private int rightSuspectID;
+    private String rightSuspectID;
     private Stage stage;
 
     boolean win;
@@ -45,7 +47,7 @@ public class RowScreen implements Screen {
         loseText.setPosition(550,600);
     }
 
-    public void setCriminals(Face[] criminals, int suspectID) {
+    public void setCriminals(Face[] criminals, String suspectID) {
         criminalRow = criminals;
         rightSuspectID = suspectID;
         float xCrd = 0;
@@ -66,7 +68,7 @@ public class RowScreen implements Screen {
     }
 
     public void select() {
-        int selectedID = -1;
+        String selectedID = "";
 
         for (Face criminal : criminalRow) {
             if (criminal.active) {
@@ -74,7 +76,7 @@ public class RowScreen implements Screen {
             }
         }
 
-        if (selectedID == rightSuspectID) {
+        if (selectedID.equals(rightSuspectID)) {
             win = true;
             stage.addActor(winText);
         } else {

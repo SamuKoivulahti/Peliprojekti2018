@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,15 +17,48 @@ public class Rikollisentunnistus extends Game {
     RowScreen rowScreen;
 
 	SpriteBatch batch;
+
+    TextureRegion[] noseTextures;
+    TextureRegion[] eyesTextures;
 	
 	@Override
 	public void create () {
-        criminalScreen = new CriminalScreen(this);
         rowScreen = new RowScreen(this);
 
 		batch = new SpriteBatch();
-		setCriminalScreen();
+
+        makeTextureArrays();
+
+        criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
+        setCriminalScreen();
 	}
+
+    private void makeTextureArrays() {
+        TextureRegion[][] noses = TextureRegion.split(new Texture("noses.png"),
+                80, 80);
+
+        TextureRegion[][] eyes = TextureRegion.split(new Texture("eyes.png"),
+                156, 66);
+
+        noseTextures = toArrays(noses);
+        eyesTextures = toArrays(eyes);
+    }
+
+    private TextureRegion[] toArrays(TextureRegion[][] table) {
+        TextureRegion[] array = new TextureRegion[table.length * table[0].length];
+
+        int index = 0;
+
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[0].length; j++) {
+                array[index] = table[i][j];
+
+                index++;
+            }
+        }
+
+        return array;
+    }
 
     public SpriteBatch getBatch() {
         return batch;
@@ -39,14 +73,14 @@ public class Rikollisentunnistus extends Game {
     }
 
     public void setCriminals(Face criminal) {
-	    int rightId = criminal.getIdCode();
+	    String rightId = criminal.getIdCode();
 	    Face[] criminals = new Face[5];
 
 	    criminals[0] = criminal;
-	    criminals[1] = new Face(new Texture("testinaama2.png"), 2);
-        criminals[2] = new Face(new Texture("testinaama3.png"), 3);
-        criminals[3] = new Face(new Texture("testinaama4.png"), 4);
-        criminals[4] = new Face(new Texture("testinaama5.png"), 5);
+	    criminals[1] = new Face(noseTextures, eyesTextures);
+        criminals[2] = new Face(noseTextures, eyesTextures);
+        criminals[3] = new Face(noseTextures, eyesTextures);
+        criminals[4] = new Face(noseTextures, eyesTextures);
 
         criminals = shuffleArray(criminals);
         rowScreen.setCriminals(criminals,rightId);

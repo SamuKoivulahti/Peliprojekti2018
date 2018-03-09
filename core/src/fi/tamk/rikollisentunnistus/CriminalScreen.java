@@ -25,14 +25,14 @@ public class CriminalScreen implements Screen {
     final boolean SHOWING = true;
     final boolean WAITING = false;
 
-    public CriminalScreen(Rikollisentunnistus g) {
+    public CriminalScreen(Rikollisentunnistus g, Face rightCriminal) {
         game = g;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
         status = SHOWING;
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
-        criminal = new Face(new Texture("testinaama1.png"),1);
+        criminal = rightCriminal;
         criminal.setLocation(450, 125);
 
         stage.addActor(criminal);
