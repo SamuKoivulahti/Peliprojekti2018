@@ -1,9 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 
 /**
  * Created by Koivulahti on 5.3.2018.
