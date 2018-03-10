@@ -40,6 +40,7 @@ public class RowScreen implements Screen {
         loseText = new TextActor("Wrong, you lose.");
         winText.setPosition(550,600);
         loseText.setPosition(550,600);
+
     }
 
     public void setCriminals(Face[] criminals, String suspectID) {
@@ -59,7 +60,7 @@ public class RowScreen implements Screen {
 
     @Override
     public void show() {
-
+        Controls.currentScreen = this;
     }
 
     public void select() {
@@ -159,19 +160,19 @@ public class RowScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Controls.moveRight()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Controls.moveRight(false)) {
             moveRight();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Controls.moveLeft()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Controls.moveLeft(false)) {
             moveLeft();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Controls.moveUp()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Controls.moveUp(true)) {
             select();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Controls.moveDown()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Controls.moveDown(true)) {
             cancel();
         }
         game.batch.end();
@@ -194,7 +195,7 @@ public class RowScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Controls.currentScreen = null;
     }
 
     @Override
