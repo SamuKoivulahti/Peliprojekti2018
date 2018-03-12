@@ -60,6 +60,11 @@ public class Rikollisentunnistus extends Game {
         return array;
     }
 
+    public void resetAll() {
+	    criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
+	    setScreen(criminalScreen);
+    }
+
     public SpriteBatch getBatch() {
         return batch;
     }

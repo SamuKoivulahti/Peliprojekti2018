@@ -83,7 +83,10 @@ public class RowScreen implements Screen {
     }
 
     public void cancel() {
-        for (Face criminal : criminalRow) {
+        stage.clear();
+        game.resetAll();
+
+        /**for (Face criminal : criminalRow) {
             if (criminal.active) {
                 criminal.toggleActive();
                 break;
@@ -92,7 +95,7 @@ public class RowScreen implements Screen {
 
         stage.clear();
         game.resetCriminalScreen();
-        game.setCriminalScreen();
+        game.setCriminalScreen();*/
     }
 
     public void moveRight() {
