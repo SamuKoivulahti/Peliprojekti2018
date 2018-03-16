@@ -85,17 +85,6 @@ public class RowScreen implements Screen {
     public void cancel() {
         stage.clear();
         game.resetAll();
-
-        /**for (Face criminal : criminalRow) {
-            if (criminal.active) {
-                criminal.toggleActive();
-                break;
-            }
-        }
-
-        stage.clear();
-        game.resetCriminalScreen();
-        game.setCriminalScreen();*/
     }
 
     public void moveRight() {
