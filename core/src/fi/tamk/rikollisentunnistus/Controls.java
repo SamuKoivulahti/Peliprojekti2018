@@ -3,6 +3,8 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import java.util.Set;
+
 /**
  * Created by Koivulahti on 5.3.2018.
  */
@@ -12,17 +14,16 @@ public class Controls {
     static float accelX;
     static float accelY;
 
-    static float moveRight = 5f;
+    static float moveRight =5f;
     static float moveLeft = -5f;
     static float moveUp = -9f;
     static float moveDown = 9f;
 
-    static float hysteresisRight = 3f;
-    static float hysteresisLeft = -3f;
-    static float hysteresisUp = -1.5f;
-    static float hysteresisDown = 1.5f;
+    static float hysteresisRight = moveRight/2;
+    static float hysteresisLeft = moveLeft/2;
+    static float hysteresisUp = moveUp/2;
+    static float hysteresisDown = moveDown/2;
 
-    static boolean startTimer = false;
     static float elapsedTime = 0;
 
     static boolean isAbleMoveLeft = true;
