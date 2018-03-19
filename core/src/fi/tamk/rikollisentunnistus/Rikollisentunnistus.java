@@ -12,25 +12,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import sun.applet.Main;
+
 public class Rikollisentunnistus extends Game {
     CriminalScreen criminalScreen;
     RowScreen rowScreen;
 
+    public Controls controls;
 	SpriteBatch batch;
 
     TextureRegion[] noseTextures;
     TextureRegion[] eyesTextures;
-	
+
+    int rowLength;
+    int sameAttributes;
+    boolean accessories;
+	int rounds;
+
 	@Override
 	public void create () {
-        rowScreen = new RowScreen(this);
+        controls = new Controls();
+        MainScreen mainScreen = new MainScreen(this);
+        rowScreen = new RowScreen(this, controls);
 
-		batch = new SpriteBatch();
+        batch = new SpriteBatch();
 
         makeTextureArrays();
 
+
         criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
-        setCriminalScreen();
+        setScreen(mainScreen);
+        //setCriminalScreen();
 	}
 
     private void makeTextureArrays() {

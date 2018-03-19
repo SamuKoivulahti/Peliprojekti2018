@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
+    private Controls controls;
     private OrthographicCamera camera;
     private Face[] criminalRow;
     private String rightSuspectID;
@@ -27,8 +28,9 @@ public class RowScreen implements Screen {
     private TextActor loseText;
 
 
-    public RowScreen(Rikollisentunnistus g) {
+    public RowScreen(Rikollisentunnistus g, Controls c) {
         game = g;
+        controls = c;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
 
@@ -60,7 +62,6 @@ public class RowScreen implements Screen {
 
     @Override
     public void show() {
-        Controls.currentScreen = this;
     }
 
     public void select() {
@@ -152,19 +153,19 @@ public class RowScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Controls.moveRight(false)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || controls.moveRight(false)) {
             moveRight();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Controls.moveLeft(false)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || controls.moveLeft(false)) {
             moveLeft();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Controls.moveUp(true)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || controls.moveUp(true)) {
             select();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Controls.moveDown(true)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || controls.moveDown(true)) {
             cancel();
         }
         game.batch.end();
@@ -187,7 +188,6 @@ public class RowScreen implements Screen {
 
     @Override
     public void hide() {
-        Controls.currentScreen = null;
     }
 
     @Override

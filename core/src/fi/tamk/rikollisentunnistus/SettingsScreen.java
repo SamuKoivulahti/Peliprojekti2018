@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 
 /**
@@ -69,6 +71,11 @@ public class SettingsScreen implements Screen {
         sliderPositionX = width -sliderSize-10f;
         sliderPositionY = height - sliderSize-10f;
 
+        valueRight = 5f;
+        valueLeft = -5f;
+        valueUp = -5f;
+        valueDown = 5f;
+
         stage = new Stage();
 
         multiplexer = new InputMultiplexer();
@@ -83,6 +90,27 @@ public class SettingsScreen implements Screen {
         assetSlider();
         rowSlider();
         attributeSlider();
+        buttonSave();
+    }
+
+    public void buttonSave() {
+        Button save = new TextButton("SAVE",mySkin,"small");
+        save.setSize(col_width*2,row_height);
+        save.setPosition(0,0);
+        save.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("TAG", "save");
+                host.controls.setControlValues(valueRight, valueLeft, valueUp, valueDown);
+                System.out.print(valueRight + " " +  valueLeft + " " + valueUp + " " + valueDown);
+                // rowlength, sameattributes, accessories, rounds
+                return true;
+            }
+
+        });
+        stage.addActor(save);
+
     }
 
     public float sliderRight() {
@@ -161,7 +189,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+sliderU.getValue());
-                valueUp = sliderU.getValue();
+                valueUp = sliderU.getValue() * -1;
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -190,7 +218,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+sliderD.getValue());
-                valueDown = sliderD.getValue();
+                valueDown = sliderD.getValue() * -1 ;
 
 
             }

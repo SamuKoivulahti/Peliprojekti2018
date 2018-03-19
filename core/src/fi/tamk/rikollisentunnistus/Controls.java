@@ -11,42 +11,76 @@ import java.util.Set;
 
 public class Controls {
 
-    static float accelX;
-    static float accelY;
+    public float accelX;
+    public float accelY;
+    
 
-    static float moveRight =5f;
-    static float moveLeft = -5f;
-    static float moveUp = -9f;
-    static float moveDown = 9f;
+    public float moveRight;
+    public float moveLeft;
+    public float moveUp;
+    public float moveDown;
 
-    static float hysteresisRight = moveRight/2;
-    static float hysteresisLeft = moveLeft/2;
-    static float hysteresisUp = moveUp/2;
-    static float hysteresisDown = moveDown/2;
+    public float hysteresisRight;
+    public float hysteresisLeft;
+    public float hysteresisUp;
+    public float hysteresisDown;
 
-    static float elapsedTime = 0;
+    public float elapsedTime;
 
-    static boolean isAbleMoveLeft = true;
-    static boolean isAbleMoveRight = true;
-    static boolean isAbleMoveUp = true;
-    static boolean isAbleMoveDown = true;
+    public boolean isAbleMoveLeft;
+    public boolean isAbleMoveRight;
+    public boolean isAbleMoveUp;
+    public boolean isAbleMoveDown;
 
-    static boolean timer = false;
-    static Screen currentScreen;
+    public boolean timer;
+    public Screen currentScreen;
 
-    static float accelerometerX() {
+    public Controls() {
+
+        moveRight = 5f;
+        moveLeft = -5f;
+        moveUp = -9f;
+        moveDown = 9f;
+
+        hysteresisRight = moveRight/2;
+        hysteresisLeft = moveLeft/2;
+        hysteresisUp = moveUp/2;
+        hysteresisDown = moveDown/2;
+
+        elapsedTime = 0;
+
+        isAbleMoveLeft = true;
+        isAbleMoveRight = true;
+        isAbleMoveUp = true;
+        isAbleMoveDown = true;
+
+        timer = false;
+    }
+
+    public void setControlValues(float right, float left, float up, float down) {
+        moveRight = right;
+        moveLeft = left;
+        moveUp = up;
+        moveDown = down;
+        hysteresisRight = right/2;
+        hysteresisLeft = left/2;
+        hysteresisUp = up/2;
+        hysteresisDown = down/2;
+    }
+
+    public float accelerometerX() {
         accelX = Gdx.input.getAccelerometerX();
         //Gdx.app.log("TAG", "X:" + accelX);
         return accelX;
     }
 
-    static float accelerometerY() {
+    public float accelerometerY() {
         accelY = Gdx.input.getAccelerometerY();
         //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
-    static boolean moveRight(boolean isTimed) {
+    public boolean moveRight(boolean isTimed) {
         accelerometerY();
         if (accelY > moveRight && isAbleMoveRight) {
             isAbleMoveRight = false;
@@ -63,7 +97,7 @@ public class Controls {
         return false;
     }
 
-    static boolean moveLeft(boolean isTimed) {
+    public boolean moveLeft(boolean isTimed) {
         accelerometerY();
         if (accelY < moveLeft && isAbleMoveLeft) {
             isAbleMoveLeft = false;
@@ -81,7 +115,7 @@ public class Controls {
         return false;
     }
 
-    static boolean moveUp(boolean isTimed) {
+    public boolean moveUp(boolean isTimed) {
         accelerometerX();
         if (accelX < moveUp && isAbleMoveUp) {
             //Gdx.app.log("TAG", "L");
@@ -98,7 +132,7 @@ public class Controls {
         return false;
     }
 
-    static boolean moveDown(boolean isTimed) {
+    public boolean moveDown(boolean isTimed) {
         accelerometerX();
         if (accelX > moveDown && isAbleMoveDown) {
             timer = isTimed;
@@ -114,7 +148,7 @@ public class Controls {
         return false;
     }
 
-    static boolean timer() {
+    public boolean timer() {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= 3) {
             elapsedTime = 0;

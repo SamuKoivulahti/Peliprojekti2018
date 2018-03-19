@@ -37,11 +37,13 @@ public class MainScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 650);
-        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+        stage = new Stage();
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
+
+        Gdx.input.setInputProcessor(stage);
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -52,8 +54,8 @@ public class MainScreen implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                //CriminalScreen CriminalScreen = new CriminalScreen(host);
-                //host.setScreen(CriminalScreen);
+                Gdx.app.log("TAG", "dfgg");
+                host.setCriminalScreen();
                 return true;
             }
 
