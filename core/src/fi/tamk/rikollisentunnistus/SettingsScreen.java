@@ -71,15 +71,7 @@ public class SettingsScreen implements Screen {
         sliderPositionX = width -sliderSize-10f;
         sliderPositionY = height - sliderSize-10f;
 
-        valueRight = 5f;
-        valueLeft = -5f;
-        valueUp = -5f;
-        valueDown = 5f;
-
         stage = new Stage();
-
-        multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -91,6 +83,25 @@ public class SettingsScreen implements Screen {
         rowSlider();
         attributeSlider();
         buttonSave();
+        buttonBack();
+    }
+
+    public void buttonBack() {
+        Button back = new TextButton("<--",mySkin,"small");
+        back.setSize(col_width*2,row_height);
+        back.setPosition(0,height - back.getHeight());
+        back.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("TAG", "back");
+                MainScreen MainScreen = new MainScreen(host);
+                host.setScreen(MainScreen);
+                return true;
+            }
+
+        });
+        stage.addActor(back);
     }
 
     public void buttonSave() {
@@ -323,7 +334,7 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -351,10 +362,12 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
+        stage.dispose();
+        mySkin.dispose();
     }
 }

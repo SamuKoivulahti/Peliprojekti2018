@@ -3,7 +3,6 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import java.util.Set;
 
 /**
  * Created by Koivulahti on 5.3.2018.
@@ -11,9 +10,9 @@ import java.util.Set;
 
 public class Controls {
 
-    public float accelX;
     public float accelY;
-    
+    public float accelX;
+
 
     public float moveRight;
     public float moveLeft;
@@ -36,11 +35,11 @@ public class Controls {
     public Screen currentScreen;
 
     public Controls() {
-
+        Gdx.app.log("Controls", "constructor");
         moveRight = 5f;
         moveLeft = -5f;
-        moveUp = -9f;
-        moveDown = 9f;
+        moveUp = 5f;
+        moveDown = -5f;
 
         hysteresisRight = moveRight/2;
         hysteresisLeft = moveLeft/2;
@@ -66,83 +65,85 @@ public class Controls {
         hysteresisLeft = left/2;
         hysteresisUp = up/2;
         hysteresisDown = down/2;
-    }
 
-    public float accelerometerX() {
-        accelX = Gdx.input.getAccelerometerX();
-        //Gdx.app.log("TAG", "X:" + accelX);
-        return accelX;
+        System.out.println("ok");
     }
 
     public float accelerometerY() {
-        accelY = Gdx.input.getAccelerometerY();
+        accelY = Gdx.input.getAccelerometerZ();
         //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
+    public float accelerometerX() {
+        accelX = Gdx.input.getAccelerometerY();
+        //Gdx.app.log("TAG", "X:" + accelX);
+        return accelX;
+    }
+
     public boolean moveRight(boolean isTimed) {
-        accelerometerY();
-        if (accelY > moveRight && isAbleMoveRight) {
+        accelerometerX();
+        if (accelX > moveRight && isAbleMoveRight) {
             isAbleMoveRight = false;
             timer = isTimed;
             //Gdx.app.log("TAG", "R");
             return !isTimed;
-        } else if (!isAbleMoveRight && accelY < hysteresisRight && accelY > 0) {
+        } else if (!isAbleMoveRight && accelX < hysteresisRight && accelX > 0) {
             isAbleMoveRight = true;
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Rback");
-        } else if (accelY > moveRight && !isAbleMoveRight && timer) {
+        } else if (accelX > moveRight && !isAbleMoveRight && timer) {
             return timer();
         }
         return false;
     }
 
     public boolean moveLeft(boolean isTimed) {
-        accelerometerY();
-        if (accelY < moveLeft && isAbleMoveLeft) {
+        accelerometerX();
+        if (accelX < moveLeft && isAbleMoveLeft) {
             isAbleMoveLeft = false;
             timer = isTimed;
             //Gdx.app.log("TAG", "L");
             return !isTimed;
-        } else if (!isAbleMoveLeft && accelY > hysteresisLeft && accelY < 0) {
+        } else if (!isAbleMoveLeft && accelX > hysteresisLeft && accelX < 0) {
             isAbleMoveLeft = true;
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Lback");
         }
-        else if (accelY < moveLeft && !isAbleMoveLeft && timer) {
+        else if (accelX < moveLeft && !isAbleMoveLeft && timer) {
             return timer();
         }
         return false;
     }
 
     public boolean moveUp(boolean isTimed) {
-        accelerometerX();
-        if (accelX < moveUp && isAbleMoveUp) {
+        accelerometerY();
+        if (accelY > moveUp && isAbleMoveUp) {
             //Gdx.app.log("TAG", "L");
             timer = isTimed;
             isAbleMoveUp = false;
             return !isTimed;
-        } else if (!isAbleMoveUp && accelX > hysteresisUp && accelX < 0) {
+        } else if (!isAbleMoveUp && accelY < hysteresisUp && accelY > 0) {
             isAbleMoveUp = true;
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Lback");
-        } else if (accelX < moveUp && !isAbleMoveUp && timer) {
+        } else if (accelY > moveUp && !isAbleMoveUp && timer) {
             return timer();
         }
         return false;
     }
 
     public boolean moveDown(boolean isTimed) {
-        accelerometerX();
-        if (accelX > moveDown && isAbleMoveDown) {
+        accelerometerY();
+        if (accelY < moveDown && isAbleMoveDown) {
             timer = isTimed;
             isAbleMoveDown = false;
             return !isTimed;
 
-        } else if (!isAbleMoveDown && accelX < hysteresisDown && accelX > 0) {
+        } else if (!isAbleMoveDown && accelY > hysteresisDown && accelY < 0) {
             isAbleMoveDown = true;
             elapsedTime = 0;
-        } else if (accelX > moveDown && !isAbleMoveDown && timer) {
+        } else if (accelY < moveDown && !isAbleMoveDown && timer) {
             return timer();
         }
         return false;

@@ -5,9 +5,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by Essi Supponen on 23/02/2018.
@@ -15,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
-    private Controls controls;
     private OrthographicCamera camera;
     private Face[] criminalRow;
     private String rightSuspectID;
@@ -27,22 +34,57 @@ public class RowScreen implements Screen {
     private TextActor winText;
     private TextActor loseText;
 
+    Skin mySkin;
 
-    public RowScreen(Rikollisentunnistus g, Controls c) {
+    int row_height;
+    int col_width;
+    float width;
+    float height;
+
+    float rowLength;
+
+    public RowScreen(Rikollisentunnistus g) {
         game = g;
-        controls = c;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
+        stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
-        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         win = false;
         lose = false;
+
+        row_height = Gdx.graphics.getWidth() / 12;
+        col_width = Gdx.graphics.getWidth() / 12;
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
 
         winText = new TextActor("Right, you won!");
         loseText = new TextActor("Wrong, you lose.");
         winText.setPosition(550,600);
         loseText.setPosition(550,600);
 
+        mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
+
+        buttonBack();
+        Gdx.app.log("RowScreen", "constructor");
+
+    }
+
+    public void buttonBack() {
+        Button back = new TextButton("<--",mySkin,"small");
+        back.setSize(col_width*2,row_height);
+        back.setPosition(0,camera.viewportHeight - back.getHeight());
+        back.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                Gdx.app.log("TAG", "back");
+                game.resetAll();
+                MainScreen MainScreen = new MainScreen(game);
+                game.setScreen(MainScreen);
+            }
+        });
+        stage.addActor(back);
     }
 
     public void setCriminals(Face[] criminals, String suspectID) {
@@ -62,6 +104,7 @@ public class RowScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void select() {
@@ -81,11 +124,14 @@ public class RowScreen implements Screen {
             lose = true;
             stage.addActor(loseText);
         }
+
+        Gdx.app.log("Select", "selected");
     }
 
     public void cancel() {
         stage.clear();
         game.resetAll();
+        Gdx.app.log("Cancel", "cancelled");
     }
 
     public void moveRight() {
@@ -153,19 +199,19 @@ public class RowScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || controls.moveRight(false)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || game.controls.moveRight(false)) {
             moveRight();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || controls.moveLeft(false)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || game.controls.moveLeft(false)) {
             moveLeft();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || controls.moveUp(true)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) {
             select();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || controls.moveDown(true)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || game.controls.moveDown(true)) {
             cancel();
         }
         game.batch.end();
@@ -188,10 +234,12 @@ public class RowScreen implements Screen {
 
     @Override
     public void hide() {
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        stage.clear();
+        mySkin.dispose();
     }
 }

@@ -24,6 +24,10 @@ public class CriminalScreen implements Screen {
 
     final boolean SHOWING = true;
     final boolean WAITING = false;
+    float elapsedTime = 0;
+
+    int timeShown = 5;
+    int timeWaiting = 3;
 
     public CriminalScreen(Rikollisentunnistus g, Face rightCriminal) {
         game = g;
@@ -38,6 +42,15 @@ public class CriminalScreen implements Screen {
         stage.addActor(criminal);
     }
 
+    public boolean timer(int timeToPass) {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        if (elapsedTime >= timeToPass) {
+            elapsedTime = 0;
+            return true;
+        }
+        return false;
+    }
+
     public void reset() {
         status = SHOWING;
         criminal.setLocation(450, 125);
@@ -46,7 +59,7 @@ public class CriminalScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -59,26 +72,37 @@ public class CriminalScreen implements Screen {
         game.batch.begin();
 
         if (status == SHOWING) {
-            Gdx.app.log("Criminal Screen", "Showing");
+            //Gdx.app.log("Criminal Screen", "Showing");
 
             stage.act();
             stage.draw();
+
+            if (timer(timeShown)) {
+                status = WAITING;
+                elapsedTime = 0;
+            }
+
         } else if (status == WAITING) {
-            Gdx.app.log("Criminal Screen", "Waiting");
+            if (timer(timeWaiting)) {
+                elapsedTime = 0;
+                game.setRowScreen();
+                game.setCriminals(criminal);
+            }
+            //Gdx.app.log("Criminal Screen", "Waiting");
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
-            game.setCriminals(criminal);
             game.setRowScreen();
+            game.setCriminals(criminal);
         }
-        if (Gdx.input.isTouched() && status == SHOWING) {
+        /*if (Gdx.input.isTouched() && status == SHOWING) {
             status = WAITING;
         } else if (Gdx.input.isTouched() && status == WAITING) {
-            game.setCriminals(criminal);
             game.setRowScreen();
-        }
+            game.setCriminals(criminal);
+        }*/
 
         game.batch.end();
     }
@@ -100,11 +124,11 @@ public class CriminalScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        stage.clear();
     }
 }

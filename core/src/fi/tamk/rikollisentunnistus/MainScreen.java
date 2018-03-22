@@ -43,7 +43,7 @@ public class MainScreen implements Screen {
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
 
-        Gdx.input.setInputProcessor(stage);
+
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -54,7 +54,7 @@ public class MainScreen implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("TAG", "dfgg");
+                Gdx.app.log("MainScreen", "Play");
                 host.setCriminalScreen();
                 return true;
             }
@@ -82,7 +82,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -112,11 +112,12 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
+        mySkin.dispose();
     }
 }

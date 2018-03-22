@@ -12,13 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import sun.applet.Main;
-
 public class Rikollisentunnistus extends Game {
     CriminalScreen criminalScreen;
     RowScreen rowScreen;
 
     public Controls controls;
+
 	SpriteBatch batch;
 
     TextureRegion[] noseTextures;
@@ -32,15 +31,15 @@ public class Rikollisentunnistus extends Game {
 	@Override
 	public void create () {
         controls = new Controls();
+
         MainScreen mainScreen = new MainScreen(this);
-        rowScreen = new RowScreen(this, controls);
+
 
         batch = new SpriteBatch();
 
         makeTextureArrays();
 
 
-        criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
         setScreen(mainScreen);
         //setCriminalScreen();
 	}
@@ -82,10 +81,12 @@ public class Rikollisentunnistus extends Game {
     }
 
     public void setRowScreen() {
+        rowScreen = new RowScreen(this);
         setScreen(rowScreen);
     }
 
     public void setCriminalScreen() {
+        criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
         setScreen(criminalScreen);
     }
 
