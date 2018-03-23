@@ -71,6 +71,11 @@ public class SettingsScreen implements Screen {
         sliderPositionX = width -sliderSize-10f;
         sliderPositionY = height - sliderSize-10f;
 
+        valueRight = 5f;
+        valueLeft = -5f;
+        valueUp = 5f;
+        valueDown = -5f;
+
         stage = new Stage();
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
@@ -184,12 +189,12 @@ public class SettingsScreen implements Screen {
     }
 
     public float sliderUp() {
-        sliderU = new Slider(-10f,0f,0.5f,true, mySkin);
+        sliderU = new Slider(0f,10f,0.5f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(sliderSize);
-        sliderU.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY - sliderSize);
-        sliderU.setValue(-5f);
+        sliderU.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY );
+        sliderU.setValue(5f);
         sliderU.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -200,7 +205,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+sliderU.getValue());
-                valueUp = sliderU.getValue() * -1;
+                valueUp = sliderU.getValue();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -213,12 +218,12 @@ public class SettingsScreen implements Screen {
     }
 
     public float sliderDown() {
-        sliderD = new Slider(0f,10f,0.5f,true, mySkin);
+        sliderD = new Slider(-10f,0f,0.5f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(sliderSize);
-        sliderD.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY );
-        sliderD.setValue(5f);
+        sliderD.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY - sliderSize);
+        sliderD.setValue(-5f);
         sliderD.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -229,7 +234,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+sliderD.getValue());
-                valueDown = sliderD.getValue() * -1 ;
+                valueDown = sliderD.getValue();
 
 
             }
