@@ -28,6 +28,11 @@ public class CriminalScreen implements Screen {
 
     int timeShown = 5;
     int timeWaiting = 3;
+    int sameAttributes;
+    boolean assets;
+    int roundAmount;
+
+
 
     public CriminalScreen(Rikollisentunnistus g, Face rightCriminal) {
         game = g;
@@ -38,6 +43,24 @@ public class CriminalScreen implements Screen {
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = rightCriminal;
         criminal.setLocation(450, 125);
+
+        Settings settings = Settings.getInstance();
+
+        try {
+            sameAttributes = settings.getInteger("sameAttributes");
+            assets = settings.getBoolean("assets");
+            roundAmount = settings.getInteger("roundAmount");
+
+
+        } catch (Exception e) {
+            sameAttributes = 5;
+            assets = false;
+            roundAmount = 7;
+            settings.setInteger("sameAttributes", sameAttributes);
+            settings.setBoolean("assets", assets);
+            settings.setInteger("roundAmount", roundAmount);
+            settings.saveSettings();
+        }
 
         stage.addActor(criminal);
     }
@@ -66,7 +89,7 @@ public class CriminalScreen implements Screen {
     public void render(float delta) {
         game.batch.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(25/255f, 25/255f, 100/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();

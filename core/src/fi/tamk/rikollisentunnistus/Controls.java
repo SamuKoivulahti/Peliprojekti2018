@@ -32,19 +32,34 @@ public class Controls {
     public boolean isAbleMoveDown;
 
     public boolean timer;
-    public Screen currentScreen;
 
     public Controls() {
         Gdx.app.log("Controls", "constructor");
-        moveRight = 5f;
-        moveLeft = -5f;
-        moveUp = 5f;
-        moveDown = -5f;
+
+        Settings settings = Settings.getInstance();
+        try {
+            moveRight = settings.getFloat("sensitivityRight");
+            moveLeft = settings.getFloat("sensitivityLeft");
+            moveUp = settings.getFloat("sensitivityUp");
+            moveDown = settings.getFloat("sensitivityDown");
+        } catch (Exception e) {
+            moveRight = 5f;
+            moveLeft = -5f;
+            moveUp = 5f;
+            moveDown = -5f;
+
+            settings.setFloat("sensitivityRight", moveRight);
+            settings.setFloat("sensitivityLeft", moveLeft);
+            settings.setFloat("sensitivityUp", moveUp);
+            settings.setFloat("sensitivityDown", moveDown);
+            settings.saveSettings();
+        }
 
         hysteresisRight = moveRight/2;
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
         hysteresisDown = moveDown/2;
+
 
         elapsedTime = 0;
 
@@ -54,19 +69,6 @@ public class Controls {
         isAbleMoveDown = true;
 
         timer = false;
-    }
-
-    public void setControlValues(float right, float left, float up, float down) {
-        moveRight = right;
-        moveLeft = left;
-        moveUp = up;
-        moveDown = down;
-        hysteresisRight = right/2;
-        hysteresisLeft = left/2;
-        hysteresisUp = up/2;
-        hysteresisDown = down/2;
-
-        System.out.println("ok");
     }
 
     public float accelerometerY() {

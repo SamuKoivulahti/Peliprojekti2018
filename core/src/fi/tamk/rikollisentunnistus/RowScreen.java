@@ -6,15 +6,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -27,12 +25,14 @@ public class RowScreen implements Screen {
     private Face[] criminalRow;
     private String rightSuspectID;
     private Stage stage;
+    IntermissionScreen InterMissionScreen;
 
     boolean win;
     boolean lose;
 
-    private TextActor winText;
-    private TextActor loseText;
+    private Label winText;
+    private Label loseText;
+    private Label pointsText;
 
     Skin mySkin;
 
@@ -41,14 +41,17 @@ public class RowScreen implements Screen {
     float width;
     float height;
 
-    float rowLength;
+    int points;
+
+    int rowLength;
 
     public RowScreen(Rikollisentunnistus g) {
+        Gdx.app.log("RowScreen", "constructor");
         game = g;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
-
+        game.gameData.setWin(false);
         win = false;
         lose = false;
 
@@ -57,20 +60,44 @@ public class RowScreen implements Screen {
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
 
-        winText = new TextActor("Right, you won!");
-        loseText = new TextActor("Wrong, you lose.");
-        winText.setPosition(550,600);
-        loseText.setPosition(550,600);
-
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
+        winText = new Label("Right, you won!", mySkin);
+        winText.setPosition(camera.viewportWidth / 2 - winText.getWidth()/2,camera.viewportHeight - winText.getHeight()*2);
+        winText.setVisible(false);
+
+        loseText = new Label("Wrong, you lose.", mySkin);
+        loseText.setPosition(camera.viewportWidth / 2 - loseText.getWidth()/2,camera.viewportHeight - loseText.getHeight()*2);
+        loseText.setVisible(false);
+
+        points = game.gameData.getPoints();
+        System.out.println(points + "rowscreen top");
+        pointsText = new Label("Pisteet: " + points, mySkin);
+        pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
+
+        Settings settings = Settings.getInstance();
+
+
+        try {
+            rowLength = settings.getInteger("rowLength");
+
+        } catch (Exception e) {
+            rowLength = 5;
+            settings.setInteger("rowLength", rowLength);
+            settings.saveSettings();
+        }
+
+
         buttonBack();
-        Gdx.app.log("RowScreen", "constructor");
+        stage.addActor(winText);
+        stage.addActor(loseText);
+        stage.addActor(pointsText);
+
 
     }
 
     public void buttonBack() {
-        Button back = new TextButton("<--",mySkin,"small");
+        Button back = new TextButton("Main Menu",mySkin,"small");
         back.setSize(col_width*2,row_height);
         back.setPosition(0,camera.viewportHeight - back.getHeight());
         back.addListener(new ClickListener(){
@@ -154,15 +181,22 @@ public class RowScreen implements Screen {
         System.out.println(rightSuspectID);
         System.out.println(selectedID);
 
+        Gdx.app.log("Select", "selected");
         if (selectedID.equals(rightSuspectID)) {
             win = true;
-            stage.addActor(winText);
+            pointsText.setText("Pisteet: " + points);
+            winText.setVisible(true);
+            loseText.setVisible(false);
+            game.gameData.setPoints(points + 1);
+            game.gameData.setWin(true);
+
         } else {
             lose = true;
-            stage.addActor(loseText);
+            winText.setVisible(false);
+            loseText.setVisible(true);
         }
 
-        Gdx.app.log("Select", "selected");
+        setInterMissionScreen();
     }
 
     public void cancel() {
@@ -215,14 +249,20 @@ public class RowScreen implements Screen {
         }
     }
 
+    public void setInterMissionScreen() {
+        InterMissionScreen = new IntermissionScreen(game);
+        game.setScreen(InterMissionScreen);
+    }
+
     @Override
     public void render(float delta) {
         game.batch.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(0,1,0,1);
+        Gdx.gl.glClearColor(25/255f,100/255f,25/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
+
 
         for (Face criminal : criminalRow) {
             if (criminal.active && !criminal.hasActions()) {

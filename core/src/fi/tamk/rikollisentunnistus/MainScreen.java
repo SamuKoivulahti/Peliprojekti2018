@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.Set;
@@ -50,13 +51,13 @@ public class MainScreen implements Screen {
         Button play = new TextButton("PLAY",mySkin,"small");
         play.setSize(col_width*2,row_height);
         play.setPosition(col_width * 5,height- row_height*3);
-        play.addListener(new InputListener(){
+        play.addListener(new ClickListener(){
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 Gdx.app.log("MainScreen", "Play");
                 host.setCriminalScreen();
-                return true;
             }
 
         });
@@ -64,13 +65,13 @@ public class MainScreen implements Screen {
         Button settings = new TextButton("Settings",mySkin,"small");
         settings.setSize(col_width*2,row_height);
         settings.setPosition(col_width * 5,height- row_height*5);
-        settings.addListener(new InputListener(){
+        settings.addListener(new ClickListener(){
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 SettingsScreen SettingScreen = new SettingsScreen(host);
                 host.setScreen(SettingScreen);
-                return true;
             }
 
         });

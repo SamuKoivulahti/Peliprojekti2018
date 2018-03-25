@@ -21,6 +21,7 @@ public class Rikollisentunnistus extends Game {
     public Controls controls;
 
 	SpriteBatch batch;
+	GameData gameData;
 
     private RowConstructor rowConstructor;
     private Face[] criminals;
@@ -32,7 +33,9 @@ public class Rikollisentunnistus extends Game {
 
 	@Override
 	public void create () {
+
         controls = new Controls();
+        gameData = new GameData();
 
         MainScreen mainScreen = new MainScreen(this);
 

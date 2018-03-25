@@ -11,9 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 /**
@@ -33,27 +36,41 @@ public class SettingsScreen implements Screen {
     public Slider sliderA;
     public Slider sliderRow;
     public Slider sliderAttribute;
+    public Slider sliderRound;
 
     float valueRight;
     float valueLeft;
     float valueUp;
     float valueDown;
-    float valueAssets;
-    float valueRow;
-    float valueAttribute;
+    boolean valueAssets;
+    int valueRow;
+    int valueAttribute;
+    int valueRound;
 
-    float sliderPositionX;
-    float sliderPositionY;
     float sliderSize;
 
     private InputMultiplexer multiplexer;
 
-    int row_height;
-    int col_width;
-    float width;
-    float height;
+    float row_height;
+    float col_width;
+    
+
+    private Label calibrateText;
+    private Label assetsText;
+    private Label sameAttributesText;
+    private Label rowLengthText;
+    private Label roundsText;
+    private Label onText;
+    private Label offText;
+    private Label rowLengthMinText;
+    private Label rowLengthMaxText;
+    private Label sameAttributesMinText;
+    private Label sameAttributesMaxText;
+    private Label roundsMinText;
+    private Label roundsMaxText;
 
     Skin mySkin;
+    Settings settings;
 
 
     public SettingsScreen(Rikollisentunnistus host) {
@@ -61,25 +78,26 @@ public class SettingsScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 650);
+        stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
-        row_height = Gdx.graphics.getWidth() / 12;
-        col_width = Gdx.graphics.getWidth() / 12;
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        row_height = camera.viewportHeight / 12;
+        col_width = camera.viewportWidth / 12;
 
-        sliderSize = Gdx.graphics.getWidth()*0.15f;
-        sliderPositionX = width -sliderSize-10f;
-        sliderPositionY = height - sliderSize-10f;
+        sliderSize = camera.viewportWidth * 0.15f;
 
         valueRight = 5f;
         valueLeft = -5f;
         valueUp = 5f;
         valueDown = -5f;
 
-        stage = new Stage();
-
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
+        calibrateText = new Label("Calibrate", mySkin);
+        calibrateText.setPosition(col_width*4 - calibrateText.getWidth()/2, row_height * 11 - calibrateText.getHeight());
+
+        settings = Settings.getInstance();
+
+        stage.addActor(calibrateText);
         sliderRight();
         sliderLeft();
         sliderUp();
@@ -87,22 +105,23 @@ public class SettingsScreen implements Screen {
         assetSlider();
         rowSlider();
         attributeSlider();
+        roundSlider();
         buttonSave();
         buttonBack();
     }
 
     public void buttonBack() {
-        Button back = new TextButton("<--",mySkin,"small");
-        back.setSize(col_width*2,row_height);
-        back.setPosition(0,height - back.getHeight());
-        back.addListener(new InputListener(){
+        Button back = new TextButton("Main Menu",mySkin,"small");
+        back.setSize(col_width*2,row_height*2);
+        back.setPosition(0,camera.viewportHeight - back.getHeight());
+        back.addListener(new ClickListener(){
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 Gdx.app.log("TAG", "back");
                 MainScreen MainScreen = new MainScreen(host);
                 host.setScreen(MainScreen);
-                return true;
             }
 
         });
@@ -111,15 +130,23 @@ public class SettingsScreen implements Screen {
 
     public void buttonSave() {
         Button save = new TextButton("SAVE",mySkin,"small");
-        save.setSize(col_width*2,row_height);
+        save.setSize(col_width*2,row_height*2);
         save.setPosition(0,0);
         save.addListener(new InputListener(){
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
-                host.controls.setControlValues(valueRight, valueLeft, valueUp, valueDown);
-                System.out.print(valueRight + " " +  valueLeft + " " + valueUp + " " + valueDown);
+                settings.setFloat("sensitivityRight", valueRight);
+                settings.setFloat("sensitivityLeft", valueLeft);
+                settings.setFloat("sensitivityUp", valueUp);
+                settings.setFloat("sensitivityDown", valueDown);
+                settings.setInteger("rowLength", valueRow);
+                settings.setInteger("sameAttributes", valueAttribute);
+                settings.setBoolean("assets", valueAssets);
+                settings.setInteger("roundAmount", valueRound);
+                settings.saveSettings();
+
                 // rowlength, sameattributes, accessories, rounds
                 return true;
             }
@@ -134,8 +161,8 @@ public class SettingsScreen implements Screen {
         sliderR.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderR.setWidth(sliderSize);
-        sliderR.setPosition(sliderPositionX, sliderPositionY - sliderR.getHeight()/2);
-        sliderR.setValue(5f);
+        sliderR.setPosition(col_width*4, row_height * 6 - sliderR.getHeight()/2);
+        sliderR.setValue(settings.getFloat("sensitivityRight"));
         sliderR.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -163,8 +190,8 @@ public class SettingsScreen implements Screen {
         sliderL.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderL.setWidth(sliderSize);
-        sliderL.setPosition(sliderPositionX - sliderSize, sliderPositionY - sliderL.getHeight()/2);
-        sliderL.setValue(-5f);
+        sliderL.setPosition(col_width*4 - sliderL.getWidth(), row_height * 6 - sliderR.getHeight()/2);
+        sliderL.setValue(settings.getFloat("sensitivityLeft"));
         sliderL.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -193,8 +220,8 @@ public class SettingsScreen implements Screen {
         sliderU.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(sliderSize);
-        sliderU.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY );
-        sliderU.setValue(5f);
+        sliderU.setPosition(col_width*4 - sliderU.getWidth()/2, row_height * 6);
+        sliderU.setValue(settings.getFloat("sensitivityUp"));
         sliderU.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -222,8 +249,8 @@ public class SettingsScreen implements Screen {
         sliderD.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(sliderSize);
-        sliderD.setPosition(sliderPositionX - sliderU.getWidth()/2, sliderPositionY - sliderSize);
-        sliderD.setValue(-5f);
+        sliderD.setPosition(col_width*4 - sliderD.getWidth()/2, row_height * 6 - sliderD.getHeight());
+        sliderD.setValue(settings.getFloat("sensitivityDown"));
         sliderD.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -248,13 +275,13 @@ public class SettingsScreen implements Screen {
         return valueDown;
     }
 
-    public float assetSlider() {
-        sliderA = new Slider(0f,1f,1f,false, mySkin);
+    public boolean assetSlider() {
+        sliderA = new Slider(0,1,1,false, mySkin);
         sliderA.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
-        sliderA.setWidth(Gdx.graphics.getWidth()*0.15f/2);
-        sliderA.setPosition(sliderPositionX - sliderA.getWidth()/2, sliderPositionY - (sliderSize) - sliderA.getHeight()/2 - 50f);
-        sliderA.setValue(1f);
+        sliderA.setWidth(sliderSize/2);
+        sliderA.setPosition(col_width *8 + (sliderSize*2 - sliderA.getWidth())/ 2, row_height * 10);
+        sliderA.setValue(settings.getBoolean("assets")? 1 : 0);
         sliderA.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -265,7 +292,8 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+ sliderA.getValue());
-                valueAssets = sliderA.getValue();
+                valueAssets = sliderA.getValue() == 1;
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -273,17 +301,26 @@ public class SettingsScreen implements Screen {
                 return true;
             }
         });
+        assetsText = new Label("Assets", mySkin);
+        assetsText.setPosition(col_width * 8 + (sliderSize) - assetsText.getWidth()/2, row_height * 11);
+        onText = new Label("ON", mySkin);
+        onText.setPosition(col_width *8 + (sliderSize*2), row_height * 10);
+        offText = new Label("OFF", mySkin);
+        offText.setPosition(col_width * 8 - offText.getWidth(), row_height * 10);
+        stage.addActor(onText);
+        stage.addActor(offText);
+        stage.addActor(assetsText);
         stage.addActor(sliderA);
         return valueAssets;
     }
 
-    public float rowSlider() {
-        sliderRow = new Slider(3f,6f,1f,false, mySkin);
+    public int rowSlider() {
+        sliderRow = new Slider(3,6,1,false, mySkin);
         sliderRow.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
-        sliderRow.setWidth(Gdx.graphics.getWidth()*0.15f*2);
-        sliderRow.setPosition(sliderPositionX - sliderRow.getWidth()/2, sliderPositionY - sliderSize*2 - sliderRow.getHeight()/2);
-        sliderRow.setValue(1f);
+        sliderRow.setWidth(sliderSize*2);
+        sliderRow.setPosition(col_width *8, row_height * 7);
+        sliderRow.setValue(settings.getInteger("rowLength"));
         sliderRow.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -294,7 +331,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+ sliderRow.getValue());
-                valueRow = sliderRow.getValue();
+                valueRow = (int)sliderRow.getValue();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -302,17 +339,26 @@ public class SettingsScreen implements Screen {
                 return true;
             }
         });
+        rowLengthText = new Label("Rows Length", mySkin);
+        rowLengthText.setPosition(col_width *8 + (sliderSize) - rowLengthText.getWidth()/2, row_height *8);
+        rowLengthMinText = new Label("3", mySkin);
+        rowLengthMinText.setPosition(col_width * 8 - rowLengthMinText.getWidth(), row_height * 7);
+        rowLengthMaxText = new Label("6", mySkin);
+        rowLengthMaxText.setPosition(col_width *8 + (sliderSize*2)+rowLengthMaxText.getWidth(), row_height * 7);
+        stage.addActor(rowLengthText);
+        stage.addActor(rowLengthMinText);
+        stage.addActor(rowLengthMaxText);
         stage.addActor(sliderRow);
         return valueRow;
     }
 
-    public float attributeSlider() {
-        sliderAttribute = new Slider(0f,4f,1f,false, mySkin);
+    public int attributeSlider() {
+        sliderAttribute = new Slider(0,4,1,false, mySkin);
         sliderAttribute.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
-        sliderAttribute.setWidth(Gdx.graphics.getWidth()*0.15f*2);
-        sliderAttribute.setPosition(sliderPositionX - sliderAttribute.getWidth()/2, sliderPositionY - (sliderSize) - sliderAttribute.getHeight()/2 - 225f);
-        sliderAttribute.setValue(2f);
+        sliderAttribute.setWidth(sliderSize*2);
+        sliderAttribute.setPosition(col_width *8, row_height * 4);
+        sliderAttribute.setValue(settings.getInteger("sameAttributes"));
         sliderAttribute.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -322,7 +368,7 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                valueAttribute = sliderAttribute.getValue();
+                valueAttribute = (int)sliderAttribute.getValue();
                 Gdx.app.log("up","slider Value:"+ sliderAttribute.getValue());
             }
             @Override
@@ -331,11 +377,58 @@ public class SettingsScreen implements Screen {
                 return true;
             }
         });
+        sameAttributesText = new Label("Same Attributes", mySkin);
+        sameAttributesText.setPosition(col_width *8 + (sliderSize) - sameAttributesText.getWidth()/2, row_height *5);
+        sameAttributesMinText = new Label("0", mySkin);
+        sameAttributesMinText.setPosition(col_width * 8 - sameAttributesMinText.getWidth(), row_height * 4);
+        sameAttributesMaxText = new Label("4", mySkin);
+        sameAttributesMaxText.setPosition(col_width *8 + (sliderSize*2)+sameAttributesMaxText.getWidth(), row_height * 4);
+        stage.addActor(sameAttributesText);
+        stage.addActor(sameAttributesMinText);
+        stage.addActor(sameAttributesMaxText);
         stage.addActor(sliderAttribute);
 
         return valueAttribute;
     }
 
+    public int roundSlider() {
+        sliderRound = new Slider(5,15,1,false, mySkin);
+        sliderRound.setAnimateInterpolation(Interpolation.smooth);
+        //slider.setAnimateDuration(0.1f);
+        sliderRound.setWidth(sliderSize*2);
+        sliderRound.setPosition(col_width *8, row_height * 1);
+        sliderRound.setValue(settings.getInteger("roundAmount"));
+        sliderRound.addListener(new InputListener(){
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
+                super.touchDragged(event, x, y, pointer);
+            }
+
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                valueRound = (int)sliderRound.getValue();
+                Gdx.app.log("up","slider Value:"+ sliderRound.getValue());
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("down","slider Value:"+ sliderRound.getValue());
+                return true;
+            }
+        });
+        roundsText = new Label("Round Amount", mySkin);
+        roundsText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *2);
+        roundsMinText = new Label("5", mySkin);
+        roundsMinText.setPosition(col_width * 8 - rowLengthMinText.getWidth(), row_height * 1);
+        roundsMaxText = new Label("15", mySkin);
+        roundsMaxText.setPosition(col_width *8 + (sliderSize*2), row_height * 1);
+        stage.addActor(roundsText);
+        stage.addActor(roundsMinText);
+        stage.addActor(roundsMaxText);
+        stage.addActor(sliderRound);
+
+        return valueRound;
+    }
 
     @Override
     public void show() {
