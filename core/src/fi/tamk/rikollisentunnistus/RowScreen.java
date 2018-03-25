@@ -72,10 +72,11 @@ public class RowScreen implements Screen {
 
         points = game.gameData.getPoints();
         System.out.println(points + "rowscreen top");
-        pointsText = new Label("Pisteet: " + points, mySkin);
+        pointsText = new Label("Points: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
 
         Settings settings = Settings.getInstance();
+
 
 
         try {
