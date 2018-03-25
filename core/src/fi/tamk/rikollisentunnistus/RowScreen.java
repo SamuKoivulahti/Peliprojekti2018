@@ -90,16 +90,50 @@ public class RowScreen implements Screen {
     public void setCriminals(Face[] criminals, String suspectID) {
         criminalRow = criminals;
         rightSuspectID = suspectID;
-        float xCrd = 0;
+        float separationEven = width / 6;
+        float separationOdd = width / 5;
+        float separation = separationEven;
+        float xCrd = 20;
+        int startpoint = 1;
+
+        if (criminalRow.length == 3) {
+            xCrd = separationOdd;
+            separation = separationOdd;
+            startpoint = 1;
+        } else if (criminalRow.length == 4) {
+            xCrd = separationOdd/2;
+            separation = separationOdd;
+            startpoint = 1;
+        } else if (criminalRow.length == 5) {
+            xCrd = separationEven/2;
+            separation = separationEven;
+            startpoint = 2;
+        } else if (criminalRow.length == 6) {
+            xCrd = 20;
+            separation = separationEven;
+            startpoint = 2;
+        }
+
+        if (criminalRow.length == 5 || criminalRow.length == 6) {
+            float scale = separationEven / criminalRow[0].getSpriteWidth();
+
+            System.out.println(separationEven);
+            System.out.println(criminalRow[0].getSpriteWidth());
+            System.out.println(scale);
+
+            for (Face criminal : criminalRow) {
+                criminal.changeScale(scale);
+            }
+        }
 
         for (Face criminal : criminalRow) {
             criminal.setLocation(xCrd, 0);
             stage.addActor(criminal);
 
-            xCrd = xCrd + 230;
+            xCrd = xCrd + separation;
         }
 
-        criminalRow[2].toggleActive();
+        criminalRow[startpoint].toggleActive();
     }
 
     @Override
@@ -116,6 +150,9 @@ public class RowScreen implements Screen {
                 break;
             }
         }
+
+        System.out.println(rightSuspectID);
+        System.out.println(selectedID);
 
         if (selectedID.equals(rightSuspectID)) {
             win = true;
@@ -137,14 +174,14 @@ public class RowScreen implements Screen {
     public void moveRight() {
         int help = 0;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < criminalRow.length; i++) {
             if (criminalRow[i].active) {
                 help = i;
                 break;
             }
         }
 
-        if (help <= 3) {
+        if (help <= criminalRow.length - 2) {
             MoveToAction moveDown = new MoveToAction();
             moveDown.setPosition(criminalRow[help].getX(), 0);
             moveDown.setDuration(0.5f);
@@ -159,7 +196,7 @@ public class RowScreen implements Screen {
     public void moveLeft() {
         int help = 0;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < criminalRow.length; i++) {
             if (criminalRow[i].active) {
                 help = i;
                 break;

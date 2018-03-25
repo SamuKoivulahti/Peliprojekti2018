@@ -53,7 +53,7 @@ public class CriminalScreen implements Screen {
 
     public void reset() {
         status = SHOWING;
-        criminal.setLocation(450, 125);
+        criminal.setLocation((Gdx.graphics.getWidth()-criminal.getSpriteWidth())/2, 125);
         stage.addActor(criminal);
     }
 
@@ -86,7 +86,7 @@ public class CriminalScreen implements Screen {
             if (timer(timeWaiting)) {
                 elapsedTime = 0;
                 game.setRowScreen();
-                game.setCriminals(criminal);
+                game.setCriminals();
             }
             //Gdx.app.log("Criminal Screen", "Waiting");
         }
@@ -95,7 +95,7 @@ public class CriminalScreen implements Screen {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
             game.setRowScreen();
-            game.setCriminals(criminal);
+            game.setCriminals();
         }
         /*if (Gdx.input.isTouched() && status == SHOWING) {
             status = WAITING;

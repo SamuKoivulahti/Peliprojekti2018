@@ -3,10 +3,12 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +22,8 @@ public class Rikollisentunnistus extends Game {
 
 	SpriteBatch batch;
 
-    TextureRegion[] noseTextures;
-    TextureRegion[] eyesTextures;
+    private RowConstructor rowConstructor;
+    private Face[] criminals;
 
     int rowLength;
     int sameAttributes;
@@ -37,23 +39,16 @@ public class Rikollisentunnistus extends Game {
 
         batch = new SpriteBatch();
 
-        makeTextureArrays();
+        rowConstructor = new RowConstructor();
 
+        rowLength = 5;
+        sameAttributes = 2;
+        accessories = false;
+
+        criminals = rowConstructor.makeRow(rowLength,sameAttributes,accessories);
 
         setScreen(mainScreen);
-        //setCriminalScreen();
 	}
-
-    private void makeTextureArrays() {
-        TextureRegion[][] noses = TextureRegion.split(new Texture("noses.png"),
-                80, 80);
-
-        TextureRegion[][] eyes = TextureRegion.split(new Texture("eyes.png"),
-                156, 66);
-
-        noseTextures = toArrays(noses);
-        eyesTextures = toArrays(eyes);
-    }
 
     private TextureRegion[] toArrays(TextureRegion[][] table) {
         TextureRegion[] array = new TextureRegion[table.length * table[0].length];
@@ -72,7 +67,8 @@ public class Rikollisentunnistus extends Game {
     }
 
     public void resetAll() {
-	    criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
+	    criminals = rowConstructor.makeRow(rowLength,sameAttributes,accessories);
+	    criminalScreen = new CriminalScreen(this, criminals[0]);
 	    setScreen(criminalScreen);
     }
 
@@ -86,19 +82,16 @@ public class Rikollisentunnistus extends Game {
     }
 
     public void setCriminalScreen() {
-        criminalScreen = new CriminalScreen(this, new Face(noseTextures, eyesTextures));
+        criminalScreen = new CriminalScreen(this, criminals[0]);
         setScreen(criminalScreen);
     }
 
-    public void setCriminals(Face criminal) {
-	    String rightId = criminal.getIdCode();
-	    Face[] criminals = new Face[5];
+    public void setCriminals() {
+	    String rightId = criminals[0].getIdCode();
 
-	    criminals[0] = criminal;
-	    criminals[1] = new Face(noseTextures, eyesTextures);
-        criminals[2] = new Face(noseTextures, eyesTextures);
-        criminals[3] = new Face(noseTextures, eyesTextures);
-        criminals[4] = new Face(noseTextures, eyesTextures);
+	    if (accessories && MathUtils.random(0f,1f) <= 0.8f) {
+	        criminals[0].addAccessory(rowConstructor.accessoryTextures);
+	    }
 
         criminals = shuffleArray(criminals);
         rowScreen.setCriminals(criminals,rightId);
