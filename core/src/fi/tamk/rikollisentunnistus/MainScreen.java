@@ -1,21 +1,16 @@
 package fi.tamk.rikollisentunnistus;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import java.util.Set;
 
 /**
  * Created by Samu Koivulahti on 17.3.2018.
@@ -45,8 +40,6 @@ public class MainScreen implements Screen {
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
 
-
-
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         Button play = new TextButton("PLAY",mySkin,"small");
@@ -56,7 +49,6 @@ public class MainScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Gdx.app.log("MainScreen", "Play");
                 host.setCriminalScreen();
             }
@@ -70,7 +62,6 @@ public class MainScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 SettingsScreen SettingScreen = new SettingsScreen(host);
                 host.setScreen(SettingScreen);
             }
@@ -97,8 +88,6 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-
-
     }
 
     @Override

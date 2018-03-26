@@ -1,7 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 
 
 /**
@@ -61,7 +60,6 @@ public class Controls {
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
         hysteresisDown = moveDown/2;
-
 
         elapsedTime = 0;
 

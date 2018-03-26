@@ -33,8 +33,6 @@ public class RowScreen implements Screen {
     boolean win;
     boolean lose;
 
-    private Label winText;
-    private Label loseText;
     private Label pointsText;
     private Label levelText;
 
@@ -75,25 +73,15 @@ public class RowScreen implements Screen {
         lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight*1.2f);
         lineUpImage.setColor(Color.FOREST);
 
-        winText = new Label("Right, you won!", mySkin);
-        winText.setPosition(camera.viewportWidth / 2 - winText.getWidth()/2,camera.viewportHeight - winText.getHeight()*2);
-        winText.setVisible(false);
-
-        loseText = new Label("Wrong, you lose.", mySkin);
-        loseText.setPosition(camera.viewportWidth / 2 - loseText.getWidth()/2,camera.viewportHeight - loseText.getHeight()*2);
-        loseText.setVisible(false);
-
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
         game.gameData.setLevel(level + 1);
-        pointsText = new Label("Pisteet: " + points, mySkin);
+        pointsText = new Label("Points: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
         stage.addActor(lineUpImage);
         buttonBack();
-        stage.addActor(winText);
-        stage.addActor(loseText);
         stage.addActor(pointsText);
         stage.addActor(levelText);
 
@@ -108,7 +96,6 @@ public class RowScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Gdx.app.log("TAG", "back");
                 game.resetAll();
                 MainScreen MainScreen = new MainScreen(game);
@@ -188,16 +175,11 @@ public class RowScreen implements Screen {
         Gdx.app.log("Select", "selected");
         if (selectedID.equals(rightSuspectID)) {
             win = true;
-            pointsText.setText("Pisteet: " + points);
-            winText.setVisible(true);
-            loseText.setVisible(false);
             game.gameData.setPoints(points + 1);
             game.gameData.setWin(true);
 
         } else {
             lose = true;
-            winText.setVisible(false);
-            loseText.setVisible(true);
         }
         setInterMissionScreen();
     }
