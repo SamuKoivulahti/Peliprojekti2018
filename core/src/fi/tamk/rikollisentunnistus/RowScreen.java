@@ -194,6 +194,8 @@ public class RowScreen implements Screen {
     public void cancel() {
         stage.clear();
         game.resetAll();
+        MainScreen mainScreen = new MainScreen(game);
+        game.setScreen(mainScreen);
         Gdx.app.log("Cancel", "cancelled");
     }
 

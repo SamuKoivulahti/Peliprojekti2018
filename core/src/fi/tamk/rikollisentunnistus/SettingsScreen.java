@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 /**
  * Created by Samu Koivulahti on 17.3.2018.
  */
-
+//TODO: boolean useDifficulty, int startingDifficulty 0-14, boolean incresingDifficulty
 public class SettingsScreen implements Screen {
 
     Rikollisentunnistus host;

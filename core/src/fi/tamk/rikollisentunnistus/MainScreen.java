@@ -1,5 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,12 +29,13 @@ public class MainScreen implements Screen {
     Rikollisentunnistus host;
     ShapeRenderer shapeRenderer;
     OrthographicCamera camera;
+    GameData gameData;
 
     Skin mySkin;
     Stage stage;
 
     public MainScreen(final Rikollisentunnistus host) {
-
+        GameData gameData = new GameData();
         this.host = host;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
@@ -84,6 +86,9 @@ public class MainScreen implements Screen {
     @Override
     public void show() {
         host.updateSettings();
+        host.gameData.setLevel(0);
+        host.gameData.setPoints(0);
+
         Gdx.input.setInputProcessor(stage);
     }
 
