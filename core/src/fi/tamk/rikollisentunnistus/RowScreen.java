@@ -75,19 +75,6 @@ public class RowScreen implements Screen {
         pointsText = new Label("Pisteet: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
 
-        Settings settings = Settings.getInstance();
-
-
-        try {
-            rowLength = settings.getInteger("rowLength");
-
-        } catch (Exception e) {
-            rowLength = 5;
-            settings.setInteger("rowLength", rowLength);
-            settings.saveSettings();
-        }
-
-
         buttonBack();
         stage.addActor(winText);
         stage.addActor(loseText);

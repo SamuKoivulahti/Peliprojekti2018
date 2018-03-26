@@ -83,6 +83,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
+        host.updateSettings();
         Gdx.input.setInputProcessor(stage);
     }
 

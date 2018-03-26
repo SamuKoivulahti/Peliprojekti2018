@@ -292,7 +292,8 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("up","slider Value:"+ sliderA.getValue());
-                valueAssets = sliderA.getValue() == 1;
+                valueAssets = (sliderA.getValue() == 1);
+                System.out.println("Asdaejis:" + valueAssets);
 
             }
             @Override

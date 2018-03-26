@@ -44,24 +44,6 @@ public class CriminalScreen implements Screen {
         criminal = rightCriminal;
         criminal.setLocation(450, 125);
 
-        Settings settings = Settings.getInstance();
-
-        try {
-            sameAttributes = settings.getInteger("sameAttributes");
-            assets = settings.getBoolean("assets");
-            roundAmount = settings.getInteger("roundAmount");
-
-
-        } catch (Exception e) {
-            sameAttributes = 5;
-            assets = false;
-            roundAmount = 7;
-            settings.setInteger("sameAttributes", sameAttributes);
-            settings.setBoolean("assets", assets);
-            settings.setInteger("roundAmount", roundAmount);
-            settings.saveSettings();
-        }
-
         stage.addActor(criminal);
     }
 

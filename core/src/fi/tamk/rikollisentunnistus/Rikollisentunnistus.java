@@ -44,11 +44,9 @@ public class Rikollisentunnistus extends Game {
 
         rowConstructor = new RowConstructor();
 
-        rowLength = 5;
-        sameAttributes = 2;
-        accessories = false;
+        updateSettings();
 
-        criminals = rowConstructor.makeRow(rowLength,sameAttributes,accessories);
+        criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
 
         setScreen(mainScreen);
 	}
@@ -67,6 +65,31 @@ public class Rikollisentunnistus extends Game {
         }
 
         return array;
+    }
+
+    public void updateSettings() {
+        Settings settings = Settings.getInstance();
+
+        try {
+            rowLength = settings.getInteger("rowLength");
+            sameAttributes = settings.getInteger("sameAttributes");
+            accessories = settings.getBoolean("assets");
+            rounds = settings.getInteger("roundAmount");
+            criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+
+        } catch (Exception e) {
+            rowLength = 5;
+            sameAttributes = 2;
+            accessories = false;
+            rounds = 7;
+            settings.setInteger("rowLength", rowLength);
+            settings.setInteger("sameAttributes", sameAttributes);
+            settings.setBoolean("assets", accessories);
+            settings.setInteger("roundAmount", rounds);
+            settings.saveSettings();
+
+            System.out.println("peruna");
+        }
     }
 
     public void resetAll() {
