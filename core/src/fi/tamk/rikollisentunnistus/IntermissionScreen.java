@@ -40,6 +40,7 @@ public class IntermissionScreen implements Screen {
     float col_width;
     float elapsedTime;
     int timeWaiting = 3;
+    int gameEndWait = 5;
     Settings settings;
 
     public IntermissionScreen(Rikollisentunnistus g) {
@@ -78,15 +79,15 @@ public class IntermissionScreen implements Screen {
     }
 
     public void textPrint() {
-        winText = new Label("You Identified the Correct Criminal!", mySkin);
+        winText = new Label("Correct!", mySkin, "big");
         winText.setPosition(camera.viewportWidth/2 - winText.getWidth()/2, camera.viewportHeight/2 - winText.getHeight() / 2);
-        loseText = new Label("You Identified the Incorrect Criminal!", mySkin);
+        loseText = new Label("Wrong!", mySkin, "big");
         loseText.setPosition(camera.viewportWidth/2 - loseText.getWidth()/2, camera.viewportHeight/2 - loseText.getHeight() / 2);
         pointsText = new Label("points: " + game.gameData.getPoints(), mySkin);
         pointsText.setPosition(camera.viewportWidth/2 - pointsText.getWidth()/2, camera.viewportHeight/12 * 5);
-        levelText = new Label("Level " + game.gameData.getLevel(), mySkin);
-        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
-        gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin);
+        levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
+        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
+        gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(camera.viewportWidth/2 - gameEndText.getWidth()/2, camera.viewportHeight/2 - gameEndText.getHeight() / 2);
 
 
@@ -130,10 +131,14 @@ public class IntermissionScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (win) {
-            Gdx.gl.glClearColor(20 / 255f, 170 / 255f, 150 / 255f, 1);
+        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+            Gdx.gl.glClearColor(20 / 255f, 180 / 255f, 255 / 255f, 1);
         } else {
-            Gdx.gl.glClearColor(150 / 255f, 30 / 255f, 30 / 255f, 1);
+            if (win) {
+                Gdx.gl.glClearColor(20 / 255f, 170 / 255f, 150 / 255f, 1);
+            } else {
+                Gdx.gl.glClearColor(255 / 255f, 100 / 255f, 20 / 255f, 1);
+            }
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -145,7 +150,7 @@ public class IntermissionScreen implements Screen {
             game.resetAll();
             game.setCriminalScreen();
         } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
-            if (timer(5)) {
+            if (timer(gameEndWait)) {
                 elapsedTime = 0;
                 MainScreen mainScreen = new MainScreen(game);
                 game.setScreen(mainScreen);

@@ -35,7 +35,8 @@ public class Rikollisentunnistus extends Game {
         controls = new Controls();
         gameData = new GameData();
 
-        MainScreen mainScreen = new MainScreen(this);
+        SplashScreen splashScreen = new SplashScreen(this);
+        //MainScreen mainScreen = new MainScreen(this);
 
 
         batch = new SpriteBatch();
@@ -46,7 +47,8 @@ public class Rikollisentunnistus extends Game {
 
         criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
 
-        setScreen(mainScreen);
+        //setScreen(mainScreen);
+	    setScreen(splashScreen);
 	}
 
     private TextureRegion[] toArrays(TextureRegion[][] table) {

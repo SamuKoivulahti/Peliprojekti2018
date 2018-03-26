@@ -29,13 +29,12 @@ public class MainScreen implements Screen {
     Rikollisentunnistus host;
     ShapeRenderer shapeRenderer;
     OrthographicCamera camera;
-    GameData gameData;
 
     Skin mySkin;
     Stage stage;
 
     public MainScreen(final Rikollisentunnistus host) {
-        GameData gameData = new GameData();
+        Gdx.app.log("MainScreen", "Constructor");
         this.host = host;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();

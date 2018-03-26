@@ -3,12 +3,15 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -34,6 +37,9 @@ public class RowScreen implements Screen {
     private Label loseText;
     private Label pointsText;
     private Label levelText;
+
+    private Texture lineUp;
+    private Image lineUpImage;
 
     Skin mySkin;
 
@@ -63,6 +69,12 @@ public class RowScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
+        lineUp = new Texture("lineup.jpg");
+        lineUpImage = new Image(lineUp);
+        lineUpImage.setPosition(0,0-camera.viewportHeight*0.2f);
+        lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight*1.2f);
+        lineUpImage.setColor(Color.FOREST);
+
         winText = new Label("Right, you won!", mySkin);
         winText.setPosition(camera.viewportWidth / 2 - winText.getWidth()/2,camera.viewportHeight - winText.getHeight()*2);
         winText.setVisible(false);
@@ -74,12 +86,11 @@ public class RowScreen implements Screen {
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
         game.gameData.setLevel(level + 1);
-        System.out.println(points + "rowscreen top");
         pointsText = new Label("Pisteet: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
-        levelText = new Label("Level " + game.gameData.getLevel(), mySkin);
-        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
-
+        levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
+        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
+        stage.addActor(lineUpImage);
         buttonBack();
         stage.addActor(winText);
         stage.addActor(loseText);
