@@ -85,17 +85,21 @@ public class SettingsScreen implements Screen {
 
         sliderSize = camera.viewportWidth * 0.15f;
 
-        valueRight = 5f;
-        valueLeft = -5f;
-        valueUp = 5f;
-        valueDown = -5f;
-
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         calibrateText = new Label("Calibrate", mySkin);
         calibrateText.setPosition(col_width*4 - calibrateText.getWidth()/2, row_height * 11 - calibrateText.getHeight());
 
         settings = Settings.getInstance();
+
+        valueRight = settings.getFloat("sensitivityRight");
+        valueLeft = settings.getFloat("sensitivityLeft");
+        valueUp = settings.getFloat("sensitivityUp");
+        valueDown = settings.getFloat("sensitivityDown");
+        valueRow = settings.getInteger("rowLength");
+        valueAttribute = settings.getInteger("sameAttributes");
+        valueAssets = settings.getBoolean("assets");
+        valueRound = settings.getInteger("roundAmount");
 
         stage.addActor(calibrateText);
         sliderRight();

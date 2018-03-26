@@ -7,6 +7,7 @@ package fi.tamk.rikollisentunnistus;
 public class GameData {
     private int points;
     private boolean win;
+    private int level;
 
     public GameData() {
     }
@@ -27,5 +28,13 @@ public class GameData {
 
     public void setWin(boolean win) {
         this.win = win;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

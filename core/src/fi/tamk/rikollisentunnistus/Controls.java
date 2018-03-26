@@ -53,6 +53,8 @@ public class Controls {
             settings.setFloat("sensitivityUp", moveUp);
             settings.setFloat("sensitivityDown", moveDown);
             settings.saveSettings();
+
+            //System.out.println("peruna");
         }
 
         hysteresisRight = moveRight/2;

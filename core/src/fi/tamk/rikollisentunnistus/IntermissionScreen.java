@@ -23,10 +23,11 @@ public class IntermissionScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
     private Stage stage;
-
     private Label winText;
     private Label loseText;
     private Label pointsText;
+    private Label levelText;
+    private Label gameEndText;
     boolean win;
 
     Skin mySkin;
@@ -35,17 +36,19 @@ public class IntermissionScreen implements Screen {
     float col_width;
     float elapsedTime;
     int timeWaiting = 3;
+    Settings settings;
 
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
+
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
         win = game.gameData.getWin();
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
         row_height = camera.viewportHeight / 12;
         col_width = camera.viewportWidth / 12;
-
+        settings = Settings.getInstance();
         elapsedTime = 0;
 
         textPrint();
@@ -77,24 +80,39 @@ public class IntermissionScreen implements Screen {
         loseText.setPosition(camera.viewportWidth/2 - loseText.getWidth()/2, camera.viewportHeight/2 - loseText.getHeight() / 2);
         pointsText = new Label("points: " + game.gameData.getPoints(), mySkin);
         pointsText.setPosition(camera.viewportWidth/2 - pointsText.getWidth()/2, camera.viewportHeight/12 * 5);
+        levelText = new Label("Level " + game.gameData.getLevel(), mySkin);
+        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
+        gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin);
+        gameEndText.setPosition(camera.viewportWidth/2 - gameEndText.getWidth()/2, camera.viewportHeight/2 - gameEndText.getHeight() / 2);
 
 
         stage.addActor(winText);
         stage.addActor(loseText);
         stage.addActor(pointsText);
-        if (win) {
-            winText.setVisible(true);
+        stage.addActor(levelText);
+        stage.addActor(gameEndText);
+
+        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+            gameEndText.setVisible(true);
+            winText.setVisible(false);
             loseText.setVisible(false);
         } else {
-            winText.setVisible(false);
-            loseText.setVisible(true);
+            if (win) {
+                winText.setVisible(true);
+                loseText.setVisible(false);
+            } else {
+                winText.setVisible(false);
+                loseText.setVisible(true);
+            }
+            gameEndText.setVisible(false);
+
         }
+
     }
 
     public boolean timer(int timeToPass) {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= timeToPass) {
-            elapsedTime = 0;
             return true;
         }
         return false;
@@ -117,10 +135,16 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (timer(timeWaiting)) {
+        if (timer(timeWaiting) && settings.getInteger("roundAmount") != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
             game.setCriminalScreen();
+        } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+            if (timer(5)) {
+                elapsedTime = 0;
+                MainScreen mainScreen = new MainScreen(game);
+                game.setScreen(mainScreen);
+            }
         }
     }
 

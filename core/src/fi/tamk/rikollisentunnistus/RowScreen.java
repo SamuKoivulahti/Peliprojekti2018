@@ -33,6 +33,7 @@ public class RowScreen implements Screen {
     private Label winText;
     private Label loseText;
     private Label pointsText;
+    private Label levelText;
 
     Skin mySkin;
 
@@ -43,7 +44,7 @@ public class RowScreen implements Screen {
 
     int points;
 
-    int rowLength;
+    int level;
 
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
@@ -71,14 +72,19 @@ public class RowScreen implements Screen {
         loseText.setVisible(false);
 
         points = game.gameData.getPoints();
+        level = game.gameData.getLevel();
+        game.gameData.setLevel(level + 1);
         System.out.println(points + "rowscreen top");
         pointsText = new Label("Pisteet: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
+        levelText = new Label("Level " + game.gameData.getLevel(), mySkin);
+        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
 
         buttonBack();
         stage.addActor(winText);
         stage.addActor(loseText);
         stage.addActor(pointsText);
+        stage.addActor(levelText);
 
 
     }
@@ -182,7 +188,6 @@ public class RowScreen implements Screen {
             winText.setVisible(false);
             loseText.setVisible(true);
         }
-
         setInterMissionScreen();
     }
 

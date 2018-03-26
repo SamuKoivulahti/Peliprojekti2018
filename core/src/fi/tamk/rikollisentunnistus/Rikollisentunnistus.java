@@ -82,8 +82,6 @@ public class Rikollisentunnistus extends Game {
             settings.setBoolean("assets", accessories);
             settings.setInteger("roundAmount", rounds);
             settings.saveSettings();
-
-            System.out.println("peruna");
         }
     }
 
