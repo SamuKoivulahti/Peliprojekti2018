@@ -25,6 +25,9 @@ public class Rikollisentunnistus extends Game {
     int sameAttributes;
     boolean accessories;
 	int rounds;
+	int startingDifficulty;
+	boolean useDifficulty;
+	boolean increasingDifficulty;
 
 	@Override
 	public void create () {
@@ -70,6 +73,10 @@ public class Rikollisentunnistus extends Game {
             sameAttributes = settings.getInteger("sameAttributes");
             accessories = settings.getBoolean("assets");
             rounds = settings.getInteger("roundAmount");
+            startingDifficulty = settings.getInteger("startingDifficulty");
+            useDifficulty = settings.getBoolean("useDifficulty");
+            increasingDifficulty = settings.getBoolean("increasingDifficulty");
+
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
 
         } catch (Exception e) {
@@ -77,10 +84,17 @@ public class Rikollisentunnistus extends Game {
             sameAttributes = 2;
             accessories = false;
             rounds = 7;
+            startingDifficulty = 7;
+            useDifficulty = false;
+            increasingDifficulty = false;
+
             settings.setInteger("rowLength", rowLength);
             settings.setInteger("sameAttributes", sameAttributes);
             settings.setBoolean("assets", accessories);
             settings.setInteger("roundAmount", rounds);
+            settings.setInteger("startingDifficulty", startingDifficulty);
+            settings.setBoolean("useDifficulty", useDifficulty);
+            settings.setBoolean("increasingDifficulty", increasingDifficulty);
             settings.saveSettings();
         }
     }
