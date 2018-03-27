@@ -25,7 +25,7 @@ public class Rikollisentunnistus extends Game {
     int sameAttributes;
     boolean accessories;
 	int rounds;
-	int startingDifficulty;
+	int difficulty;
 	boolean useDifficulty;
 	boolean increasingDifficulty;
 
@@ -45,7 +45,11 @@ public class Rikollisentunnistus extends Game {
 
         updateSettings();
 
-        criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+        if (useDifficulty) {
+            criminals = rowConstructor.makeRowDifficulty(difficulty);
+        } else {
+            criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+        }
 
         //setScreen(mainScreen);
 	    setScreen(splashScreen);
@@ -75,18 +79,22 @@ public class Rikollisentunnistus extends Game {
             sameAttributes = settings.getInteger("sameAttributes");
             accessories = settings.getBoolean("assets");
             rounds = settings.getInteger("roundAmount");
-            startingDifficulty = settings.getInteger("startingDifficulty");
+            difficulty = settings.getInteger("startingDifficulty");
             useDifficulty = settings.getBoolean("useDifficulty");
             increasingDifficulty = settings.getBoolean("increasingDifficulty");
 
-            criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+            if (useDifficulty) {
+                criminals = rowConstructor.makeRowDifficulty(difficulty);
+            } else {
+                criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+            }
 
         } catch (Exception e) {
             rowLength = 5;
             sameAttributes = 2;
             accessories = false;
             rounds = 7;
-            startingDifficulty = 7;
+            difficulty = 7;
             useDifficulty = false;
             increasingDifficulty = false;
 
@@ -94,7 +102,7 @@ public class Rikollisentunnistus extends Game {
             settings.setInteger("sameAttributes", sameAttributes);
             settings.setBoolean("assets", accessories);
             settings.setInteger("roundAmount", rounds);
-            settings.setInteger("startingDifficulty", startingDifficulty);
+            settings.setInteger("startingDifficulty", difficulty);
             settings.setBoolean("useDifficulty", useDifficulty);
             settings.setBoolean("increasingDifficulty", increasingDifficulty);
             settings.saveSettings();
@@ -102,7 +110,11 @@ public class Rikollisentunnistus extends Game {
     }
 
     public void resetAll() {
-	    criminals = rowConstructor.makeRow(rowLength,sameAttributes,accessories);
+        if (useDifficulty) {
+            criminals = rowConstructor.makeRowDifficulty(difficulty);
+        } else {
+            criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+        }
 	    criminalScreen = new CriminalScreen(this, criminals[0]);
 	    setScreen(criminalScreen);
     }

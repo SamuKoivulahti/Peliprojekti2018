@@ -181,6 +181,11 @@ public class RowScreen implements Screen {
         } else {
             lose = true;
         }
+
+        if (game.useDifficulty && game.increasingDifficulty) {
+            game.difficulty++;
+        }
+
         setInterMissionScreen();
     }
 
