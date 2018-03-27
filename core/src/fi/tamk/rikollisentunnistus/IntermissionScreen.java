@@ -140,7 +140,6 @@ public class IntermissionScreen implements Screen {
         if (timer(timeWaiting) && settings.getInteger("roundAmount") != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
-            game.setCriminalScreen();
         } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
             if (timer(gameEndWait)) {
                 elapsedTime = 0;

@@ -26,8 +26,8 @@ public class CriminalScreen implements Screen {
     final boolean WAITING = false;
     float elapsedTime = 0;
 
-    int timeShown = 5;
-    int timeWaiting = 3;
+    float timeShown;
+    float timeWaiting;
     int sameAttributes;
     boolean assets;
     int roundAmount;
@@ -44,10 +44,31 @@ public class CriminalScreen implements Screen {
         criminal = rightCriminal;
         criminal.setLocation(450, 125);
 
+        timeShown = 5f;
+        timeWaiting = 3f;
+
         stage.addActor(criminal);
     }
 
-    public boolean timer(int timeToPass) {
+    public void updateWaitingTimes() {
+        if (game.useDifficulty) {
+            float timeToShowAtMost = 5;
+            float timeToShowAtLeast = 1;
+            float timeToWaitAtMost = 8;
+            float timeToWaitAtLeast = 1;
+
+            timeShown = timeToShowAtMost - (game.difficulty*(timeToShowAtMost - timeToShowAtLeast))/14;
+            timeWaiting = timeToWaitAtLeast + (game.difficulty*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+        } else {
+            timeShown = 5f;
+            timeWaiting = 3f;
+        }
+
+        Gdx.app.log("Time shown:", " " + timeShown );
+        Gdx.app.log("Time waiting:", " " + timeWaiting);
+    }
+
+    public boolean timer(float timeToPass) {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= timeToPass) {
             elapsedTime = 0;

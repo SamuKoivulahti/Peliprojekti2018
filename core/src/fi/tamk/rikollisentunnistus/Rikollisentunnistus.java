@@ -115,7 +115,9 @@ public class Rikollisentunnistus extends Game {
         } else {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
         }
+
 	    criminalScreen = new CriminalScreen(this, criminals[0]);
+        criminalScreen.updateWaitingTimes();
 	    setScreen(criminalScreen);
     }
 
@@ -130,6 +132,7 @@ public class Rikollisentunnistus extends Game {
 
     public void setCriminalScreen() {
         criminalScreen = new CriminalScreen(this, criminals[0]);
+        criminalScreen.updateWaitingTimes();
         setScreen(criminalScreen);
     }
 
