@@ -41,8 +41,8 @@ public class RowScreen implements Screen {
 
     Skin mySkin;
 
-    int row_height;
-    int col_width;
+    float row_height;
+    float col_width;
     float width;
     float height;
 
@@ -60,10 +60,10 @@ public class RowScreen implements Screen {
         win = false;
         lose = false;
 
-        row_height = Gdx.graphics.getWidth() / 12;
-        col_width = Gdx.graphics.getWidth() / 12;
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        row_height = camera.viewportHeight / 12;
+        col_width = camera.viewportWidth / 12;
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
