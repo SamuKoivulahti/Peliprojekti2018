@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -22,6 +24,8 @@ public class CriminalScreen implements Screen {
     private Stage stage;
     private Face criminal;
 
+    private Label waitingTimeText;
+
     final boolean SHOWING = true;
     final boolean WAITING = false;
     float elapsedTime = 0;
@@ -31,6 +35,7 @@ public class CriminalScreen implements Screen {
     int sameAttributes;
     boolean assets;
     int roundAmount;
+    Skin mySkin;
 
 
 
@@ -39,6 +44,7 @@ public class CriminalScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1200,650);
         status = SHOWING;
+        mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = rightCriminal;
@@ -47,6 +53,10 @@ public class CriminalScreen implements Screen {
         timeShown = 5f;
         timeWaiting = 3f;
 
+        waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
+        waitingTimeText.setPosition(camera.viewportWidth/2 - waitingTimeText.getWidth()/2, camera.viewportHeight/2 - waitingTimeText.getHeight()/2);
+
+        stage.addActor(waitingTimeText);
         stage.addActor(criminal);
     }
 
@@ -95,25 +105,29 @@ public class CriminalScreen implements Screen {
         Gdx.gl.glClearColor(25/255f, 25/255f, 100/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act();
+        stage.draw();
         game.batch.begin();
 
         if (status == SHOWING) {
             //Gdx.app.log("Criminal Screen", "Showing");
-
-            stage.act();
-            stage.draw();
 
             if (timer(timeShown)) {
                 status = WAITING;
                 elapsedTime = 0;
             }
 
+            criminal.setVisible(true);
+
         } else if (status == WAITING) {
+            criminal.setVisible(false);
             if (timer(timeWaiting)) {
                 elapsedTime = 0;
+                criminal.setVisible(true);
                 game.setRowScreen();
                 game.setCriminals();
             }
+            waitingTimeText.setText("" + (int)(timeWaiting - elapsedTime));
             //Gdx.app.log("Criminal Screen", "Waiting");
         }
 
@@ -122,6 +136,7 @@ public class CriminalScreen implements Screen {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
             game.setRowScreen();
             game.setCriminals();
+            criminal.setVisible(true);
         }
         /*if (Gdx.input.isTouched() && status == SHOWING) {
             status = WAITING;
