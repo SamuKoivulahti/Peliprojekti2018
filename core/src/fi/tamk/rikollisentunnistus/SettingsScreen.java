@@ -159,6 +159,8 @@ public class SettingsScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
+                settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
+                settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
                 settings.setFloat("sensitivityRight", valueRight);
                 settings.setFloat("sensitivityLeft", valueLeft);
                 settings.setFloat("sensitivityUp", valueUp);

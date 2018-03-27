@@ -30,10 +30,16 @@ public class Controls {
     public boolean isAbleMoveUp;
     public boolean isAbleMoveDown;
 
+    float zeroPointX;
+    float zeroPointY;
+
     public boolean timer;
 
     public Controls() {
         Gdx.app.log("Controls", "constructor");
+
+        zeroPointX = Gdx.input.getAccelerometerY();
+        zeroPointY = Gdx.input.getAccelerometerZ();
 
         Settings settings = Settings.getInstance();
         try {
@@ -41,6 +47,8 @@ public class Controls {
             moveLeft = settings.getFloat("sensitivityLeft");
             moveUp = settings.getFloat("sensitivityUp");
             moveDown = settings.getFloat("sensitivityDown");
+            zeroPointX = settings.getFloat("zeroPointX");
+            zeroPointY = settings.getFloat("zeroPointY");
         } catch (Exception e) {
             moveRight = 5f;
             moveLeft = -5f;
@@ -51,6 +59,9 @@ public class Controls {
             settings.setFloat("sensitivityLeft", moveLeft);
             settings.setFloat("sensitivityUp", moveUp);
             settings.setFloat("sensitivityDown", moveDown);
+            settings.setFloat("zeroPointX", zeroPointX);
+            settings.setFloat("zeroPointY", zeroPointY);
+
             settings.saveSettings();
 
             //System.out.println("peruna");
@@ -72,13 +83,13 @@ public class Controls {
     }
 
     public float accelerometerY() {
-        accelY = Gdx.input.getAccelerometerZ();
-        //Gdx.app.log("TAG", "Y:" + accelY);
+        accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
+        Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
     public float accelerometerX() {
-        accelX = Gdx.input.getAccelerometerY();
+        accelX = Gdx.input.getAccelerometerY() - zeroPointX;
         //Gdx.app.log("TAG", "X:" + accelX);
         return accelX;
     }
