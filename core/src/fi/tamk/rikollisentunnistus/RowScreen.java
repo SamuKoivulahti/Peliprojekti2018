@@ -98,8 +98,7 @@ public class RowScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("TAG", "back");
                 game.resetAll();
-                MainScreen MainScreen = new MainScreen(game);
-                game.setScreen(MainScreen);
+                game.setMainScreen();
             }
         });
         stage.addActor(back);

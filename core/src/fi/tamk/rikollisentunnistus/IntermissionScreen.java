@@ -143,8 +143,7 @@ public class IntermissionScreen implements Screen {
         } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
             if (timer(gameEndWait)) {
                 elapsedTime = 0;
-                MainScreen mainScreen = new MainScreen(game);
-                game.setScreen(mainScreen);
+                game.setMainScreen();
             }
         }
     }

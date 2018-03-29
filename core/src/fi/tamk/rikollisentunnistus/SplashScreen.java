@@ -74,8 +74,7 @@ public class SplashScreen implements Screen {
 
         if (timer(splashScreenTime) || Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             elapsedTime = 0;
-            MainScreen mainScreen = new MainScreen(host);
-            host.setScreen(mainScreen);
+            host.setMainScreen();
         }
     }
 

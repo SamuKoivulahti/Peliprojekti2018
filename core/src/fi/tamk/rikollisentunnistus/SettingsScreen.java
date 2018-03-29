@@ -142,8 +142,7 @@ public class SettingsScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 Gdx.app.log("TAG", "back");
-                MainScreen MainScreen = new MainScreen(host);
-                host.setScreen(MainScreen);
+                host.setMainScreen();
             }
 
         });
@@ -604,7 +603,7 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+
     }
 
     @Override

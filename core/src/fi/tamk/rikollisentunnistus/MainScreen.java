@@ -62,8 +62,7 @@ public class MainScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SettingsScreen SettingScreen = new SettingsScreen(host);
-                host.setScreen(SettingScreen);
+                host.setSettingsScreen();
             }
 
         });
@@ -107,7 +106,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+
     }
 
     @Override

@@ -48,7 +48,7 @@ public class CriminalScreen implements Screen {
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = rightCriminal;
-        criminal.setLocation(450, 125);
+        criminal.setLocation((camera.viewportWidth - criminal.getSpriteWidth())/2, 125);
 
         timeShown = 5f;
         timeWaiting = 3f;

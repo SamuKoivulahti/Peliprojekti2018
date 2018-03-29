@@ -12,6 +12,8 @@ import java.util.List;
 public class Rikollisentunnistus extends Game {
     CriminalScreen criminalScreen;
     RowScreen rowScreen;
+    MainScreen mainScreen;
+    SettingsScreen settingsScreen;
 
     public Controls controls;
 
@@ -36,7 +38,8 @@ public class Rikollisentunnistus extends Game {
         gameData = new GameData();
 
         SplashScreen splashScreen = new SplashScreen(this);
-        //MainScreen mainScreen = new MainScreen(this);
+        mainScreen = new MainScreen(this);
+        settingsScreen = new SettingsScreen(this);
 
 
         batch = new SpriteBatch();
@@ -134,6 +137,14 @@ public class Rikollisentunnistus extends Game {
         criminalScreen = new CriminalScreen(this, criminals[0]);
         criminalScreen.updateWaitingTimes();
         setScreen(criminalScreen);
+    }
+
+    public void setMainScreen() {
+	    setScreen(mainScreen);
+    }
+
+    public void setSettingsScreen() {
+	    setScreen(settingsScreen);
     }
 
     public void setCriminals() {
