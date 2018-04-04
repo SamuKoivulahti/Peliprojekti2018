@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -30,6 +32,9 @@ public class RowScreen implements Screen {
     private Stage stage;
     IntermissionScreen InterMissionScreen;
 
+    Texture selectionBar;
+    Animation<TextureRegion> animation;
+
     boolean win;
     boolean lose;
 
@@ -50,6 +55,8 @@ public class RowScreen implements Screen {
 
     int level;
 
+    float elapsedTime;
+
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
         game = g;
@@ -59,6 +66,7 @@ public class RowScreen implements Screen {
         game.gameData.setWin(false);
         win = false;
         lose = false;
+        elapsedTime = 0;
 
         row_height = camera.viewportHeight / 12;
         col_width = camera.viewportWidth / 12;
@@ -80,17 +88,30 @@ public class RowScreen implements Screen {
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
+
+        selectionBar = new Texture("selectionBar.png");
+        Gdx.app.log("row", "sele" + selectionBar.toString());
+
+        TextureRegion[] animationFrames = new TextureRegion[10];
+
+        for (int i = 0; i < 10; i++) {
+            int length = selectionBar.getWidth() / animationFrames.length;
+            animationFrames[i] = new TextureRegion(selectionBar, i * length, 0, length, selectionBar.getHeight());
+        }
+
+        animation = new Animation<TextureRegion>(game.controls.timerTime / 10, animationFrames);
+
         stage.addActor(lineUpImage);
         buttonBack();
         stage.addActor(pointsText);
         stage.addActor(levelText);
-
-
     }
+
+
 
     public void buttonBack() {
         Button back = new TextButton("Main Menu",mySkin,"small");
-        back.setSize(col_width*2,row_height);
+        back.setSize(col_width*2,row_height*2);
         back.setPosition(0,camera.viewportHeight - back.getHeight());
         back.addListener(new ClickListener(){
 
@@ -160,7 +181,6 @@ public class RowScreen implements Screen {
 
     public void select() {
         String selectedID = "";
-
         for (Face criminal : criminalRow) {
             if (criminal.active) {
                 selectedID = criminal.getIdCode();
@@ -247,12 +267,15 @@ public class RowScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        game.batch.setProjectionMatrix(camera.combined);
+        if (game.controls.accelerometerY() > game.controls.moveUp) {
+            elapsedTime += Gdx.graphics.getDeltaTime();
+        } else {
+            elapsedTime = 0;
+        }
 
+        game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(25/255f,100/255f,25/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
 
 
         for (Face criminal : criminalRow) {
@@ -266,6 +289,12 @@ public class RowScreen implements Screen {
 
         stage.act();
         stage.draw();
+        game.batch.begin();
+        game.batch.draw(animation.getKeyFrame(elapsedTime, false),
+                camera.viewportWidth - selectionBar.getWidth()/10,
+                camera.viewportHeight /12 * 7,
+                selectionBar.getWidth()/20, selectionBar.getHeight()/2);
+        //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || game.controls.moveRight(false)) {
             moveRight();
@@ -309,5 +338,6 @@ public class RowScreen implements Screen {
     public void dispose() {
         stage.clear();
         mySkin.dispose();
+        selectionBar.dispose();
     }
 }

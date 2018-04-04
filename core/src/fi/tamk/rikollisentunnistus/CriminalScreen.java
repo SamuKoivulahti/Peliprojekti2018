@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,11 +28,11 @@ public class CriminalScreen implements Screen {
     final boolean WAITING = false;
     float elapsedTime = 0;
 
+    float width;
+    float height;
+
     float timeShown;
     float timeWaiting;
-    int sameAttributes;
-    boolean assets;
-    int roundAmount;
     Skin mySkin;
 
 
@@ -50,11 +48,14 @@ public class CriminalScreen implements Screen {
         criminal = rightCriminal;
         criminal.setLocation((camera.viewportWidth - criminal.getSpriteWidth())/2, 125);
 
+        height = camera.viewportHeight;
+        width = camera.viewportWidth;
+
         timeShown = 5f;
         timeWaiting = 3f;
 
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
-        waitingTimeText.setPosition(camera.viewportWidth/2 - waitingTimeText.getWidth()/2, camera.viewportHeight/2 - waitingTimeText.getHeight()/2);
+        waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
 
         stage.addActor(waitingTimeText);
         stage.addActor(criminal);

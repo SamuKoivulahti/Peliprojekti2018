@@ -59,7 +59,8 @@ public class SettingsScreen implements Screen {
 
     float row_height;
     float col_width;
-    
+    float height;
+    float width;
 
     private Label calibrateText;
     private Label assetsText;
@@ -94,6 +95,8 @@ public class SettingsScreen implements Screen {
 
         row_height = camera.viewportHeight / 15;
         col_width = camera.viewportWidth / 12;
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
         sliderSize = camera.viewportWidth * 0.15f;
 
@@ -135,7 +138,7 @@ public class SettingsScreen implements Screen {
     public void buttonBack() {
         Button back = new TextButton("Main Menu",mySkin,"small");
         back.setSize(col_width*2,row_height*2);
-        back.setPosition(0,camera.viewportHeight - back.getHeight());
+        back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
 
             @Override

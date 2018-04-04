@@ -35,6 +35,8 @@ public class Controls {
 
     public boolean timer;
 
+    public float timerTime;
+
     public Controls() {
         Gdx.app.log("Controls", "constructor");
 
@@ -74,6 +76,8 @@ public class Controls {
 
         elapsedTime = 0;
 
+        timerTime = 3;
+
         isAbleMoveLeft = true;
         isAbleMoveRight = true;
         isAbleMoveUp = true;
@@ -84,7 +88,7 @@ public class Controls {
 
     public float accelerometerY() {
         accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
-        Gdx.app.log("TAG", "Y:" + accelY);
+        //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 

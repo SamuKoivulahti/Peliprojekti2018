@@ -36,6 +36,7 @@ public class Rikollisentunnistus extends Game {
 
         controls = new Controls();
         gameData = new GameData();
+        updateSettings();
 
         SplashScreen splashScreen = new SplashScreen(this);
         mainScreen = new MainScreen(this);
@@ -46,7 +47,6 @@ public class Rikollisentunnistus extends Game {
 
         rowConstructor = new RowConstructor();
 
-        updateSettings();
 
         if (useDifficulty) {
             criminals = rowConstructor.makeRowDifficulty(difficulty);

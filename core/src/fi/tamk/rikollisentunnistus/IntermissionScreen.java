@@ -1,6 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +34,8 @@ public class IntermissionScreen implements Screen {
 
     float row_height;
     float col_width;
+    float height;
+    float width;
     float elapsedTime;
     int timeWaiting = 3;
     int gameEndWait = 5;
@@ -48,6 +51,8 @@ public class IntermissionScreen implements Screen {
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
         row_height = camera.viewportHeight / 12;
         col_width = camera.viewportWidth / 12;
+        height = camera.viewportHeight;
+        width = camera.viewportWidth;
         settings = Settings.getInstance();
         elapsedTime = 0;
 
@@ -58,7 +63,7 @@ public class IntermissionScreen implements Screen {
     public void buttonBack() {
         Button back = new TextButton("Main Menu",mySkin,"small");
         back.setSize(col_width*2,row_height*2);
-        back.setPosition(0,camera.viewportHeight - back.getHeight());
+        back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
 
             @Override
@@ -74,15 +79,15 @@ public class IntermissionScreen implements Screen {
 
     public void textPrint() {
         winText = new Label("Correct!", mySkin, "big");
-        winText.setPosition(camera.viewportWidth/2 - winText.getWidth()/2, camera.viewportHeight/2 - winText.getHeight() / 2);
+        winText.setPosition(width/2 - winText.getWidth()/2, height/2 - winText.getHeight() / 2);
         loseText = new Label("Wrong!", mySkin, "big");
-        loseText.setPosition(camera.viewportWidth/2 - loseText.getWidth()/2, camera.viewportHeight/2 - loseText.getHeight() / 2);
+        loseText.setPosition(width/2 - loseText.getWidth()/2, height/2 - loseText.getHeight() / 2);
         pointsText = new Label("points: " + game.gameData.getPoints(), mySkin);
-        pointsText.setPosition(camera.viewportWidth/2 - pointsText.getWidth()/2, camera.viewportHeight/12 * 5);
+        pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
-        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
+        levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
-        gameEndText.setPosition(camera.viewportWidth/2 - gameEndText.getWidth()/2, camera.viewportHeight/2 - gameEndText.getHeight() / 2);
+        gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, height/2 - gameEndText.getHeight() / 2);
 
 
         stage.addActor(winText);
