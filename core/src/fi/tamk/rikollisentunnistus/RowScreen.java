@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -57,6 +58,8 @@ public class RowScreen implements Screen {
 
     float elapsedTime;
 
+    Window pauseWindow;
+
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
         game = g;
@@ -68,6 +71,7 @@ public class RowScreen implements Screen {
         lose = false;
         elapsedTime = 0;
 
+
         row_height = camera.viewportHeight / 12;
         col_width = camera.viewportWidth / 12;
         width = camera.viewportWidth;
@@ -75,11 +79,11 @@ public class RowScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        lineUp = new Texture("lineup.jpg");
+        lineUp = new Texture("lineup.png");
         lineUpImage = new Image(lineUp);
-        lineUpImage.setPosition(0,0-camera.viewportHeight*0.2f);
-        lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight*1.2f);
-        lineUpImage.setColor(Color.FOREST);
+        lineUpImage.setPosition(0,0);
+        lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight/1.5f);
+
 
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
@@ -95,34 +99,64 @@ public class RowScreen implements Screen {
         TextureRegion[] animationFrames = new TextureRegion[10];
 
         for (int i = 0; i < 10; i++) {
-            int length = selectionBar.getWidth() / animationFrames.length;
-            animationFrames[i] = new TextureRegion(selectionBar, i * length, 0, length, selectionBar.getHeight());
+            int length = selectionBar.getHeight() / animationFrames.length;
+            animationFrames[i] = new TextureRegion(selectionBar, 0, i * length, selectionBar.getWidth(), length);
         }
 
         animation = new Animation<TextureRegion>(game.controls.timerTime / 10, animationFrames);
 
         stage.addActor(lineUpImage);
-        buttonBack();
         stage.addActor(pointsText);
         stage.addActor(levelText);
+        createPauseWindow();
+
+
     }
 
+    private void createPauseWindow () {
+        pauseWindow = new Window("Pause", mySkin);
+        pauseWindow.setVisible(false);
+        pauseWindow.setResizable(false);
+        pauseWindow.setMovable(false);
 
+        TextButton continueButton = new TextButton("Continue", mySkin);
+        continueButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        pauseWindow.setVisible(false);
+                    }
+                }
+        );
 
-    public void buttonBack() {
-        Button back = new TextButton("Main Menu",mySkin,"small");
-        back.setSize(col_width*2,row_height*2);
-        back.setPosition(0,camera.viewportHeight - back.getHeight());
-        back.addListener(new ClickListener(){
+        TextButton exitButton = new TextButton("Exit to Main Menu", mySkin);
+        exitButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        game.resetAll();
+                        game.setMainScreen();
+                    }
+                }
+        );
 
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("TAG", "back");
-                game.resetAll();
-                game.setMainScreen();
-            }
-        });
-        stage.addActor(back);
+        TextButton calibrateButton = new TextButton("Calibrate", mySkin);
+        calibrateButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        game.settingsScreen.setZeroPoint();
+                    }
+                }
+        );
+
+        pauseWindow.add(continueButton).pad(10).row();
+        pauseWindow.add(calibrateButton).pad(10).row();
+        pauseWindow.add(exitButton).pad(10, 10, 20, 10);
+        pauseWindow.pack();
+        pauseWindow.setPosition((width - pauseWindow.getWidth()) / 2, (height - pauseWindow.getHeight()) / 2);
+
+        stage.addActor(pauseWindow);
     }
 
     public void setCriminals(Face[] criminals, String suspectID) {
@@ -177,6 +211,7 @@ public class RowScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
     }
 
     public void select() {
@@ -267,11 +302,17 @@ public class RowScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        if (pauseWindow.isVisible()) {
+            delta = 0;
+        }
+
         if (game.controls.accelerometerY() > game.controls.moveUp) {
-            elapsedTime += Gdx.graphics.getDeltaTime();
+            elapsedTime += delta;
         } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
             elapsedTime = 0;
         }
+
 
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(25/255f,100/255f,25/255f,1);
@@ -286,32 +327,45 @@ public class RowScreen implements Screen {
                 criminal.addAction(moveUp);
             }
         }
-
-        stage.act();
-        stage.draw();
         game.batch.begin();
-        game.batch.draw(animation.getKeyFrame(elapsedTime, false),
-                camera.viewportWidth - selectionBar.getWidth()/10,
-                camera.viewportHeight /12 * 7,
-                selectionBar.getWidth()/20, selectionBar.getHeight()/2);
+        TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
+        game.batch.draw(
+                frame,
+                (width - frame.getRegionWidth()) / 2,
+                row_height * 9,
+                frame.getRegionWidth(),
+                frame.getRegionHeight()
+        );
         //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || game.controls.moveRight(false)) {
-            moveRight();
-        }
+        if (delta != 0) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || game.controls.moveRight(false)) {
+                moveRight();
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || game.controls.moveLeft(false)) {
-            moveLeft();
-        }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || game.controls.moveLeft(false)) {
+                moveLeft();
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) {
-            select();
-        }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) {
+                select();
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || game.controls.moveDown(true)) {
-            cancel();
+            /*if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || game.controls.moveDown(true)) {
+                cancel();
+            }*/
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
+                    Gdx.input.isKeyJustPressed(Input.Keys.BACK) ||
+                    game.controls.moveDown(true)) {
+                pauseWindow.setVisible(true);
+                pauseWindow.toFront();
+            }
         }
         game.batch.end();
+        stage.act();
+        stage.draw();
+
     }
 
     @Override
@@ -331,6 +385,7 @@ public class RowScreen implements Screen {
 
     @Override
     public void hide() {
+        Gdx.input.setCatchBackKey(false);
         dispose();
     }
 

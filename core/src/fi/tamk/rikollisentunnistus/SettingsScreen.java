@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,13 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import javax.swing.GroupLayout;
 
 
 /**
@@ -57,31 +62,19 @@ public class SettingsScreen implements Screen {
 
     float sliderSize;
 
-    private InputMultiplexer multiplexer;
-
     float row_height;
     float col_width;
     float height;
     float width;
 
     private Label calibrateText;
-    private Label assetsText;
     private Label sameAttributesText;
     private Label rowLengthText;
     private Label roundsText;
-    private Label onText;
-    private Label offText;
-    private Label rowLengthMinText;
-    private Label rowLengthMaxText;
-    private Label sameAttributesMinText;
-    private Label sameAttributesMaxText;
-    private Label roundsMinText;
-    private Label roundsMaxText;
     private Label staringDifficultyText;
-    private Label staringDifficultyMinText;
-    private Label staringDifficultyMaxText;
-    private Label useDifficultyText;
-    private Label increasingDifficultyText;
+
+    private Texture sensitivityGraphTexture;
+    private Image sensitivityGraphImage;
 
 
     Skin mySkin;
@@ -101,6 +94,12 @@ public class SettingsScreen implements Screen {
         height = camera.viewportHeight;
 
         sliderSize = camera.viewportWidth * 0.15f;
+
+        sensitivityGraphTexture = new Texture("sensitivityGraph.png");
+        sensitivityGraphImage = new Image(sensitivityGraphTexture);
+        sensitivityGraphImage.setPosition(col_width*4 - sliderSize, row_height * 8 - sliderSize);
+        sensitivityGraphImage.setSize(sliderSize*2, sliderSize*2);
+        sensitivityGraphImage.setOrigin(Align.center);
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -122,6 +121,7 @@ public class SettingsScreen implements Screen {
         valueIncreasingDifficulty = settings.getBoolean("increasingDifficulty");
 
         stage.addActor(calibrateText);
+        stage.addActor(sensitivityGraphImage);
         sliderRight();
         sliderLeft();
         sliderUp();
@@ -159,10 +159,10 @@ public class SettingsScreen implements Screen {
         Button save = new TextButton("SAVE",mySkin,"small");
         save.setSize(col_width*2,row_height*2);
         save.setPosition(0,0);
-        save.addListener(new InputListener(){
+        save.addListener(new ClickListener(){
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked (InputEvent event, float x, float y) {
                 Gdx.app.log("TAG", "save");
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
@@ -180,11 +180,7 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("increasingDifficulty", sliderIncreasingDifficulty.isChecked());
                 settings.saveSettings();
                 host.controls.updateControls();
-
-                // rowlength, sameattributes, accessories, rounds
-                return true;
             }
-
         });
         stage.addActor(save);
     }
@@ -197,22 +193,26 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                Gdx.app.log("TAG", "save");
-                settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
-                settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
-
-                settings.saveSettings();
-                host.controls.updateControls();
-                Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX"));
-                Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY"));
+                setZeroPoint();
             }
 
         });
         stage.addActor(calibrate);
     }
 
+    public void setZeroPoint() {
+        Gdx.app.log("TAG", "save");
+        settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
+        settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+
+        settings.saveSettings();
+        host.controls.updateControls();
+        Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX"));
+        Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY"));
+    }
+
     public float sliderRight() {
-        sliderR = new Slider(0f,10f,0.5f,false, mySkin);
+        sliderR = new Slider(0f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderR.setWidth(sliderSize);
@@ -227,12 +227,12 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("up","slider Value:"+sliderR.getValue());
+                Gdx.app.log("Slider Right","slider up Value:"+sliderR.getValue());
                 valueRight = sliderR.getValue();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+sliderR.getValue());
+                Gdx.app.log("Slider Right","slider down Value:"+sliderR.getValue());
                 return true;
             }
         });
@@ -241,7 +241,7 @@ public class SettingsScreen implements Screen {
     }
 
     public float sliderLeft() {
-        sliderL = new Slider(-10f,0f,0.5f,false, mySkin);
+        sliderL = new Slider(-10f,0f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderL.setWidth(sliderSize);
@@ -271,7 +271,7 @@ public class SettingsScreen implements Screen {
     }
 
     public float sliderUp() {
-        sliderU = new Slider(0f,10f,0.5f,true, mySkin);
+        sliderU = new Slider(0f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(sliderSize);
@@ -300,7 +300,7 @@ public class SettingsScreen implements Screen {
     }
 
     public float sliderDown() {
-        sliderD = new Slider(-10f,0f,0.5f,true, mySkin);
+        sliderD = new Slider(-10f,0f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(sliderSize);

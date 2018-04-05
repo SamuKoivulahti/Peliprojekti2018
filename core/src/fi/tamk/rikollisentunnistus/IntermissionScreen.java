@@ -87,7 +87,7 @@ public class IntermissionScreen implements Screen {
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
-        gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, height/2 - gameEndText.getHeight() / 2);
+        gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
 
 
         stage.addActor(winText);
@@ -98,8 +98,13 @@ public class IntermissionScreen implements Screen {
 
         if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
             gameEndText.setVisible(true);
-            winText.setVisible(false);
-            loseText.setVisible(false);
+            if (win) {
+                winText.setVisible(true);
+                loseText.setVisible(false);
+            } else {
+                winText.setVisible(false);
+                loseText.setVisible(true);
+            }
             pointsText.setVisible(false);
         } else {
             if (win) {
