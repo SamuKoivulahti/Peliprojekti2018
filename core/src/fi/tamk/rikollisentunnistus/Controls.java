@@ -43,6 +43,21 @@ public class Controls {
         zeroPointX = Gdx.input.getAccelerometerY();
         zeroPointY = Gdx.input.getAccelerometerZ();
 
+        updateControls();
+
+        elapsedTime = 0;
+
+        timerTime = 3;
+
+        isAbleMoveLeft = true;
+        isAbleMoveRight = true;
+        isAbleMoveUp = true;
+        isAbleMoveDown = true;
+
+        timer = false;
+    }
+
+    public void updateControls() {
         Settings settings = Settings.getInstance();
         try {
             moveRight = settings.getFloat("sensitivityRight");
@@ -51,11 +66,20 @@ public class Controls {
             moveDown = settings.getFloat("sensitivityDown");
             zeroPointX = settings.getFloat("zeroPointX");
             zeroPointY = settings.getFloat("zeroPointY");
+            hysteresisRight = moveRight/2;
+            hysteresisLeft = moveLeft/2;
+            hysteresisUp = moveUp/2;
+            hysteresisDown = moveDown/2;
+            Gdx.app.log("controls", "zero Y: " + settings.getFloat("zeroPointY"));
         } catch (Exception e) {
             moveRight = 5f;
             moveLeft = -5f;
             moveUp = 5f;
             moveDown = -5f;
+            hysteresisRight = moveRight/2;
+            hysteresisLeft = moveLeft/2;
+            hysteresisUp = moveUp/2;
+            hysteresisDown = moveDown/2;
 
             settings.setFloat("sensitivityRight", moveRight);
             settings.setFloat("sensitivityLeft", moveLeft);
@@ -68,22 +92,6 @@ public class Controls {
 
             //System.out.println("peruna");
         }
-
-        hysteresisRight = moveRight/2;
-        hysteresisLeft = moveLeft/2;
-        hysteresisUp = moveUp/2;
-        hysteresisDown = moveDown/2;
-
-        elapsedTime = 0;
-
-        timerTime = 3;
-
-        isAbleMoveLeft = true;
-        isAbleMoveRight = true;
-        isAbleMoveUp = true;
-        isAbleMoveDown = true;
-
-        timer = false;
     }
 
     public float accelerometerY() {

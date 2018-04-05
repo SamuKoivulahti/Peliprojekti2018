@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -33,13 +35,13 @@ public class SettingsScreen implements Screen {
     public Slider sliderL;
     public Slider sliderU;
     public Slider sliderD;
-    public Slider sliderA;
-    public Slider sliderRow;
-    public Slider sliderAttribute;
-    public Slider sliderRound;
-    public Slider sliderStaringDifficulty;
-    public Slider sliderUseDifficulty;
-    public Slider sliderIncreasingDifficulty;
+    public CheckBox sliderA;
+    public SelectBox sliderRow;
+    public SelectBox sliderAttribute;
+    public SelectBox sliderRound;
+    public SelectBox sliderStaringDifficulty;
+    public CheckBox sliderUseDifficulty;
+    public CheckBox sliderIncreasingDifficulty;
 
     float valueRight;
     float valueLeft;
@@ -163,18 +165,20 @@ public class SettingsScreen implements Screen {
                 Gdx.app.log("TAG", "save");
                 settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+                Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
                 settings.setFloat("sensitivityRight", valueRight);
                 settings.setFloat("sensitivityLeft", valueLeft);
                 settings.setFloat("sensitivityUp", valueUp);
                 settings.setFloat("sensitivityDown", valueDown);
-                settings.setInteger("rowLength", valueRow);
-                settings.setInteger("sameAttributes", valueAttribute);
-                settings.setBoolean("assets", valueAssets);
-                settings.setInteger("roundAmount", valueRound);
-                settings.setInteger("startingDifficulty", valueStartingDifficulty);
-                settings.setBoolean("useDifficulty", valueUseDifficulty);
-                settings.setBoolean("increasingDifficulty", valueIncreasingDifficulty);
+                settings.setInteger("rowLength", sliderRow.getSelectedIndex()+3);
+                settings.setInteger("sameAttributes", sliderAttribute.getSelectedIndex());
+                settings.setBoolean("assets", sliderA.isChecked());
+                settings.setInteger("roundAmount", sliderRound.getSelectedIndex()+5);
+                settings.setInteger("startingDifficulty", sliderStaringDifficulty.getSelectedIndex());
+                settings.setBoolean("useDifficulty", sliderUseDifficulty.isChecked());
+                settings.setBoolean("increasingDifficulty", sliderIncreasingDifficulty.isChecked());
                 settings.saveSettings();
+                host.controls.updateControls();
 
                 // rowlength, sameattributes, accessories, rounds
                 return true;
@@ -305,273 +309,84 @@ public class SettingsScreen implements Screen {
     }
 
     public boolean assetSlider() {
-        sliderA = new Slider(0,1,1,false, mySkin);
-        sliderA.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
-        sliderA.setWidth(sliderSize/2);
-        sliderA.setPosition(col_width *8 + (sliderSize*2 - sliderA.getWidth())/ 2, row_height * 13);
-        sliderA.setValue(settings.getBoolean("assets")? 1 : 0);
-        sliderA.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("up","slider Value:"+ sliderA.getValue());
-                valueAssets = (sliderA.getValue() == 1);
-
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderA.getValue());
-                return true;
-            }
-        });
-        assetsText = new Label("Accessories", mySkin);
-        assetsText.setPosition(col_width * 8 + (sliderSize) - assetsText.getWidth()/2, row_height * 14);
-        onText = new Label("ON", mySkin);
-        onText.setPosition(col_width *8 + (sliderSize*2), row_height * 13);
-        offText = new Label("OFF", mySkin);
-        offText.setPosition(col_width * 8 - offText.getWidth(), row_height * 13);
-        stage.addActor(onText);
-        stage.addActor(offText);
-        stage.addActor(assetsText);
+        sliderA = new CheckBox("Accessories", mySkin);
+        sliderA.setPosition(col_width *8 + (sliderSize*2 - sliderA.getWidth())/ 2, row_height * 11);
+        sliderA.setChecked(settings.getBoolean("assets"));
         stage.addActor(sliderA);
         return valueAssets;
     }
 
     public int rowSlider() {
-        sliderRow = new Slider(3,6,1,false, mySkin);
-        sliderRow.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
+        sliderRow = new SelectBox(mySkin);
+        String[] array = {"3","4","5","6"};
+        sliderRow.setItems(array);
         sliderRow.setWidth(sliderSize*2);
-        sliderRow.setPosition(col_width *8, row_height * 11);
-        sliderRow.setValue(settings.getInteger("rowLength"));
-        sliderRow.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("up","slider Value:"+ sliderRow.getValue());
-                valueRow = (int)sliderRow.getValue();
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderRow.getValue());
-                return true;
-            }
-        });
+        sliderRow.setPosition(col_width *8, row_height * 9);
+        sliderRow.setSelectedIndex(settings.getInteger("rowLength")-3);
         rowLengthText = new Label("Rows Length", mySkin);
-        rowLengthText.setPosition(col_width *8 + (sliderSize) - rowLengthText.getWidth()/2, row_height *12);
-        rowLengthMinText = new Label("3", mySkin);
-        rowLengthMinText.setPosition(col_width * 8 - rowLengthMinText.getWidth(), row_height * 11);
-        rowLengthMaxText = new Label("6", mySkin);
-        rowLengthMaxText.setPosition(col_width *8 + (sliderSize*2)+rowLengthMaxText.getWidth(), row_height * 11);
+        rowLengthText.setPosition(col_width *8 + (sliderSize) - rowLengthText.getWidth()/2, row_height *10);
         stage.addActor(rowLengthText);
-        stage.addActor(rowLengthMinText);
-        stage.addActor(rowLengthMaxText);
         stage.addActor(sliderRow);
         return valueRow;
     }
 
     public int attributeSlider() {
-        sliderAttribute = new Slider(0,4,1,false, mySkin);
-        sliderAttribute.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
+        sliderAttribute = new SelectBox(mySkin);
+        String[] array = {"0", "1", "2", "4"};
+        sliderAttribute.setItems(array);
         sliderAttribute.setWidth(sliderSize*2);
-        sliderAttribute.setPosition(col_width *8, row_height * 9);
-        sliderAttribute.setValue(settings.getInteger("sameAttributes"));
-        sliderAttribute.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                valueAttribute = (int)sliderAttribute.getValue();
-                Gdx.app.log("up","slider Value:"+ sliderAttribute.getValue());
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderAttribute.getValue());
-                return true;
-            }
-        });
+        sliderAttribute.setPosition(col_width *8, row_height * 7);
+        sliderAttribute.setSelectedIndex(settings.getInteger("sameAttributes"));
         sameAttributesText = new Label("Same Attributes", mySkin);
-        sameAttributesText.setPosition(col_width *8 + (sliderSize) - sameAttributesText.getWidth()/2, row_height *10);
-        sameAttributesMinText = new Label("0", mySkin);
-        sameAttributesMinText.setPosition(col_width * 8 - sameAttributesMinText.getWidth(), row_height * 9);
-        sameAttributesMaxText = new Label("4", mySkin);
-        sameAttributesMaxText.setPosition(col_width *8 + (sliderSize*2)+sameAttributesMaxText.getWidth(), row_height * 9);
+        sameAttributesText.setPosition(col_width *8 + (sliderSize) - sameAttributesText.getWidth()/2, row_height *8);
         stage.addActor(sameAttributesText);
-        stage.addActor(sameAttributesMinText);
-        stage.addActor(sameAttributesMaxText);
         stage.addActor(sliderAttribute);
 
         return valueAttribute;
     }
 
     public int roundSlider() {
-        sliderRound = new Slider(5,15,1,false, mySkin);
-        sliderRound.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
+        sliderRound = new SelectBox(mySkin);
+        String[] array = {"5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
+        sliderRound.setItems(array);
         sliderRound.setWidth(sliderSize*2);
-        sliderRound.setPosition(col_width *8, row_height * 7);
-        sliderRound.setValue(settings.getInteger("roundAmount"));
-        sliderRound.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                valueRound = (int)sliderRound.getValue();
-                Gdx.app.log("up","slider Value:"+ sliderRound.getValue());
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderRound.getValue());
-                return true;
-            }
-        });
+        sliderRound.setPosition(col_width *8, row_height * 13);
+        sliderRound.setSelectedIndex(settings.getInteger("roundAmount")-5);
         roundsText = new Label("Round Amount", mySkin);
-        roundsText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *8);
-        roundsMinText = new Label("5", mySkin);
-        roundsMinText.setPosition(col_width * 8 - rowLengthMinText.getWidth(), row_height * 7);
-        roundsMaxText = new Label("15", mySkin);
-        roundsMaxText.setPosition(col_width *8 + (sliderSize*2), row_height * 7);
+        roundsText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *14);
         stage.addActor(roundsText);
-        stage.addActor(roundsMinText);
-        stage.addActor(roundsMaxText);
         stage.addActor(sliderRound);
 
         return valueRound;
     }
 
     public int startingDifficultySlider() {
-        sliderStaringDifficulty= new Slider(0,14,1,false, mySkin);
-        sliderStaringDifficulty.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
+        sliderStaringDifficulty= new SelectBox(mySkin);
+        String[] array = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
+        sliderStaringDifficulty.setItems(array);
         sliderStaringDifficulty.setWidth(sliderSize*2);
-        sliderStaringDifficulty.setPosition(col_width *8, row_height * 5);
-        sliderStaringDifficulty.setValue(settings.getInteger("startingDifficulty"));
-        sliderStaringDifficulty.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                valueStartingDifficulty = (int)sliderStaringDifficulty.getValue();
-                Gdx.app.log("up","slider Value:"+ sliderStaringDifficulty.getValue());
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderStaringDifficulty.getValue());
-                return true;
-            }
-        });
+        sliderStaringDifficulty.setPosition(col_width *8, row_height * 2);
+        sliderStaringDifficulty.setSelectedIndex(settings.getInteger("startingDifficulty")-1);
         staringDifficultyText = new Label("Starting Difficulty", mySkin);
-        staringDifficultyText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *6);
-        staringDifficultyMinText = new Label("0", mySkin);
-        staringDifficultyMinText.setPosition(col_width * 8 - rowLengthMinText.getWidth(), row_height * 5);
-        staringDifficultyMaxText = new Label("14", mySkin);
-        staringDifficultyMaxText.setPosition(col_width *8 + (sliderSize*2), row_height * 5);
+        staringDifficultyText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *3);
         stage.addActor(staringDifficultyText);
-        stage.addActor(staringDifficultyMinText);
-        stage.addActor(staringDifficultyMaxText);
         stage.addActor(sliderStaringDifficulty);
 
         return valueStartingDifficulty;
     }
 
     public boolean useDifficultySlider() {
-        sliderUseDifficulty = new Slider(0,1,1,false, mySkin);
-        sliderUseDifficulty.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
-        sliderUseDifficulty.setWidth(sliderSize/2);
-        sliderUseDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderUseDifficulty.getWidth())/ 2, row_height * 3);
-        sliderUseDifficulty.setValue(settings.getBoolean("useDifficulty")? 1 : 0);
-        sliderUseDifficulty.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("up","slider Value:"+ sliderUseDifficulty.getValue());
-                valueUseDifficulty = (sliderUseDifficulty.getValue() == 1);
-
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderUseDifficulty.getValue());
-                return true;
-            }
-        });
-        useDifficultyText = new Label("Use Difficulty", mySkin);
-        useDifficultyText.setPosition(col_width * 8 + (sliderSize) - useDifficultyText.getWidth()/2, row_height * 4);
-        onText = new Label("ON", mySkin);
-        onText.setPosition(col_width *8 + (sliderSize*2), row_height * 3);
-        offText = new Label("OFF", mySkin);
-        offText.setPosition(col_width * 8 - offText.getWidth(), row_height * 3);
-        stage.addActor(onText);
-        stage.addActor(offText);
-        stage.addActor(useDifficultyText);
+        sliderUseDifficulty = new CheckBox("Use Difficulty", mySkin);
+        sliderUseDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderUseDifficulty.getWidth())/ 2, row_height * 5);
+        sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty"));
         stage.addActor(sliderUseDifficulty);
         return valueUseDifficulty;
     }
 
     public boolean increasingDifficultySlider() {
-        sliderIncreasingDifficulty = new Slider(0,1,1,false, mySkin);
-        sliderIncreasingDifficulty.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
-        sliderIncreasingDifficulty.setWidth(sliderSize/2);
-        sliderIncreasingDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderA.getWidth())/ 2, row_height * 1);
-        sliderIncreasingDifficulty.setValue(settings.getBoolean("increasingDifficulty")? 1 : 0);
-        sliderIncreasingDifficulty.addListener(new InputListener(){
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                //Gdx.app.log("touchDragged","slider Value:"+slider.getValue());
-                super.touchDragged(event, x, y, pointer);
-            }
-
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("up","slider Value:"+ sliderIncreasingDifficulty.getValue());
-                valueIncreasingDifficulty = (sliderIncreasingDifficulty.getValue() == 1);
-
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("down","slider Value:"+ sliderIncreasingDifficulty.getValue());
-                return true;
-            }
-        });
-        increasingDifficultyText = new Label("Increasing Difficulty", mySkin);
-        increasingDifficultyText.setPosition(col_width * 8 + (sliderSize) - increasingDifficultyText.getWidth()/2, row_height * 2);
-        onText = new Label("ON", mySkin);
-        onText.setPosition(col_width *8 + (sliderSize*2), row_height * 1);
-        offText = new Label("OFF", mySkin);
-        offText.setPosition(col_width * 8 - offText.getWidth(), row_height * 1);
-        stage.addActor(onText);
-        stage.addActor(offText);
-        stage.addActor(increasingDifficultyText);
+        sliderIncreasingDifficulty = new CheckBox("Increasing Difficulty", mySkin);
+        sliderIncreasingDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderIncreasingDifficulty.getWidth())/ 2, row_height * 4);
+        sliderIncreasingDifficulty.setChecked(settings.getBoolean("increasingDifficulty"));
         stage.addActor(sliderIncreasingDifficulty);
         return valueIncreasingDifficulty;
     }

@@ -269,7 +269,7 @@ public class RowScreen implements Screen {
     public void render(float delta) {
         if (game.controls.accelerometerY() > game.controls.moveUp) {
             elapsedTime += Gdx.graphics.getDeltaTime();
-        } else {
+        } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
             elapsedTime = 0;
         }
 
