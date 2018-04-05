@@ -135,6 +135,7 @@ public class SettingsScreen implements Screen {
         increasingDifficultySlider();
         buttonSave();
         buttonBack();
+        buttonCalibrate();
     }
 
     public void buttonBack() {
@@ -163,9 +164,9 @@ public class SettingsScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
-                settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
-                settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
-                Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
+                //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
+                //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+                //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
                 settings.setFloat("sensitivityRight", valueRight);
                 settings.setFloat("sensitivityLeft", valueLeft);
                 settings.setFloat("sensitivityUp", valueUp);
@@ -186,7 +187,28 @@ public class SettingsScreen implements Screen {
 
         });
         stage.addActor(save);
+    }
 
+    public void buttonCalibrate() {
+        Button calibrate = new TextButton("Calibrate", mySkin, "small");
+        calibrate.setSize(col_width*2, row_height*2);
+        calibrate.setPosition(col_width*4 - calibrate.getWidth()/2, row_height * 1.5f);
+        calibrate.addListener(new ClickListener(){
+
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                Gdx.app.log("TAG", "save");
+                settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
+                settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+
+                settings.saveSettings();
+                host.controls.updateControls();
+                Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX"));
+                Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY"));
+            }
+
+        });
+        stage.addActor(calibrate);
     }
 
     public float sliderRight() {
