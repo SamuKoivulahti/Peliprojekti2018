@@ -87,7 +87,7 @@ public class IntermissionScreen implements Screen {
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
-        gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
+        gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, height/2 - gameEndText.getHeight() / 2);
 
 
         stage.addActor(winText);
@@ -96,26 +96,15 @@ public class IntermissionScreen implements Screen {
         stage.addActor(levelText);
         stage.addActor(gameEndText);
 
-        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
-            gameEndText.setVisible(true);
-            if (win) {
-                winText.setVisible(true);
-                loseText.setVisible(false);
-            } else {
-                winText.setVisible(false);
-                loseText.setVisible(true);
-            }
-            pointsText.setVisible(false);
+        if (win) {
+            winText.setVisible(true);
+            loseText.setVisible(false);
         } else {
-            if (win) {
-                winText.setVisible(true);
-                loseText.setVisible(false);
-            } else {
-                winText.setVisible(false);
-                loseText.setVisible(true);
-            }
-            gameEndText.setVisible(false);
+            winText.setVisible(false);
+            loseText.setVisible(true);
         }
+        gameEndText.setVisible(false);
+
     }
 
     public boolean timer(int timeToPass) {
@@ -133,7 +122,7 @@ public class IntermissionScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+        if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
             Gdx.gl.glClearColor(20 / 255f, 180 / 255f, 255 / 255f, 1);
         } else {
             if (win) {
@@ -147,13 +136,21 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (timer(timeWaiting) && settings.getInteger("roundAmount") != game.gameData.getLevel()) {
+        if (timer(timeWaiting) && settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
-        } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
-            if (timer(gameEndWait)) {
-                elapsedTime = 0;
-                game.setMainScreen();
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
+            Gdx.app.log("inter", "time 1 " + elapsedTime);
+            if (timer(timeWaiting)) {
+                Gdx.app.log("inter", "time 2 " + elapsedTime);
+                gameEndText.setVisible(true);
+                winText.setVisible(false);
+                loseText.setVisible(false);
+                pointsText.setVisible(false);
+                if (elapsedTime > (timeWaiting + gameEndWait)) {
+                    elapsedTime = 0;
+                    game.setMainScreen();
+                }
             }
         }
     }
