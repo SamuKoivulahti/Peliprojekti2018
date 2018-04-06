@@ -246,7 +246,7 @@ public class Face extends Actor {
 
 
         if (accessoryImg != null) {
-            batch.draw(accessoryImg, getX() - accessoryImg.getWidth()/2, getY(),
+            batch.draw(accessoryImg, getX() - (accessoryImg.getWidth()/2)*scale, getY(),
                     accessoryImg.getWidth()*scale,accessoryImg.getHeight()*scale);
         }
     }
