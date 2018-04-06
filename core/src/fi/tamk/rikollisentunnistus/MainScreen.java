@@ -46,7 +46,7 @@ public class MainScreen implements Screen {
 
         Button play = new TextButton("PLAY",mySkin,"small");
         play.setSize(col_width*2,row_height*2);
-        play.setPosition(col_width * 5,row_height*7);
+        play.setPosition(col_width * 5,row_height*8);
         play.addListener(new ClickListener(){
 
             @Override
@@ -59,7 +59,7 @@ public class MainScreen implements Screen {
 
         Button settings = new TextButton("Settings",mySkin,"small");
         settings.setSize(col_width*2,row_height*2);
-        settings.setPosition(col_width * 5,row_height*3);
+        settings.setPosition(col_width * 5,row_height*5);
         settings.addListener(new ClickListener(){
 
             @Override
@@ -69,8 +69,21 @@ public class MainScreen implements Screen {
 
         });
 
+        Button exit = new TextButton("Exit Game",mySkin,"small");
+        exit.setSize(col_width*2,row_height*2);
+        exit.setPosition(col_width * 5,row_height*2);
+        exit.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+
+        });
+
         stage.addActor(play);
         stage.addActor(settings);
+        stage.addActor(exit);
 
     }
 
