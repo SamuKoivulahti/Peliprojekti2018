@@ -8,6 +8,8 @@ public class GameData {
     private int points;
     private boolean win;
     private int level;
+    private Face chosenCriminal;
+    private Face correctCriminal;
 
     public GameData() {
     }
@@ -34,5 +36,21 @@ public class GameData {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public Face getChosenCriminal() {
+        return chosenCriminal;
+    }
+
+    public void setChosenCriminal(Face criminal) {
+        this.chosenCriminal = criminal;
+    }
+
+    public Face getCorrectCriminal() {
+        return correctCriminal;
+    }
+
+    public void setCorrectCriminal(Face criminal) {
+        correctCriminal = criminal;
     }
 }

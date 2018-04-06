@@ -154,6 +154,8 @@ public class Rikollisentunnistus extends Game {
 	        criminals[0].addAccessory(rowConstructor.accessoryTextures);
 	    }
 
+	    gameData.setCorrectCriminal(criminals[0]);
+
         criminals = shuffleArray(criminals);
         rowScreen.setCriminals(criminals,rightId);
     }

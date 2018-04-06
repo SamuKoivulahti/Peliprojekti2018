@@ -44,7 +44,9 @@ public class RowScreen implements Screen {
     private Label levelText;
 
     private Texture lineUp;
+    private Texture desk;
     private Image lineUpImage;
+    private Image deskImage;
 
     Skin mySkin;
 
@@ -88,6 +90,11 @@ public class RowScreen implements Screen {
         lineUpImage.setPosition(0,0);
         lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight);
 
+        desk = new Texture("rowscreendesk.png");
+        deskImage = new Image(desk);
+        deskImage.setPosition(0,0);
+        deskImage.setSize(width, height/8);
+
 
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
@@ -110,6 +117,7 @@ public class RowScreen implements Screen {
         animation = new Animation<TextureRegion>(game.controls.timerTime / 10, animationFrames);
 
         stage.addActor(lineUpImage);
+        stage.addActor(deskImage);
         stage.addActor(pointsText);
         stage.addActor(levelText);
         createPauseWindow();
@@ -229,6 +237,7 @@ public class RowScreen implements Screen {
         String selectedID = "";
         for (Face criminal : criminalRow) {
             if (criminal.active) {
+                game.gameData.setChosenCriminal(criminal);
                 selectedID = criminal.getIdCode();
                 break;
             }

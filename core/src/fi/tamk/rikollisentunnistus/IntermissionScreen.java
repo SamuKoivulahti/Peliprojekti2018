@@ -28,6 +28,10 @@ public class IntermissionScreen implements Screen {
     private Label pointsText;
     private Label levelText;
     private Label gameEndText;
+    private Label chosenCriminalText;
+    private Label correctCriminalText;
+    private Face chosenCriminal;
+    private Face correctCriminal;
     boolean win;
 
     Skin mySkin;
@@ -88,34 +92,51 @@ public class IntermissionScreen implements Screen {
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
+        correctCriminalText = new Label("Correct criminal", mySkin);
+        correctCriminalText.setPosition(width*5/6 - correctCriminalText.getWidth()/2, height*3/16);
+        chosenCriminalText = new Label("Your choice", mySkin);
+        chosenCriminalText.setPosition(width/6 - correctCriminalText.getWidth()/2, height*3/16);
 
+        chosenCriminal = game.gameData.getChosenCriminal();
+        correctCriminal = game.gameData.getCorrectCriminal();
+
+        if (!win) {
+            chosenCriminal = game.gameData.getChosenCriminal();
+            correctCriminal = game.gameData.getCorrectCriminal();
+            chosenCriminal.clearActions();
+            chosenCriminal.setScale(1.0f);
+
+            chosenCriminal.setLocation(width/6,height/4);
+            correctCriminal.setLocation(width*5/6, height/4);
+        }
+
+        stage.addActor(chosenCriminal);
+        stage.addActor(correctCriminal);
 
         stage.addActor(winText);
         stage.addActor(loseText);
         stage.addActor(pointsText);
         stage.addActor(levelText);
         stage.addActor(gameEndText);
+        stage.addActor(correctCriminalText);
+        stage.addActor(chosenCriminalText);
 
-        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
-            gameEndText.setVisible(true);
-            if (win) {
-                winText.setVisible(true);
-                loseText.setVisible(false);
-            } else {
-                winText.setVisible(false);
-                loseText.setVisible(true);
-            }
-            pointsText.setVisible(false);
+        if (win) {
+            winText.setVisible(true);
+            loseText.setVisible(false);
+            chosenCriminal.setVisible(false);
+            correctCriminal.setVisible(false);
+            chosenCriminalText.setVisible(false);
+            correctCriminalText.setVisible(false);
         } else {
-            if (win) {
-                winText.setVisible(true);
-                loseText.setVisible(false);
-            } else {
-                winText.setVisible(false);
-                loseText.setVisible(true);
-            }
-            gameEndText.setVisible(false);
+            winText.setVisible(false);
+            loseText.setVisible(true);
+            chosenCriminal.setVisible(true);
+            correctCriminal.setVisible(true);
+            chosenCriminalText.setVisible(true);
+            correctCriminalText.setVisible(true);
         }
+        gameEndText.setVisible(false);
     }
 
     public boolean timer(int timeToPass) {
@@ -151,9 +172,17 @@ public class IntermissionScreen implements Screen {
             elapsedTime = 0;
             game.resetAll();
         } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
-            if (timer(gameEndWait)) {
-                elapsedTime = 0;
-                game.setMainScreen();
+            Gdx.app.log("inter", "time 1 " + elapsedTime);
+            if (timer(timeWaiting)) {
+                Gdx.app.log("inter", "time 2 " + elapsedTime);
+                gameEndText.setVisible(true);
+                winText.setVisible(false);
+                loseText.setVisible(false);
+                pointsText.setVisible(false);
+                if (elapsedTime > (timeWaiting + gameEndWait)) {
+                    elapsedTime = 0;
+                    game.setMainScreen();
+                }
             }
         }
     }

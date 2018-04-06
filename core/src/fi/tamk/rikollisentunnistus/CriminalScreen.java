@@ -130,7 +130,7 @@ public class CriminalScreen implements Screen {
             waitingTimeText.setVisible(true);
 
             MoveToAction move = new MoveToAction();
-            move.setPosition(width/2, height/2);
+            move.setPosition(width/2, -height/2);
             move.setDuration(0.4f);
 
             criminal.addAction(move);
