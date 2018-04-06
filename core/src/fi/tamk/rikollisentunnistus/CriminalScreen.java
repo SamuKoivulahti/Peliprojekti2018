@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -40,13 +41,17 @@ public class CriminalScreen implements Screen {
     public CriminalScreen(Rikollisentunnistus g, Face rightCriminal) {
         game = g;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,1200,650);
+        camera.setToOrtho(false,1280,800);
         status = SHOWING;
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = rightCriminal;
-        criminal.setLocation((camera.viewportWidth - criminal.getSpriteWidth())/2, 125);
+        criminal.setLocation((camera.viewportWidth - criminal.getSpriteWidth())/2, -600);
+        MoveToAction moveUp = new MoveToAction();
+        moveUp.setPosition((camera.viewportWidth - criminal.getSpriteWidth())/2, 125f);
+        moveUp.setDuration(0.4f);
+        criminal.addAction(moveUp);
 
         height = camera.viewportHeight;
         width = camera.viewportWidth;
@@ -56,6 +61,7 @@ public class CriminalScreen implements Screen {
 
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
         waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
+        waitingTimeText.setVisible(false);
 
         stage.addActor(waitingTimeText);
         stage.addActor(criminal);
@@ -121,10 +127,18 @@ public class CriminalScreen implements Screen {
             criminal.setVisible(true);
 
         } else if (status == WAITING) {
-            criminal.setVisible(false);
+            waitingTimeText.setVisible(true);
+
+            MoveToAction move = new MoveToAction();
+            move.setPosition((camera.viewportWidth - criminal.getSpriteWidth())/2, -600);
+            move.setDuration(0.4f);
+
+            criminal.addAction(move);
+
             if (timer(timeWaiting)) {
                 elapsedTime = 0;
                 criminal.setVisible(true);
+                criminal.clearActions();
                 game.setRowScreen();
                 game.setCriminals();
             }
@@ -136,8 +150,9 @@ public class CriminalScreen implements Screen {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
             game.setRowScreen();
-            game.setCriminals();
             criminal.setVisible(true);
+            criminal.clearActions();
+            game.setCriminals();
         }
         /*if (Gdx.input.isTouched() && status == SHOWING) {
             status = WAITING;

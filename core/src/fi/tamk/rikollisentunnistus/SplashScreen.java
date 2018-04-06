@@ -33,7 +33,7 @@ public class SplashScreen implements Screen {
     public SplashScreen(Rikollisentunnistus host) {
         this.host = host;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,1200,650);
+        camera.setToOrtho(false,1280,800);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
         exerium = new Texture("exerium_logo.png");

@@ -11,14 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by Samu Koivulahti on 17.3.2018.
  */
 
 public class MainScreen implements Screen {
-    private int row_height;
-    private int col_width;
+    private float row_height;
+    private float col_width;
     private float height;
     private float width;
     Rikollisentunnistus host;
@@ -33,18 +35,18 @@ public class MainScreen implements Screen {
         this.host = host;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 650);
-        stage = new Stage();
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
-        row_height = Gdx.graphics.getWidth() / 12;
-        col_width = Gdx.graphics.getWidth() / 12;
+        camera.setToOrtho(false,1280,800);
+        stage = new Stage(new StretchViewport(camera.viewportWidth, camera.viewportHeight));
+        row_height = camera.viewportHeight / 12;
+        col_width = camera.viewportWidth / 12;
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         Button play = new TextButton("PLAY",mySkin,"small");
-        play.setSize(col_width*2,row_height);
-        play.setPosition(col_width * 5,height- row_height*3);
+        play.setSize(col_width*2,row_height*2);
+        play.setPosition(col_width * 5,row_height*7);
         play.addListener(new ClickListener(){
 
             @Override
@@ -56,8 +58,8 @@ public class MainScreen implements Screen {
         });
 
         Button settings = new TextButton("Settings",mySkin,"small");
-        settings.setSize(col_width*2,row_height);
-        settings.setPosition(col_width * 5,height- row_height*5);
+        settings.setSize(col_width*2,row_height*2);
+        settings.setPosition(col_width * 5,row_height*3);
         settings.addListener(new ClickListener(){
 
             @Override

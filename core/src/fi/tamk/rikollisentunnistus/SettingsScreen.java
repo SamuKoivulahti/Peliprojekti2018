@@ -85,7 +85,7 @@ public class SettingsScreen implements Screen {
         this.host = host;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 650);
+        camera.setToOrtho(false,1280,800);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
         row_height = camera.viewportHeight / 15;

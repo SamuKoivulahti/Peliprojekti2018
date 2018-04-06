@@ -64,7 +64,7 @@ public class RowScreen implements Screen {
         Gdx.app.log("RowScreen", "constructor");
         game = g;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,1200,650);
+        camera.setToOrtho(false,1280,800);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
         game.gameData.setWin(false);
         win = false;

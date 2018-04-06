@@ -44,7 +44,7 @@ public class IntermissionScreen implements Screen {
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,1200,650);
+        camera.setToOrtho(false,1280,800);
 
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
         win = game.gameData.getWin();
