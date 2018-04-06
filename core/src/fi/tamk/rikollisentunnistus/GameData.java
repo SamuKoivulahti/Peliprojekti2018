@@ -1,5 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
+import com.badlogic.gdx.Gdx;
+
 /**
  * Created by Samu Koivulahti on 25.3.2018.
  */
@@ -37,6 +39,26 @@ public class GameData {
     public void setLevel(int level) {
         this.level = level;
     }
+
+    public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;
+    public static final float DEFAULT_SENSITIVITY_LEFT = -5f;
+    public static final float DEFAULT_SENSITIVITY_UP = 5f;
+    public static final float DEFAULT_SENSITIVITY_DOWN = -5f;
+    public static final float DEFAULT_HYSTERESIS_RIGHT = DEFAULT_SENSITIVITY_RIGHT/2;
+    public static final float DEFAULT_HYSTERESIS_LEFT = DEFAULT_SENSITIVITY_LEFT/2;
+    public static final float DEFAULT_HYSTERESIS_UP = DEFAULT_SENSITIVITY_UP/2;
+    public static final float DEFAULT_HYSTERESIS_DOWN = DEFAULT_SENSITIVITY_DOWN/2;
+    public static final float DEFAULT_ZERO_POINT_X= 0;
+    public static final float DEFAULT_ZERO_POINT_Y = 0;
+    public static final int DEFAULT_ROW_LENGTH = 5;
+    public static final int DEFAULT_SAME_ATTRIBUTES = 2;
+    public static final int DEFAULT_ROUND_AMOUNT = 7;
+    public static final int DEFAULT_STARTING_DIFFICULTY = 7;
+    public static final boolean DEFAULT_ASSETS = false;
+    public static final boolean DEFAULT_USE_DIFFICULTY = false;
+    public static final boolean DEFAULT_INCREASING_DIFFICULTY = false;
+
+
 
     public Face getChosenCriminal() {
         return chosenCriminal;

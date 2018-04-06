@@ -59,39 +59,20 @@ public class Controls {
 
     public void updateControls() {
         Settings settings = Settings.getInstance();
-        try {
-            moveRight = settings.getFloat("sensitivityRight");
-            moveLeft = settings.getFloat("sensitivityLeft");
-            moveUp = settings.getFloat("sensitivityUp");
-            moveDown = settings.getFloat("sensitivityDown");
-            zeroPointX = settings.getFloat("zeroPointX");
-            zeroPointY = settings.getFloat("zeroPointY");
-            hysteresisRight = moveRight/2;
-            hysteresisLeft = moveLeft/2;
-            hysteresisUp = moveUp/2;
-            hysteresisDown = moveDown/2;
-            Gdx.app.log("controls", "zero Y: " + settings.getFloat("zeroPointY"));
-        } catch (Exception e) {
-            moveRight = 5f;
-            moveLeft = -5f;
-            moveUp = 5f;
-            moveDown = -5f;
-            hysteresisRight = moveRight/2;
-            hysteresisLeft = moveLeft/2;
-            hysteresisUp = moveUp/2;
-            hysteresisDown = moveDown/2;
+        moveRight = settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT);
+        moveLeft = settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT);
+        moveUp = settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP);
+        moveDown = settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN);
+        zeroPointX = settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X);
+        zeroPointY = settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y);
+        hysteresisRight = moveRight/2;
+        hysteresisLeft = moveLeft/2;
+        hysteresisUp = moveUp/2;
+        hysteresisDown = moveDown/2;
+        Gdx.app.log("controls", "zero Y: " + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
 
-            settings.setFloat("sensitivityRight", moveRight);
-            settings.setFloat("sensitivityLeft", moveLeft);
-            settings.setFloat("sensitivityUp", moveUp);
-            settings.setFloat("sensitivityDown", moveDown);
-            settings.setFloat("zeroPointX", zeroPointX);
-            settings.setFloat("zeroPointY", zeroPointY);
+        //System.out.println("peruna");
 
-            settings.saveSettings();
-
-            //System.out.println("peruna");
-        }
     }
 
     public float accelerometerY() {

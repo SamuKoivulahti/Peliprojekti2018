@@ -1,6 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,7 +37,6 @@ public class Rikollisentunnistus extends Game {
 
         controls = new Controls();
         gameData = new GameData();
-        updateSettings();
 
         SplashScreen splashScreen = new SplashScreen(this);
         mainScreen = new MainScreen(this);
@@ -46,6 +46,7 @@ public class Rikollisentunnistus extends Game {
         batch = new SpriteBatch();
 
         rowConstructor = new RowConstructor();
+        updateSettings();
 
 
         if (useDifficulty) {
@@ -77,38 +78,20 @@ public class Rikollisentunnistus extends Game {
     public void updateSettings() {
         Settings settings = Settings.getInstance();
 
-        try {
-            rowLength = settings.getInteger("rowLength");
-            sameAttributes = settings.getInteger("sameAttributes");
-            accessories = settings.getBoolean("assets");
-            rounds = settings.getInteger("roundAmount");
-            difficulty = settings.getInteger("startingDifficulty");
-            useDifficulty = settings.getBoolean("useDifficulty");
-            increasingDifficulty = settings.getBoolean("increasingDifficulty");
+        rowLength = settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH);
+        sameAttributes = settings.getInteger("sameAttributes", GameData.DEFAULT_SAME_ATTRIBUTES);
+        accessories = settings.getBoolean("assets", GameData.DEFAULT_ASSETS);
+        rounds = settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT);
+        difficulty = settings.getInteger("startingDifficulty", GameData.DEFAULT_STARTING_DIFFICULTY);
+        useDifficulty = settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY);
+        increasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
 
-            if (useDifficulty) {
-                criminals = rowConstructor.makeRowDifficulty(difficulty);
-            } else {
-                criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
-            }
+        System.out.print("perunaxd");
 
-        } catch (Exception e) {
-            rowLength = 5;
-            sameAttributes = 2;
-            accessories = false;
-            rounds = 7;
-            difficulty = 7;
-            useDifficulty = false;
-            increasingDifficulty = false;
-
-            settings.setInteger("rowLength", rowLength);
-            settings.setInteger("sameAttributes", sameAttributes);
-            settings.setBoolean("assets", accessories);
-            settings.setInteger("roundAmount", rounds);
-            settings.setInteger("startingDifficulty", difficulty);
-            settings.setBoolean("useDifficulty", useDifficulty);
-            settings.setBoolean("increasingDifficulty", increasingDifficulty);
-            settings.saveSettings();
+        if (useDifficulty) {
+            criminals = rowConstructor.makeRowDifficulty(difficulty);
+        } else {
+            criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
         }
     }
 

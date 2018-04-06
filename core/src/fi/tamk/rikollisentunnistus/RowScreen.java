@@ -327,7 +327,7 @@ public class RowScreen implements Screen {
             delta = 0;
         }
 
-        if (game.controls.accelerometerY() > game.controls.moveUp) {
+        if ((game.controls.accelerometerY() > game.controls.moveUp) && letMove) {
             elapsedTime += delta;
         } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
             elapsedTime = 0;

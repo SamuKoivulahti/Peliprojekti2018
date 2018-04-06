@@ -17,22 +17,24 @@ public class Settings {
         prefs = Gdx.app.getPreferences("Rikollisentunnistus.config");
     }
 
-    private void hasKey(String key) {
-        if (!prefs.contains(key)) {
-            throw new IllegalArgumentException();
-        }
+    private boolean hasKey(String key) {
+            return prefs.contains(key);
     }
 
-    public float getFloat(String key) throws IllegalArgumentException {
-        hasKey(key);
+    public float getFloat(String key, float defaultValue) {
+        if (!hasKey(key)) {
+            return defaultValue;
+        }
         return prefs.getFloat(key);
     }
     public void setFloat(String key, float value) {
         prefs.putFloat(key, value);
     }
 
-    public int getInteger(String key) throws IllegalArgumentException {
-        hasKey(key);
+    public int getInteger(String key, int defaultValue) {
+        if (!hasKey(key)) {
+            return defaultValue;
+        }
         return prefs.getInteger(key);
     }
 
@@ -40,7 +42,10 @@ public class Settings {
         prefs.putInteger(key, value);
     }
 
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(String key, boolean defaultValue) {
+        if (!hasKey(key)) {
+            return defaultValue;
+        }
         return prefs.getBoolean(key);
     }
 

@@ -137,6 +137,15 @@ public class IntermissionScreen implements Screen {
             correctCriminalText.setVisible(true);
         }
         gameEndText.setVisible(false);
+        if (win) {
+            winText.setVisible(true);
+            loseText.setVisible(false);
+        } else {
+            winText.setVisible(false);
+            loseText.setVisible(true);
+        }
+        gameEndText.setVisible(false);
+
     }
 
     public boolean timer(int timeToPass) {
@@ -154,7 +163,7 @@ public class IntermissionScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+        if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
             Gdx.gl.glClearColor(20 / 255f, 180 / 255f, 255 / 255f, 1);
         } else {
             if (win) {
@@ -168,10 +177,10 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (timer(timeWaiting) && settings.getInteger("roundAmount") != game.gameData.getLevel()) {
+        if (timer(timeWaiting) && settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
-        } else if (settings.getInteger("roundAmount") == game.gameData.getLevel()) {
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
             Gdx.app.log("inter", "time 1 " + elapsedTime);
             if (timer(timeWaiting)) {
                 Gdx.app.log("inter", "time 2 " + elapsedTime);

@@ -108,17 +108,17 @@ public class SettingsScreen implements Screen {
 
         settings = Settings.getInstance();
 
-        valueRight = settings.getFloat("sensitivityRight");
-        valueLeft = settings.getFloat("sensitivityLeft");
-        valueUp = settings.getFloat("sensitivityUp");
-        valueDown = settings.getFloat("sensitivityDown");
-        valueRow = settings.getInteger("rowLength");
-        valueAttribute = settings.getInteger("sameAttributes");
-        valueAssets = settings.getBoolean("assets");
-        valueRound = settings.getInteger("roundAmount");
-        valueStartingDifficulty = settings.getInteger("startingDifficulty");
-        valueUseDifficulty = settings.getBoolean("useDifficulty");
-        valueIncreasingDifficulty = settings.getBoolean("increasingDifficulty");
+        valueRight = settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_UP);
+        valueLeft = settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT);
+        valueUp = settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP);
+        valueDown = settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN);
+        valueRow = settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH);
+        valueAttribute = settings.getInteger("sameAttributes", GameData.DEFAULT_SAME_ATTRIBUTES);
+        valueAssets = settings.getBoolean("assets", GameData.DEFAULT_ASSETS);
+        valueRound = settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT);
+        valueStartingDifficulty = settings.getInteger("startingDifficulty", GameData.DEFAULT_STARTING_DIFFICULTY);
+        valueUseDifficulty = settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY);
+        valueIncreasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
 
         stage.addActor(calibrateText);
         stage.addActor(sensitivityGraphImage);
@@ -207,8 +207,8 @@ public class SettingsScreen implements Screen {
 
         settings.saveSettings();
         host.controls.updateControls();
-        Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX"));
-        Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY"));
+        Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X));
+        Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
     }
 
     public float sliderRight() {
@@ -217,7 +217,7 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderR.setWidth(sliderSize);
         sliderR.setPosition(col_width*4, row_height * 8 - sliderR.getHeight()/2);
-        sliderR.setValue(settings.getFloat("sensitivityRight"));
+        sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
         sliderR.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -246,7 +246,7 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderL.setWidth(sliderSize);
         sliderL.setPosition(col_width*4 - sliderL.getWidth(), row_height * 8 - sliderR.getHeight()/2);
-        sliderL.setValue(settings.getFloat("sensitivityLeft"));
+        sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
         sliderL.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -276,7 +276,7 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(sliderSize);
         sliderU.setPosition(col_width*4 - sliderU.getWidth()/2, row_height * 8);
-        sliderU.setValue(settings.getFloat("sensitivityUp"));
+        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
         sliderU.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -305,7 +305,7 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(sliderSize);
         sliderD.setPosition(col_width*4 - sliderD.getWidth()/2, row_height * 8 - sliderD.getHeight());
-        sliderD.setValue(settings.getFloat("sensitivityDown"));
+        sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
         sliderD.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
@@ -333,7 +333,7 @@ public class SettingsScreen implements Screen {
     public boolean assetSlider() {
         sliderA = new CheckBox("Accessories", mySkin);
         sliderA.setPosition(col_width *8 + (sliderSize*2 - sliderA.getWidth())/ 2, row_height * 11);
-        sliderA.setChecked(settings.getBoolean("assets"));
+        sliderA.setChecked(settings.getBoolean("assets", GameData.DEFAULT_ASSETS));
         stage.addActor(sliderA);
         return valueAssets;
     }
@@ -344,7 +344,7 @@ public class SettingsScreen implements Screen {
         sliderRow.setItems(array);
         sliderRow.setWidth(sliderSize*2);
         sliderRow.setPosition(col_width *8, row_height * 9);
-        sliderRow.setSelectedIndex(settings.getInteger("rowLength")-3);
+        sliderRow.setSelectedIndex(settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH)-3);
         rowLengthText = new Label("Rows Length", mySkin);
         rowLengthText.setPosition(col_width *8 + (sliderSize) - rowLengthText.getWidth()/2, row_height *10);
         stage.addActor(rowLengthText);
@@ -358,7 +358,7 @@ public class SettingsScreen implements Screen {
         sliderAttribute.setItems(array);
         sliderAttribute.setWidth(sliderSize*2);
         sliderAttribute.setPosition(col_width *8, row_height * 7);
-        sliderAttribute.setSelectedIndex(settings.getInteger("sameAttributes"));
+        sliderAttribute.setSelectedIndex(settings.getInteger("sameAttributes", GameData.DEFAULT_SAME_ATTRIBUTES));
         sameAttributesText = new Label("Same Attributes", mySkin);
         sameAttributesText.setPosition(col_width *8 + (sliderSize) - sameAttributesText.getWidth()/2, row_height *8);
         stage.addActor(sameAttributesText);
@@ -373,7 +373,7 @@ public class SettingsScreen implements Screen {
         sliderRound.setItems(array);
         sliderRound.setWidth(sliderSize*2);
         sliderRound.setPosition(col_width *8, row_height * 13);
-        sliderRound.setSelectedIndex(settings.getInteger("roundAmount")-5);
+        sliderRound.setSelectedIndex(settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT)-5);
         roundsText = new Label("Round Amount", mySkin);
         roundsText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *14);
         stage.addActor(roundsText);
@@ -388,7 +388,7 @@ public class SettingsScreen implements Screen {
         sliderStaringDifficulty.setItems(array);
         sliderStaringDifficulty.setWidth(sliderSize*2);
         sliderStaringDifficulty.setPosition(col_width *8, row_height * 2);
-        sliderStaringDifficulty.setSelectedIndex(settings.getInteger("startingDifficulty")-1);
+        sliderStaringDifficulty.setSelectedIndex(settings.getInteger("startingDifficulty", GameData.DEFAULT_STARTING_DIFFICULTY));
         staringDifficultyText = new Label("Starting Difficulty", mySkin);
         staringDifficultyText.setPosition(col_width *8 + (sliderSize) - roundsText.getWidth()/2, row_height *3);
         stage.addActor(staringDifficultyText);
@@ -400,7 +400,7 @@ public class SettingsScreen implements Screen {
     public boolean useDifficultySlider() {
         sliderUseDifficulty = new CheckBox("Use Difficulty", mySkin);
         sliderUseDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderUseDifficulty.getWidth())/ 2, row_height * 5);
-        sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty"));
+        sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY));
         stage.addActor(sliderUseDifficulty);
         return valueUseDifficulty;
     }
@@ -408,7 +408,7 @@ public class SettingsScreen implements Screen {
     public boolean increasingDifficultySlider() {
         sliderIncreasingDifficulty = new CheckBox("Increasing Difficulty", mySkin);
         sliderIncreasingDifficulty.setPosition(col_width *8 + (sliderSize*2 - sliderIncreasingDifficulty.getWidth())/ 2, row_height * 4);
-        sliderIncreasingDifficulty.setChecked(settings.getBoolean("increasingDifficulty"));
+        sliderIncreasingDifficulty.setChecked(settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY));
         stage.addActor(sliderIncreasingDifficulty);
         return valueIncreasingDifficulty;
     }
