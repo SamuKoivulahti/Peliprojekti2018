@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -82,10 +83,10 @@ public class RowScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        lineUp = new Texture("lineup.png");
+        lineUp = new Texture("rowscreentausta.png");
         lineUpImage = new Image(lineUp);
         lineUpImage.setPosition(0,0);
-        lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight/1.5f);
+        lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight);
 
 
         points = game.gameData.getPoints();
@@ -173,19 +174,19 @@ public class RowScreen implements Screen {
         int startpoint = 1;
 
         if (criminalRow.length == 3) {
-            xCrd = separationOdd;
+            xCrd = separationOdd*1.5f;
             separation = separationOdd;
             startpoint = 1;
         } else if (criminalRow.length == 4) {
-            xCrd = separationOdd/2;
-            separation = separationOdd;
+            xCrd = separationEven*1.5f;
+            separation = separationEven;
             startpoint = 1;
         } else if (criminalRow.length == 5) {
-            xCrd = separationEven/2;
+            xCrd = separationEven;
             separation = separationEven;
             startpoint = 2;
         } else if (criminalRow.length == 6) {
-            xCrd = 20;
+            xCrd = separationEven*0.5f;
             separation = separationEven;
             startpoint = 2;
         }
@@ -203,11 +204,11 @@ public class RowScreen implements Screen {
         }
 
         for (Face criminal : criminalRow) {
-            criminal.setLocation(xCrd - width, 0);
+            criminal.setLocation(xCrd - width, height/8);
 
             MoveToAction moveToScreen = new MoveToAction();
             moveToScreen.setDuration(1.5f);
-            moveToScreen.setPosition(xCrd, 0);
+            moveToScreen.setPosition(xCrd, height/8);
             criminal.addAction(moveToScreen);
 
             stage.addActor(criminal);
@@ -272,12 +273,12 @@ public class RowScreen implements Screen {
         }
 
         if (help <= criminalRow.length - 2 && letMove) {
-            MoveToAction moveDown = new MoveToAction();
-            moveDown.setPosition(criminalRow[help].getX(), 0);
-            moveDown.setDuration(0.5f);
+            ScaleToAction scaleDown = new ScaleToAction();
+            scaleDown.setScale(1.0f);
+            scaleDown.setDuration(0.5f);
 
             criminalRow[help].clearActions();
-            criminalRow[help].addAction(moveDown);
+            criminalRow[help].addAction(scaleDown);
             criminalRow[help].toggleActive();
             criminalRow[help + 1].toggleActive();
         }
@@ -294,12 +295,12 @@ public class RowScreen implements Screen {
         }
 
         if (help >= 1 && letMove) {
-            MoveToAction moveDown = new MoveToAction();
-            moveDown.setPosition(criminalRow[help].getX(), 0);
-            moveDown.setDuration(0.5f);
+            ScaleToAction scaleDown = new ScaleToAction();
+            scaleDown.setScale(1.0f);
+            scaleDown.setDuration(0.5f);
 
             criminalRow[help].clearActions();
-            criminalRow[help].addAction(moveDown);
+            criminalRow[help].addAction(scaleDown);
             criminalRow[help].toggleActive();
             criminalRow[help - 1].toggleActive();
         }
@@ -332,18 +333,27 @@ public class RowScreen implements Screen {
 
 
         game.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(25/255f,100/255f,25/255f,1);
+        Gdx.gl.glClearColor(220/255f,223/255f,229/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
         for (Face criminal : criminalRow) {
             if (criminal.active && !criminal.hasActions() && letMove) {
-                MoveToAction moveUp = new MoveToAction();
-                moveUp.setPosition(criminal.getX(), 100);
-                moveUp.setDuration(0.5f);
-                criminal.addAction(moveUp);
+                ScaleToAction scaleUp = new ScaleToAction();
+                scaleUp.setScale(1.25f);
+                scaleUp.setDuration(0.5f);
+                criminal.addAction(scaleUp);
+                if (delta != 0) {
+                    criminal.toFront();
+                }
             }
         }
+
+        stage.act();
+        stage.draw();
+
+        pauseWindow.toFront();
+
         game.batch.begin();
         TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
         game.batch.draw(
@@ -380,8 +390,6 @@ public class RowScreen implements Screen {
             }
         }
         game.batch.end();
-        stage.act();
-        stage.draw();
 
     }
 

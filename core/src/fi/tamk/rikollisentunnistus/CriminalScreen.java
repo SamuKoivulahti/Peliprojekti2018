@@ -45,16 +45,16 @@ public class CriminalScreen implements Screen {
         status = SHOWING;
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
-        criminal = rightCriminal;
-        criminal.setLocation((camera.viewportWidth - criminal.getSpriteWidth())/2, -600);
-        MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition((camera.viewportWidth - criminal.getSpriteWidth())/2, 125f);
-        moveUp.setDuration(0.4f);
-        criminal.addAction(moveUp);
-
         height = camera.viewportHeight;
         width = camera.viewportWidth;
+
+        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+        criminal = rightCriminal;
+        criminal.setLocation(width/2, -height/2);
+        MoveToAction moveUp = new MoveToAction();
+        moveUp.setPosition(width/2, height/4);
+        moveUp.setDuration(0.4f);
+        criminal.addAction(moveUp);
 
         timeShown = 5f;
         timeWaiting = 3f;
@@ -130,7 +130,7 @@ public class CriminalScreen implements Screen {
             waitingTimeText.setVisible(true);
 
             MoveToAction move = new MoveToAction();
-            move.setPosition((camera.viewportWidth - criminal.getSpriteWidth())/2, -600);
+            move.setPosition(width/2, height/2);
             move.setDuration(0.4f);
 
             criminal.addAction(move);

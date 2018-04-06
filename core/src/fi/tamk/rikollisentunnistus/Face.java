@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 
 public class Face extends Actor {
-    private float scale;
+    private float originalScale;
 
     private Texture faceShapeImg;
     private Texture hairImg;
@@ -29,7 +29,7 @@ public class Face extends Actor {
 
     public Face(Texture[] faceShapes, Texture[] hairs,
                 Texture[] eyes, Texture[] noses, Texture[] mouths) {
-        scale = 1f;
+        originalScale = 1f;
 
         int randomFaceShape = MathUtils.random(0, faceShapes.length - 1);
         int randomHair = MathUtils.random(0, hairs.length - 1);
@@ -57,7 +57,7 @@ public class Face extends Actor {
 
     public Face(Texture[] faceShapes, Texture[] hairs, Texture[] eyes,
                 Texture[] noses, Texture[] mouths, int[] attributes, boolean useSameAttributes) {
-        scale = 1f;
+        originalScale = 1f;
 
         int faceShapeId = -1;
         int hairId = -1;
@@ -183,7 +183,7 @@ public class Face extends Actor {
     }
 
     public void changeScale(float scale) {
-        this.scale = scale;
+        this.originalScale = scale;
     }
 
     public float getSpriteWidth() {
@@ -208,7 +208,9 @@ public class Face extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha) {
-        batch.draw(faceShapeImg,getX(),getY(),
+        float scale = originalScale * getScaleX();
+
+        batch.draw(faceShapeImg,getX() - (faceShapeImg.getWidth()/2)*scale,getY(),
                 faceShapeImg.getWidth()*scale,faceShapeImg.getHeight()*scale);
 
         if (featureIds[1]%4 == 0) {
@@ -221,24 +223,24 @@ public class Face extends Actor {
             batch.setColor(Color.GREEN);
         }
 
-        batch.draw(hairImg, getX() + ((faceShapeImg.getWidth() - hairImg.getWidth())/2)*scale,
+        batch.draw(hairImg, getX() - (hairImg.getWidth()/2)*scale,
                 getY() + (faceShapeImg.getHeight() - hairImg.getHeight()/2)*scale,
                 hairImg.getWidth()*scale, hairImg.getHeight()*scale);
 
         batch.setColor(Color.WHITE);
 
-        batch.draw(eyesImg, getX() + (7/9f*faceShapeImg.getWidth() - eyesImg.getWidth()/2)*scale,
+        batch.draw(eyesImg, getX() + (3/18f)*faceShapeImg.getWidth()*scale,
                 getY() + (9/15f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
                 eyesImg.getWidth()*scale, eyesImg.getHeight()*scale);
-        batch.draw(eyesImg, getX() + (2/9f*faceShapeImg.getWidth() - eyesImg.getWidth()/2)*scale,
+        batch.draw(eyesImg, getX() - ((5/18f)*faceShapeImg.getWidth() + eyesImg.getWidth()/2)*scale,
                 getY() + (9/15f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
                 eyesImg.getWidth()*scale, eyesImg.getHeight()*scale,
                 0, 0, eyesImg.getWidth(), eyesImg.getHeight(),
                 true, false);
-        batch.draw(noseImg, getX() + ((faceShapeImg.getWidth() - noseImg.getWidth())/2)*scale,
+        batch.draw(noseImg, getX() - (noseImg.getWidth()/2)*scale,
                 getY() + ((1/2f*faceShapeImg.getHeight() - noseImg.getHeight()/2))*scale,
                 noseImg.getWidth()*scale, noseImg.getHeight()*scale);
-        batch.draw(mouthImg, getX() + ((faceShapeImg.getWidth() - mouthImg.getWidth())/2)*scale,
+        batch.draw(mouthImg, getX() - (mouthImg.getWidth()/2)*scale,
                 getY() + (1/4f*faceShapeImg.getHeight())*scale,
                 mouthImg.getWidth()*scale,mouthImg.getHeight()*scale);
 
