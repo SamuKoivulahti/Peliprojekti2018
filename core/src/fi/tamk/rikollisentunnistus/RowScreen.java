@@ -58,6 +58,9 @@ public class RowScreen implements Screen {
 
     float elapsedTime;
 
+    boolean letMove;
+    float timeToMove;
+
     Window pauseWindow;
 
     public RowScreen(Rikollisentunnistus g) {
@@ -110,7 +113,8 @@ public class RowScreen implements Screen {
         stage.addActor(levelText);
         createPauseWindow();
 
-
+        letMove = false;
+        timeToMove = 0;
     }
 
     private void createPauseWindow () {
@@ -199,7 +203,13 @@ public class RowScreen implements Screen {
         }
 
         for (Face criminal : criminalRow) {
-            criminal.setLocation(xCrd, 0);
+            criminal.setLocation(xCrd - width, 0);
+
+            MoveToAction moveToScreen = new MoveToAction();
+            moveToScreen.setDuration(1.5f);
+            moveToScreen.setPosition(xCrd, 0);
+            criminal.addAction(moveToScreen);
+
             stage.addActor(criminal);
 
             xCrd = xCrd + separation;
@@ -261,7 +271,7 @@ public class RowScreen implements Screen {
             }
         }
 
-        if (help <= criminalRow.length - 2) {
+        if (help <= criminalRow.length - 2 && letMove) {
             MoveToAction moveDown = new MoveToAction();
             moveDown.setPosition(criminalRow[help].getX(), 0);
             moveDown.setDuration(0.5f);
@@ -283,7 +293,7 @@ public class RowScreen implements Screen {
             }
         }
 
-        if (help >= 1) {
+        if (help >= 1 && letMove) {
             MoveToAction moveDown = new MoveToAction();
             moveDown.setPosition(criminalRow[help].getX(), 0);
             moveDown.setDuration(0.5f);
@@ -313,6 +323,13 @@ public class RowScreen implements Screen {
             elapsedTime = 0;
         }
 
+        if (!letMove) {
+            timeToMove += delta;
+            if (timeToMove >= 1.5) {
+                letMove = true;
+            }
+        }
+
 
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(25/255f,100/255f,25/255f,1);
@@ -320,7 +337,7 @@ public class RowScreen implements Screen {
 
 
         for (Face criminal : criminalRow) {
-            if (criminal.active && !criminal.hasActions()) {
+            if (criminal.active && !criminal.hasActions() && letMove) {
                 MoveToAction moveUp = new MoveToAction();
                 moveUp.setPosition(criminal.getX(), 100);
                 moveUp.setDuration(0.5f);
@@ -347,7 +364,7 @@ public class RowScreen implements Screen {
                 moveLeft();
             }
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) {
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) && letMove) {
                 select();
             }
 
