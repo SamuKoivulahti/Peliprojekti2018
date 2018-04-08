@@ -3,7 +3,6 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -56,8 +54,8 @@ public class RowScreen implements Screen {
     float height;
 
     int points;
-
     int level;
+    boolean stillLeaning;
 
     float elapsedTime;
 
@@ -65,6 +63,8 @@ public class RowScreen implements Screen {
     float timeToMove;
 
     Window pauseWindow;
+    Window sensitivityWindow;
+    Settings settings;
 
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
@@ -73,6 +73,7 @@ public class RowScreen implements Screen {
         camera.setToOrtho(false,1280,800);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
         game.gameData.setWin(false);
+        game.gameData.setStillLeaning(false);
         win = false;
         lose = false;
         elapsedTime = 0;
@@ -98,6 +99,7 @@ public class RowScreen implements Screen {
 
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
+
         game.gameData.setLevel(level + 1);
         pointsText = new Label("Points: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
@@ -134,42 +136,116 @@ public class RowScreen implements Screen {
 
         TextButton continueButton = new TextButton("Continue", mySkin);
         continueButton.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        pauseWindow.setVisible(false);
-                    }
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    pauseWindow.setVisible(false);
                 }
+            }
         );
 
         TextButton exitButton = new TextButton("Exit to Main Menu", mySkin);
         exitButton.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        game.resetAll();
-                        game.setMainScreen();
-                    }
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.resetAll();
+                    game.setMainScreen();
                 }
+            }
         );
 
         TextButton calibrateButton = new TextButton("Calibrate", mySkin);
         calibrateButton.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        game.settingsScreen.setZeroPoint();
-                    }
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.settingsScreen.setZeroPoint();
                 }
+            }
+        );
+
+        sensitivityWindow = new Window("Sensitivity", mySkin);
+        sensitivityWindow.setVisible(false);
+        sensitivityWindow.setResizable(false);
+        sensitivityWindow.setMovable(false);
+
+        TextButton sensitivityButton = new TextButton("Sensitivity", mySkin);
+        sensitivityButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    pauseWindow.setVisible(false);
+                    sensitivityWindow.setVisible(true);
+                    game.settingsScreen.externalSensitivityWindow(stage);
+                    game.settingsScreen.sliderR.setVisible(true);
+                    game.settingsScreen.sliderL.setVisible(true);
+                    game.settingsScreen.sliderU.setVisible(true);
+                    game.settingsScreen.sliderD.setVisible(true);
+                    game.settingsScreen.sensitivityGraphImage.setVisible(true);
+                    game.settingsScreen.sliderR.setPosition(width/5,height/2 - game.settingsScreen.sliderR.getHeight()/2);
+                    game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.sliderSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
+                    game.settingsScreen.sliderU.setPosition(width/5 - game.settingsScreen.sliderU.getWidth()/2,height/2);
+                    game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.sliderSize);
+                    game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.sliderSize, height/2 - game.settingsScreen.sliderSize);
+                }
+            }
+        );
+
+        TextButton saveButton = new TextButton("Save", mySkin);
+        saveButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    settings = Settings.getInstance();
+                    settings.setFloat("sensitivityRight", game.settingsScreen.valueRight);
+                    settings.setFloat("sensitivityLeft", game.settingsScreen.valueLeft);
+                    settings.setFloat("sensitivityUp", game.settingsScreen.valueUp);
+                    settings.setFloat("sensitivityDown", game.settingsScreen.valueDown);
+                    settings.saveSettings();
+                    pauseWindow.setVisible(true);
+                    sensitivityWindow.setVisible(false);
+                    game.settingsScreen.sliderR.setVisible(false);
+                    game.settingsScreen.sliderL.setVisible(false);
+                    game.settingsScreen.sliderU.setVisible(false);
+                    game.settingsScreen.sliderD.setVisible(false);
+                    game.settingsScreen.sensitivityGraphImage.setVisible(false);
+                }
+            }
+        );
+
+        TextButton cancelButton = new TextButton("Cancel", mySkin);
+        cancelButton.addListener(
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    pauseWindow.setVisible(true);
+                    sensitivityWindow.setVisible(false);
+                    game.settingsScreen.sliderR.setVisible(false);
+                    game.settingsScreen.sliderL.setVisible(false);
+                    game.settingsScreen.sliderU.setVisible(false);
+                    game.settingsScreen.sliderD.setVisible(false);
+                    game.settingsScreen.sensitivityGraphImage.setVisible(false);
+
+                }
+            }
         );
 
         pauseWindow.add(continueButton).pad(10).row();
         pauseWindow.add(calibrateButton).pad(10).row();
+        pauseWindow.add(sensitivityButton).pad(10).row();
         pauseWindow.add(exitButton).pad(10, 10, 20, 10);
         pauseWindow.pack();
         pauseWindow.setPosition((width - pauseWindow.getWidth()) / 2, (height - pauseWindow.getHeight()) / 2);
 
+
+        sensitivityWindow.add(saveButton).pad(10).row();
+        sensitivityWindow.add(cancelButton).pad(10).row();
+        sensitivityWindow.pack();
+        sensitivityWindow.setPosition((width - sensitivityWindow.getWidth()) / 2, (height - sensitivityWindow.getHeight()) / 2);
+
         stage.addActor(pauseWindow);
+        stage.addActor(sensitivityWindow);
     }
 
     public void setCriminals(Face[] criminals, String suspectID) {
@@ -327,11 +403,15 @@ public class RowScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (pauseWindow.isVisible()) {
+        if (pauseWindow.isVisible() || sensitivityWindow.isVisible()) {
             delta = 0;
         }
+        if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
+            game.gameData.setStillLeaning(true);
+            stillLeaning = game.gameData.getStillLeaning();
+        }
 
-        if ((game.controls.accelerometerY() > game.controls.moveUp) && letMove) {
+        if ((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning) {
             elapsedTime += delta;
         } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
             elapsedTime = 0;
@@ -366,16 +446,20 @@ public class RowScreen implements Screen {
         stage.draw();
 
         pauseWindow.toFront();
+        sensitivityWindow.toFront();
 
         game.batch.begin();
-        TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
-        game.batch.draw(
-                frame,
-                (width - frame.getRegionWidth()) / 2,
-                row_height * 9,
-                frame.getRegionWidth(),
-                frame.getRegionHeight()
-        );
+        if (!pauseWindow.isVisible() && !sensitivityWindow.isVisible()) {
+            TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
+            game.batch.draw(
+                    frame,
+                    (width - frame.getRegionWidth()) / 2,
+                    row_height * 9,
+                    frame.getRegionWidth(),
+                    frame.getRegionHeight()
+            );
+
+        }
         //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
 
         if (delta != 0) {
@@ -400,7 +484,9 @@ public class RowScreen implements Screen {
                     game.controls.moveDown(true)) {
                 pauseWindow.setVisible(true);
                 pauseWindow.toFront();
+
             }
+
         }
         game.batch.end();
 

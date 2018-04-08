@@ -1,7 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -15,6 +14,7 @@ public class Rikollisentunnistus extends Game {
     RowScreen rowScreen;
     MainScreen mainScreen;
     SettingsScreen settingsScreen;
+    SplashScreen splashScreen;
 
     public Controls controls;
 
@@ -34,11 +34,12 @@ public class Rikollisentunnistus extends Game {
 
 	@Override
 	public void create () {
+        splashScreen = new SplashScreen(this);
+        setScreen(splashScreen);
 
         controls = new Controls();
         gameData = new GameData();
 
-        SplashScreen splashScreen = new SplashScreen(this);
         mainScreen = new MainScreen(this);
         settingsScreen = new SettingsScreen(this);
 
@@ -56,7 +57,6 @@ public class Rikollisentunnistus extends Game {
         }
 
         //setScreen(mainScreen);
-	    setScreen(splashScreen);
 	}
 
     private TextureRegion[] toArrays(TextureRegion[][] table) {

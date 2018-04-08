@@ -70,7 +70,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -114,6 +114,7 @@ public class SplashScreen implements Screen {
     @Override
     public void hide() {
         dispose();
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override

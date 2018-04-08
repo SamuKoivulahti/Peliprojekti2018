@@ -94,7 +94,7 @@ public class MainScreen implements Screen {
 
         });
 
-        final Button tutorialButton = new TextButton("Controls",mySkin,"small");
+        final TextButton tutorialButton = new TextButton("Controls",mySkin,"small");
         tutorialButton.setSize(col_width*2,row_height);
         tutorialButton.setPosition(col_width * 0.5f,row_height/2);
         tutorialButton.addListener(new ClickListener(){
@@ -104,9 +104,11 @@ public class MainScreen implements Screen {
                 if (tutorial.isVisible()) {
                     tutorial.setVisible(false);
                     tutorialButton.setPosition(col_width*0.5f,row_height/2);
+                    tutorialButton.setText("Controls");
                 } else {
                     tutorial.setVisible(true);
                     tutorialButton.setPosition(col_width*3.5f,row_height/2);
+                    tutorialButton.setText("Back");
                 }
             }
 
@@ -128,6 +130,7 @@ public class MainScreen implements Screen {
         host.gameData.setPoints(0);
 
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -155,7 +158,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override

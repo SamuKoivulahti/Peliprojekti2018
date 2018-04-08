@@ -12,6 +12,7 @@ public class GameData {
     private int level;
     private Face chosenCriminal;
     private Face correctCriminal;
+    private boolean stillLeaning;
 
     public GameData() {
     }
@@ -38,6 +39,14 @@ public class GameData {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public boolean getStillLeaning() {
+        return stillLeaning;
+    }
+
+    public void setStillLeaning(boolean stillLeaning) {
+        this.stillLeaning = stillLeaning;
     }
 
     public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;

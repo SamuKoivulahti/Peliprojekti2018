@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -29,7 +30,6 @@ import javax.swing.GroupLayout;
 /**
  * Created by Samu Koivulahti on 17.3.2018.
  */
-//TODO: boolean useDifficulty, int startingDifficulty 0-14, boolean incresingDifficulty
 public class SettingsScreen implements Screen {
 
     Rikollisentunnistus host;
@@ -74,7 +74,7 @@ public class SettingsScreen implements Screen {
     private Label staringDifficultyText;
 
     private Texture sensitivityGraphTexture;
-    private Image sensitivityGraphImage;
+    public Image sensitivityGraphImage;
 
 
     Skin mySkin;
@@ -94,12 +94,6 @@ public class SettingsScreen implements Screen {
         height = camera.viewportHeight;
 
         sliderSize = camera.viewportWidth * 0.15f;
-
-        sensitivityGraphTexture = new Texture("sensitivityGraph.png");
-        sensitivityGraphImage = new Image(sensitivityGraphTexture);
-        sensitivityGraphImage.setPosition(col_width*4 - sliderSize, row_height * 8 - sliderSize);
-        sensitivityGraphImage.setSize(sliderSize*2, sliderSize*2);
-        sensitivityGraphImage.setOrigin(Align.center);
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -121,11 +115,6 @@ public class SettingsScreen implements Screen {
         valueIncreasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
 
         stage.addActor(calibrateText);
-        stage.addActor(sensitivityGraphImage);
-        sliderRight();
-        sliderLeft();
-        sliderUp();
-        sliderDown();
         assetSlider();
         rowSlider();
         attributeSlider();
@@ -138,6 +127,19 @@ public class SettingsScreen implements Screen {
         buttonCalibrate();
     }
 
+    public void externalSensitivityWindow(Stage stage) {
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        sensitivityGraph(stage);
+        sliderRight(stage);
+        sliderLeft(stage);
+        sliderUp(stage);
+        sliderDown(stage);
+    }
+
     public void buttonBack() {
         Button back = new TextButton("Main Menu",mySkin,"small");
         back.setSize(col_width*2,row_height*2);
@@ -146,7 +148,6 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 Gdx.app.log("TAG", "back");
                 host.setMainScreen();
             }
@@ -211,7 +212,36 @@ public class SettingsScreen implements Screen {
         Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
     }
 
+    private void sensitivityGraph (Stage stage) {
+        sensitivityGraphTexture = new Texture("sensitivityGraph.png");
+        sensitivityGraphImage = new Image(sensitivityGraphTexture);
+        sensitivityGraphImage.setSize(sliderSize*2, sliderSize*2);
+        sensitivityGraphImage.setOrigin(Align.center);
+        sensitivityGraphImage.setPosition(col_width*4 - sliderSize, row_height * 8 - sliderSize);
+        stage.addActor(sensitivityGraphImage);
+    }
+
+    public void sensitivityGraph () {
+        sensitivityGraph(stage);
+    }
+
     public float sliderRight() {
+        return sliderRight(stage);
+    }
+
+    public float sliderLeft() {
+        return sliderLeft(stage);
+    }
+
+    public float sliderUp() {
+        return sliderUp(stage);
+    }
+
+    public float sliderDown() {
+        return sliderDown(stage);
+    }
+
+    private float sliderRight(Stage stage) {
         sliderR = new Slider(0f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
@@ -240,7 +270,7 @@ public class SettingsScreen implements Screen {
         return valueRight;
     }
 
-    public float sliderLeft() {
+    private float sliderLeft(Stage stage) {
         sliderL = new Slider(-10f,0f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
@@ -270,7 +300,7 @@ public class SettingsScreen implements Screen {
         return valueLeft;
     }
 
-    public float sliderUp() {
+    private float sliderUp(Stage stage) {
         sliderU = new Slider(0f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
@@ -299,7 +329,7 @@ public class SettingsScreen implements Screen {
         return valueUp;
     }
 
-    public float sliderDown() {
+    private float sliderDown(Stage stage) {
         sliderD = new Slider(-10f,0f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
@@ -354,7 +384,7 @@ public class SettingsScreen implements Screen {
 
     public int attributeSlider() {
         sliderAttribute = new SelectBox(mySkin);
-        String[] array = {"0", "1", "2", "4"};
+        String[] array = {"0", "1", "2", "3", "4"};
         sliderAttribute.setItems(array);
         sliderAttribute.setWidth(sliderSize*2);
         sliderAttribute.setPosition(col_width *8, row_height * 7);
@@ -415,7 +445,20 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void show() {
+        sensitivityGraph();
+        sliderRight();
+        sliderLeft();
+        sliderUp();
+        sliderDown();
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
+        sliderR.setVisible(true);
+        sliderL.setVisible(true);
+        sliderU.setVisible(true);
+        sliderD.setVisible(true);
+        sensitivityGraphImage.setVisible(true);
+
+
     }
 
     @Override
@@ -443,6 +486,7 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void hide() {
+        Gdx.input.setCatchBackKey(false);
 
     }
 

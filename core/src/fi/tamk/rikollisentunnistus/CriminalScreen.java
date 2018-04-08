@@ -116,6 +116,7 @@ public class CriminalScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -199,6 +200,7 @@ public class CriminalScreen implements Screen {
     @Override
     public void hide() {
         dispose();
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override
