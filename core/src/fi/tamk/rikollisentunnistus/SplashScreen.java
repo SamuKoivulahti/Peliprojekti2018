@@ -27,6 +27,7 @@ public class SplashScreen implements Screen {
     float elapsedTime;
     private Image splashImageExerium;
     private Image splashImageTiko;
+    private Image splashImageIhanPihalla;
     private int splashScreenTime;
 
 
@@ -46,9 +47,16 @@ public class SplashScreen implements Screen {
         splashImageTiko.setPosition(camera.viewportWidth/4*3-tiko.getWidth()*0.5f/2, camera.viewportHeight/4 *3 - tiko.getHeight()*0.5f/2);
         splashImageTiko.setSize(tiko.getWidth()*0.5f, tiko.getHeight()*0.5f);
 
+        ihanPihalla = new Texture("ihanpihalla_logo.png");
+        splashImageIhanPihalla = new Image(ihanPihalla);
+        splashImageIhanPihalla.setPosition(camera.viewportWidth/2 - ihanPihalla.getWidth()*0.65f/2, camera.viewportHeight/12);
+        splashImageIhanPihalla.setSize(ihanPihalla.getWidth()*0.65f,ihanPihalla.getHeight()*0.65f);
+
         splashImageExerium.addAction(Actions.sequence(Actions.alpha(0f),
                  Actions.fadeIn(1.0f), Actions.delay(0.5f)));
         splashImageTiko.addAction(Actions.sequence(Actions.alpha(0f),
+                Actions.fadeIn(1.0f), Actions.delay(0.5f)));
+        splashImageIhanPihalla.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
 
         elapsedTime = 0;
@@ -57,6 +65,7 @@ public class SplashScreen implements Screen {
 
         stage.addActor(splashImageExerium);
         stage.addActor(splashImageTiko);
+        stage.addActor(splashImageIhanPihalla);
     }
 
     @Override

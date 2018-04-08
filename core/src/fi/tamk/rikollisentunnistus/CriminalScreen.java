@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -22,6 +24,7 @@ public class CriminalScreen implements Screen {
 
     private Stage stage;
     private Face criminal;
+    private Image criminalFrame;
 
     private Label waitingTimeText;
 
@@ -49,6 +52,7 @@ public class CriminalScreen implements Screen {
         width = camera.viewportWidth;
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+
         criminal = rightCriminal;
         criminal.changeScale(0.75f);
         criminal.setLocation(width/2, -height);
@@ -56,6 +60,13 @@ public class CriminalScreen implements Screen {
         moveUp.setPosition(width/2, height/6);
         moveUp.setDuration(0.6f);
         criminal.addAction(moveUp);
+
+        criminalFrame = new Image(new Texture("criminalframe.jpg"));
+        criminalFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 80);
+        MoveToAction frameMoveUp = new MoveToAction();
+        frameMoveUp.setPosition((width - criminalFrame.getWidth())/2, height/6 -80);
+        frameMoveUp.setDuration(0.6f);
+        criminalFrame.addAction(frameMoveUp);
 
         timeShown = 5f;
         timeWaiting = 3f;
@@ -65,6 +76,7 @@ public class CriminalScreen implements Screen {
         waitingTimeText.setVisible(false);
 
         stage.addActor(waitingTimeText);
+        stage.addActor(criminalFrame);
         stage.addActor(criminal);
     }
 
@@ -133,8 +145,12 @@ public class CriminalScreen implements Screen {
             MoveToAction move = new MoveToAction();
             move.setPosition(width/2, -height);
             move.setDuration(0.6f);
-
             criminal.addAction(move);
+
+            MoveToAction moveFrame = new MoveToAction();
+            moveFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 80);
+            moveFrame.setDuration(0.6f);
+            criminalFrame.addAction(moveFrame);
 
             if (timer(timeWaiting)) {
                 elapsedTime = 0;
