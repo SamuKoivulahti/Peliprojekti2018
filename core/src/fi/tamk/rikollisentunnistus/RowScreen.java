@@ -471,7 +471,7 @@ public class RowScreen implements Screen {
                 moveLeft();
             }
 
-            if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) && letMove) {
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) && letMove && stillLeaning) {
                 select();
             }
 

@@ -1,7 +1,5 @@
 package fi.tamk.rikollisentunnistus;
 
-import com.badlogic.gdx.Gdx;
-
 /**
  * Created by Samu Koivulahti on 25.3.2018.
  */
