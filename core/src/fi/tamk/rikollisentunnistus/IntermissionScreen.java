@@ -93,9 +93,9 @@ public class IntermissionScreen implements Screen {
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
         correctCriminalText = new Label("Correct criminal", mySkin);
-        correctCriminalText.setPosition(width*5/6 - correctCriminalText.getWidth()/2, height*3/16);
+        correctCriminalText.setPosition(width*5/6 - correctCriminalText.getWidth()/2, height*1/8f);
         chosenCriminalText = new Label("Your choice", mySkin);
-        chosenCriminalText.setPosition(width/6 - correctCriminalText.getWidth()/2, height*3/16);
+        chosenCriminalText.setPosition(width/6 - correctCriminalText.getWidth()/2, height*1/8f);
 
         chosenCriminal = game.gameData.getChosenCriminal();
         correctCriminal = game.gameData.getCorrectCriminal();
@@ -106,8 +106,11 @@ public class IntermissionScreen implements Screen {
             chosenCriminal.clearActions();
             chosenCriminal.setScale(1.0f);
 
-            chosenCriminal.setLocation(width/6,height/4);
-            correctCriminal.setLocation(width*5/6, height/4);
+            chosenCriminal.changeScale(0.75f);
+            correctCriminal.changeScale(0.75f);
+
+            chosenCriminal.setLocation(width/6,height/6);
+            correctCriminal.setLocation(width*5/6, height/6);
         }
 
         stage.addActor(chosenCriminal);

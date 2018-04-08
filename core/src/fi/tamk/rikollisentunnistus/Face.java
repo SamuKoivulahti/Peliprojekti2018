@@ -187,7 +187,7 @@ public class Face extends Actor {
     }
 
     public float getSpriteWidth() {
-        return hairImg.getWidth();
+        return faceShapeImg.getWidth() + 40f;
     }
 
     public int[] getFeatureIds() {
@@ -210,38 +210,22 @@ public class Face extends Actor {
     public void draw(Batch batch, float alpha) {
         float scale = originalScale * getScaleX();
 
-        batch.draw(faceShapeImg,getX() - (faceShapeImg.getWidth()/2)*scale,getY(),
+        batch.draw(faceShapeImg,getX()-faceShapeImg.getWidth()*scale/2,getY(),
                 faceShapeImg.getWidth()*scale,faceShapeImg.getHeight()*scale);
 
-        if (featureIds[1]%4 == 0) {
-            batch.setColor(Color.RED);
-        } else if (featureIds[1]%4 == 1) {
-            batch.setColor(Color.BLUE);
-        } else if (featureIds[1]%4 == 2) {
-            batch.setColor(Color.CORAL);
-        } else {
-            batch.setColor(Color.GREEN);
-        }
-
-        batch.draw(hairImg, getX() - (hairImg.getWidth()/2)*scale,
-                getY() + (faceShapeImg.getHeight() - hairImg.getHeight()/2)*scale,
-                hairImg.getWidth()*scale, hairImg.getHeight()*scale);
-
-        batch.setColor(Color.WHITE);
-
-        batch.draw(eyesImg, getX() + (3/18f)*faceShapeImg.getWidth()*scale,
-                getY() + (9/15f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
+        batch.draw(eyesImg, getX() + (4.5f/25f*faceShapeImg.getWidth() - eyesImg.getWidth()/2)*scale,
+                getY() + (9/16f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
                 eyesImg.getWidth()*scale, eyesImg.getHeight()*scale);
-        batch.draw(eyesImg, getX() - ((5/18f)*faceShapeImg.getWidth() + eyesImg.getWidth()/2)*scale,
-                getY() + (9/15f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
+        batch.draw(eyesImg, getX() - (4.5f/25f*faceShapeImg.getWidth() + eyesImg.getWidth()/2)*scale,
+                getY() + (9/16f*faceShapeImg.getHeight() - eyesImg.getHeight()/2)*scale,
                 eyesImg.getWidth()*scale, eyesImg.getHeight()*scale,
                 0, 0, eyesImg.getWidth(), eyesImg.getHeight(),
                 true, false);
         batch.draw(noseImg, getX() - (noseImg.getWidth()/2)*scale,
-                getY() + ((1/2f*faceShapeImg.getHeight() - noseImg.getHeight()/2))*scale,
+                getY() + ((2/5f*faceShapeImg.getHeight() - noseImg.getHeight()/2))*scale,
                 noseImg.getWidth()*scale, noseImg.getHeight()*scale);
         batch.draw(mouthImg, getX() - (mouthImg.getWidth()/2)*scale,
-                getY() + (1/4f*faceShapeImg.getHeight())*scale,
+                getY() + (5/18f*faceShapeImg.getHeight() - 1/2f*mouthImg.getHeight())*scale,
                 mouthImg.getWidth()*scale,mouthImg.getHeight()*scale);
 
 
@@ -249,6 +233,10 @@ public class Face extends Actor {
             batch.draw(accessoryImg, getX() - (accessoryImg.getWidth()/2)*scale, getY(),
                     accessoryImg.getWidth()*scale,accessoryImg.getHeight()*scale);
         }
+
+        batch.draw(hairImg, getX() - (hairImg.getWidth()/2)*scale,
+                getY()+ (faceShapeImg.getHeight() - hairImg.getHeight()/2)*scale,
+                hairImg.getWidth()*scale, hairImg.getHeight()*scale);
     }
 
     @Override

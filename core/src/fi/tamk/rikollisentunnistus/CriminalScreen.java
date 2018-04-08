@@ -50,10 +50,11 @@ public class CriminalScreen implements Screen {
 
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
         criminal = rightCriminal;
-        criminal.setLocation(width/2, -height/2);
+        criminal.changeScale(0.75f);
+        criminal.setLocation(width/2, -height);
         MoveToAction moveUp = new MoveToAction();
-        moveUp.setPosition(width/2, height/4);
-        moveUp.setDuration(0.4f);
+        moveUp.setPosition(width/2, height/6);
+        moveUp.setDuration(0.6f);
         criminal.addAction(moveUp);
 
         timeShown = 5f;
@@ -130,8 +131,8 @@ public class CriminalScreen implements Screen {
             waitingTimeText.setVisible(true);
 
             MoveToAction move = new MoveToAction();
-            move.setPosition(width/2, -height/2);
-            move.setDuration(0.4f);
+            move.setPosition(width/2, -height);
+            move.setDuration(0.6f);
 
             criminal.addAction(move);
 

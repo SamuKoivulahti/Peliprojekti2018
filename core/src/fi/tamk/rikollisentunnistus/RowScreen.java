@@ -186,8 +186,8 @@ public class RowScreen implements Screen {
             separation = separationOdd;
             startpoint = 1;
         } else if (criminalRow.length == 4) {
-            xCrd = separationEven*1.5f;
-            separation = separationEven;
+            xCrd = separationOdd;
+            separation = separationOdd;
             startpoint = 1;
         } else if (criminalRow.length == 5) {
             xCrd = separationEven;
@@ -201,10 +201,14 @@ public class RowScreen implements Screen {
 
         if (criminalRow.length == 5 || criminalRow.length == 6) {
             float scale = separationEven / criminalRow[0].getSpriteWidth();
-
-            System.out.println(separationEven);
             System.out.println(criminalRow[0].getSpriteWidth());
-            System.out.println(scale);
+
+            for (Face criminal : criminalRow) {
+                criminal.changeScale(scale);
+            }
+        } else {
+            float scale = separationOdd / criminalRow[0].getSpriteWidth();
+            System.out.println(criminalRow[0].getSpriteWidth());
 
             for (Face criminal : criminalRow) {
                 criminal.changeScale(scale);
