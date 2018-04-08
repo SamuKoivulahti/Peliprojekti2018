@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -29,6 +31,8 @@ public class MainScreen implements Screen {
 
     Skin mySkin;
     Stage stage;
+    Image background;
+    Image tutorial;
 
     public MainScreen(final Rikollisentunnistus host) {
         Gdx.app.log("MainScreen", "Constructor");
@@ -42,11 +46,20 @@ public class MainScreen implements Screen {
         width = camera.viewportWidth;
         height = camera.viewportHeight;
 
+        background = new Image(new Texture("menupicture.jpg"));
+        background.setSize(width,height);
+        background.setPosition(0,0);
+
+        tutorial = new Image(new Texture("tutorialpicture.jpg"));
+        tutorial.setSize(width,height);
+        tutorial.setPosition(0,0);
+        tutorial.setVisible(false);
+
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         Button play = new TextButton("PLAY",mySkin,"small");
-        play.setSize(col_width*2,row_height*2);
-        play.setPosition(col_width * 5,row_height*8);
+        play.setSize(col_width*2,row_height*1.5f);
+        play.setPosition(col_width * 3.5f,row_height/2);
         play.addListener(new ClickListener(){
 
             @Override
@@ -58,8 +71,8 @@ public class MainScreen implements Screen {
         });
 
         Button settings = new TextButton("Settings",mySkin,"small");
-        settings.setSize(col_width*2,row_height*2);
-        settings.setPosition(col_width * 5,row_height*5);
+        settings.setSize(col_width*2,row_height*1.5f);
+        settings.setPosition(col_width * 6.5f,row_height/2);
         settings.addListener(new ClickListener(){
 
             @Override
@@ -70,8 +83,8 @@ public class MainScreen implements Screen {
         });
 
         Button exit = new TextButton("Exit Game",mySkin,"small");
-        exit.setSize(col_width*2,row_height*2);
-        exit.setPosition(col_width * 5,row_height*2);
+        exit.setSize(col_width*2,row_height*1.5f);
+        exit.setPosition(col_width * 9.5f,row_height/2);
         exit.addListener(new ClickListener(){
 
             @Override
@@ -81,9 +94,30 @@ public class MainScreen implements Screen {
 
         });
 
+        final Button tutorialButton = new TextButton("Controls",mySkin,"small");
+        tutorialButton.setSize(col_width*2,row_height);
+        tutorialButton.setPosition(col_width * 0.5f,row_height/2);
+        tutorialButton.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (tutorial.isVisible()) {
+                    tutorial.setVisible(false);
+                    tutorialButton.setPosition(col_width*0.5f,row_height/2);
+                } else {
+                    tutorial.setVisible(true);
+                    tutorialButton.setPosition(col_width*3.5f,row_height/2);
+                }
+            }
+
+        });
+
+        stage.addActor(background);
         stage.addActor(play);
         stage.addActor(settings);
         stage.addActor(exit);
+        stage.addActor(tutorial);
+        stage.addActor(tutorialButton);
 
     }
 

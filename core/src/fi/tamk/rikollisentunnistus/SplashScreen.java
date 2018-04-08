@@ -60,7 +60,7 @@ public class SplashScreen implements Screen {
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
 
         elapsedTime = 0;
-        splashScreenTime = 3;
+        splashScreenTime = 4;
         Gdx.app.log("SplashScreen", "Constructor");
 
         stage.addActor(splashImageExerium);
