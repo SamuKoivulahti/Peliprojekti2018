@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by Essi Supponen on 23/02/2018.
@@ -54,7 +55,7 @@ public class CriminalScreen implements Screen {
         stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
 
         criminal = rightCriminal;
-        criminal.changeScale(0.75f);
+        criminal.changeScale(0.7f);
         criminal.setLocation(width/2, -height);
         MoveToAction moveUp = new MoveToAction();
         moveUp.setPosition(width/2, height/6);

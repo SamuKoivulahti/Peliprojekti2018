@@ -20,6 +20,7 @@ public class RowConstructor {
     private boolean sameNose;
     private boolean sameMouth;
 
+    Texture[] baseTextures;
     Texture[] faceShapeTextures;
     Texture[] hairTextures;
     Texture[] eyesTextures;
@@ -49,6 +50,14 @@ public class RowConstructor {
             noseTextures[i]  = new Texture(stringPath);
         }
 
+        fileArray = Gdx.files.internal("mouths").list();
+        mouthTextures = new Texture[fileArray.length];
+
+        for (int i = 0; i < fileArray.length; i++) {
+            stringPath = fileArray[i].path();
+            mouthTextures[i]  = new Texture(stringPath);
+        }
+
         fileArray = Gdx.files.internal("faceShapes").list();
         faceShapeTextures = new Texture[fileArray.length];
 
@@ -57,12 +66,12 @@ public class RowConstructor {
             faceShapeTextures[i]  = new Texture(stringPath);
         }
 
-        fileArray = Gdx.files.internal("mouths").list();
-        mouthTextures = new Texture[fileArray.length];
+        fileArray = Gdx.files.internal("bases").list();
+        baseTextures = new Texture[fileArray.length];
 
         for (int i = 0; i < fileArray.length; i++) {
             stringPath = fileArray[i].path();
-            mouthTextures[i]  = new Texture(stringPath);
+            baseTextures[i]  = new Texture(stringPath);
         }
 
         fileArray = Gdx.files.internal("hairs").list();
@@ -208,7 +217,7 @@ public class RowConstructor {
     private Face[] generateTheFaces() {
         Face[] row = new Face[rowLength];
 
-        row[0] = new Face(faceShapeTextures, hairTextures, eyesTextures,
+        row[0] = new Face(baseTextures, faceShapeTextures, hairTextures, eyesTextures,
                 noseTextures, mouthTextures);
         int[] attributes = row[0].getFeatureIds();
 
@@ -245,7 +254,7 @@ public class RowConstructor {
             Face criminal;
             boolean sameFound = false;
 
-            criminal = new Face(faceShapeTextures, hairTextures, eyesTextures,
+            criminal = new Face(baseTextures, faceShapeTextures, hairTextures, eyesTextures,
                     noseTextures, mouthTextures, attributes, useSameAttributes);
 
                 for (int i = 0; i < row.length; i++) {
