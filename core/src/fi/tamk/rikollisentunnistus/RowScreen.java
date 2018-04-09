@@ -202,6 +202,10 @@ public class RowScreen implements Screen {
                     settings.setFloat("sensitivityLeft", game.settingsScreen.valueLeft);
                     settings.setFloat("sensitivityUp", game.settingsScreen.valueUp);
                     settings.setFloat("sensitivityDown", game.settingsScreen.valueDown);
+                    game.controls.hysteresisRight = game.settingsScreen.valueRight/2;
+                    game.controls.hysteresisLeft = game.settingsScreen.valueLeft/2;
+                    game.controls.hysteresisUp = game.settingsScreen.valueUp/2;
+                    game.controls.hysteresisDown = game.settingsScreen.valueDown/2;
                     settings.saveSettings();
                     pauseWindow.setVisible(true);
                     sensitivityWindow.setVisible(false);
