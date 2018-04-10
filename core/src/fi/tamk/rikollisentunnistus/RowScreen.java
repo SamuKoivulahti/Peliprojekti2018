@@ -415,9 +415,11 @@ public class RowScreen implements Screen {
             stillLeaning = game.gameData.getStillLeaning();
         }
 
-        if (((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning)
+                || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime += delta;
-        } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
+        } else if ((game.controls.accelerometerY() < game.controls.hysteresisUp)
+                || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime = 0;
         }
 
@@ -467,15 +469,18 @@ public class RowScreen implements Screen {
         //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
 
         if (delta != 0) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || game.controls.moveRight(false)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) ||
+                    game.controls.moveRight(false)) {
                 moveRight();
             }
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || game.controls.moveLeft(false)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) ||
+                    game.controls.moveLeft(false)) {
                 moveLeft();
             }
 
-            if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= 3) || (game.controls.moveUp(true) && letMove && stillLeaning)) {
+            if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= 3)
+                    || (game.controls.moveUp(true) && letMove && stillLeaning)) {
                 select();
             }
 
