@@ -42,8 +42,8 @@ public class CriminalScreen implements Screen {
 
 
 
-    public CriminalScreen(Rikollisentunnistus g, Face rightCriminal) {
-        game = g;
+    public CriminalScreen(Rikollisentunnistus game, Face rightCriminal) {
+        this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1280,800);
         status = SHOWING;
@@ -63,9 +63,9 @@ public class CriminalScreen implements Screen {
         criminal.addAction(moveUp);
 
         criminalFrame = new Image(new Texture("criminalframe.jpg"));
-        criminalFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 80);
+        criminalFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 79);
         MoveToAction frameMoveUp = new MoveToAction();
-        frameMoveUp.setPosition((width - criminalFrame.getWidth())/2, height/6 -80);
+        frameMoveUp.setPosition((width - criminalFrame.getWidth())/2, height/6 - 79);
         frameMoveUp.setDuration(0.6f);
         criminalFrame.addAction(frameMoveUp);
 

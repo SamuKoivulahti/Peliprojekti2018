@@ -415,7 +415,7 @@ public class RowScreen implements Screen {
             stillLeaning = game.gameData.getStillLeaning();
         }
 
-        if ((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning) {
+        if (((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime += delta;
         } else if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
             elapsedTime = 0;
@@ -475,7 +475,7 @@ public class RowScreen implements Screen {
                 moveLeft();
             }
 
-            if ((Gdx.input.isKeyJustPressed(Input.Keys.UP) || game.controls.moveUp(true)) && letMove && stillLeaning) {
+            if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= 3) || (game.controls.moveUp(true) && letMove && stillLeaning)) {
                 select();
             }
 
