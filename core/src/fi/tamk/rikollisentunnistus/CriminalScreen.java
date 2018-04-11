@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -76,6 +77,7 @@ public class CriminalScreen implements Screen {
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
         waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
         waitingTimeText.setVisible(false);
+        waitingTimeText.setAlignment(Align.center);
 
         stage.addActor(waitingTimeText);
         stage.addActor(criminalFrame);

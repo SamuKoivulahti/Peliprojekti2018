@@ -3,6 +3,7 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -109,6 +110,7 @@ public class RowScreen implements Screen {
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
+        levelText.setColor(Color.BLACK);
 
         selectionBar = new Texture("selectionBarBigG.png");
         Gdx.app.log("row", "sele" + selectionBar.toString());
@@ -203,14 +205,14 @@ public class RowScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     settings = Settings.getInstance();
-                    settings.setFloat("sensitivityRight", game.settingsScreen.valueRight);
-                    settings.setFloat("sensitivityLeft", game.settingsScreen.valueLeft);
-                    settings.setFloat("sensitivityUp", game.settingsScreen.valueUp);
-                    settings.setFloat("sensitivityDown", game.settingsScreen.valueDown);
-                    game.controls.hysteresisRight = game.settingsScreen.valueRight/2;
-                    game.controls.hysteresisLeft = game.settingsScreen.valueLeft/2;
-                    game.controls.hysteresisUp = game.settingsScreen.valueUp/2;
-                    game.controls.hysteresisDown = game.settingsScreen.valueDown/2;
+                    settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue());
+                    settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue());
+                    settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue());
+                    settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue());
+                    game.controls.hysteresisRight = game.settingsScreen.sliderR.getValue()/2;
+                    game.controls.hysteresisLeft = game.settingsScreen.sliderL.getValue()/2;
+                    game.controls.hysteresisUp = game.settingsScreen.sliderU.getValue()/2;
+                    game.controls.hysteresisDown = game.settingsScreen.sliderD.getValue()/2;
                     settings.saveSettings();
                     pauseWindow.setVisible(true);
                     sensitivityWindow.setVisible(false);

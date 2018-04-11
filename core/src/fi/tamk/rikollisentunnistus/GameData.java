@@ -115,4 +115,6 @@ public class GameData {
     public static final boolean DEFAULT_INCREASING_DIFFICULTY = false;
     public static final int DEFAULT_WAITING_TIME = 3;
     public static final int DEFAULT_FACE_SHOWN = 5;
+    public static final float DEFAULT_VOLUME = 50;
+    public static final boolean DEFAULT_SOUND_EFFECTS = true;
 }

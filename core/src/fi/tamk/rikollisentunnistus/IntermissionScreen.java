@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -176,7 +177,7 @@ public class IntermissionScreen implements Screen {
     }
 
     private boolean anyInput() {
-        return (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
+        return (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
                 game.controls.moveDown(false) || game.controls.moveUp(false) ||
                 game.controls.moveLeft(false) || game.controls.moveRight(false));
     }
