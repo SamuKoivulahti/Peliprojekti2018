@@ -12,39 +12,88 @@ public class GameData {
     private Face correctCriminal;
     private boolean stillLeaning;
 
-    public GameData() {
-    }
-
+   /**
+    * getter for points
+    */
     public int getPoints() {
         return points;
     }
 
+   /**
+    * setter for points
+    */
     public void setPoints(int points) {
         this.points = points;
     }
 
+   /**
+    * getter for win
+    */
     public boolean getWin() {
         return win;
     }
 
+   /**
+    * setter for win
+    */
     public void setWin(boolean win) {
         this.win = win;
     }
 
+   /**
+    * getter for level
+    */
     public int getLevel() {
         return level;
     }
 
+   /**
+    * setter for level
+    */
     public void setLevel(int level) {
         this.level = level;
     }
 
+   /**
+    * getter for stillLeaning
+    */
     public boolean getStillLeaning() {
         return stillLeaning;
     }
 
+   /**
+    * setter for stillLeaning
+    */
     public void setStillLeaning(boolean stillLeaning) {
         this.stillLeaning = stillLeaning;
+    }
+
+    /**
+     * getter for ChosenCriminal
+     */
+    public Face getChosenCriminal() {
+        return chosenCriminal;
+    }
+
+    /**
+     * setter for ChosenCriminal
+     */
+    public void setChosenCriminal(Face criminal) {
+        this.chosenCriminal = criminal;
+    }
+
+    /**
+     * getter for CorrectCriminal
+     */
+    public Face getCorrectCriminal() {
+        return correctCriminal;
+    }
+
+    /**
+     * setter for CorrectCriminal
+     */
+    public void setCorrectCriminal(Face criminal) {
+        correctCriminal = criminal;
     }
 
     public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;
@@ -66,22 +115,4 @@ public class GameData {
     public static final boolean DEFAULT_INCREASING_DIFFICULTY = false;
     public static final int DEFAULT_WAITING_TIME = 3;
     public static final int DEFAULT_FACE_SHOWN = 5;
-
-
-
-    public Face getChosenCriminal() {
-        return chosenCriminal;
-    }
-
-    public void setChosenCriminal(Face criminal) {
-        this.chosenCriminal = criminal;
-    }
-
-    public Face getCorrectCriminal() {
-        return correctCriminal;
-    }
-
-    public void setCorrectCriminal(Face criminal) {
-        correctCriminal = criminal;
-    }
 }

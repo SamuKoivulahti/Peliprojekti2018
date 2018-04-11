@@ -32,7 +32,7 @@ public class RowConstructor {
     public RowConstructor() {
         String stringPath = "";
 
-        FileHandle[] fileArray = Gdx.files.internal("eyes").list();
+        /*FileHandle[] fileArray = Gdx.files.internal("eyes").list();
         eyesTextures = new Texture[fileArray.length];
 
         System.out.println(fileArray.length);
@@ -64,9 +64,15 @@ public class RowConstructor {
         for (int i = 0; i < fileArray.length; i++) {
             stringPath = fileArray[i].path();
             faceShapeTextures[i]  = new Texture(stringPath);
-        }
-
-        fileArray = Gdx.files.internal("hairs").list();
+        }*/
+        faceShapeTextures = filesToTextures("faceShapes", "face%02d.png");
+        hairTextures = filesToTextures("hairs", "hair%02d.png");
+        accessoryTextures = filesToTextures("accessories", "accessory%02d.png");
+        mouthTextures = filesToTextures("mouths", "mouth%02d.png");
+        eyesTextures = filesToTextures("eyes", "eyes%02d.png");
+        noseTextures = filesToTextures("noses", "nose%02d.png");
+        //baseTextures = filesToTextures("bases", "base%02d.png");
+        /*fileArray = Gdx.files.internal("hairs").list();
         hairTextures = new Texture[fileArray.length];
 
         for (int i = 0; i < fileArray.length; i++) {
@@ -81,11 +87,32 @@ public class RowConstructor {
             stringPath = fileArray[i].path();
             accessoryTextures[i]  = new Texture(stringPath);
         }
-
+*/
         baseTextures = new Texture[3];
         baseTextures[0] = new Texture("bases/base01.png");
         baseTextures[1] = new Texture("bases/base02.png");
         baseTextures[2] = new Texture("bases/base03.png");
+
+    }
+
+    private Texture[] filesToTextures(String directoryPath, String fileMask) {
+        FileHandle[] files = Gdx.files.internal(directoryPath).list();
+
+        if (files != null && files.length > 0) {
+            Texture[] textures = new Texture[files.length];
+
+            for (int i = 0; i < files.length; i++) {
+                String fileName = String.format(fileMask, i + 1);
+                Gdx.app.log(fileName, "" +Gdx.files.internal(directoryPath).child(fileName).exists());
+                if (Gdx.files.internal(directoryPath).child(fileName).exists()) {
+                    textures[i] = new Texture(files[i].path());
+                }
+            }
+
+            return textures;
+        }
+
+        return null;
     }
 
     public Face[] makeRowDifficulty(int difficultyDegree) {

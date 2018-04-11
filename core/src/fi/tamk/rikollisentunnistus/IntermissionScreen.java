@@ -96,7 +96,7 @@ public class IntermissionScreen implements Screen {
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
-        moveForwardText = new Label("Move forward by tapping screen or leaning to any direction", mySkin, "big");
+        moveForwardText = new Label("Continue by tapping the screen or leaning to any direction", mySkin, "big");
         moveForwardText.setFontScale(MEDIUM_TEXT_SCALE);
         moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2*MEDIUM_TEXT_SCALE, height/100);
         correctCriminalText = new Label("Correct criminal", mySkin);

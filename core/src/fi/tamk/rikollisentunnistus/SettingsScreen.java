@@ -121,6 +121,9 @@ public class SettingsScreen implements Screen {
         valueStartingDifficulty = settings.getInteger("startingDifficulty", GameData.DEFAULT_STARTING_DIFFICULTY);
         valueUseDifficulty = settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY);
         valueIncreasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
+        valueWaitingTime = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
+        valueFaceShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
+
 
         stage.addActor(calibrateText);
         freePlaySettingsButton();

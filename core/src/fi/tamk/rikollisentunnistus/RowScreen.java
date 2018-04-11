@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -134,7 +133,7 @@ public class RowScreen implements Screen {
         timeToMove = 0;
     }
 
-    private void createPauseWindow () {
+    public void createPauseWindow () {
         pauseWindow = new Window("Pause", mySkin);
         pauseWindow.setVisible(false);
         pauseWindow.setResizable(false);

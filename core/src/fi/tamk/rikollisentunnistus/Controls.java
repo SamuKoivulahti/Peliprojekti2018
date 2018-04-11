@@ -56,7 +56,9 @@ public class Controls {
 
         timer = false;
     }
-
+   /**
+    * Gets all control values
+    */
     public void updateControls() {
         Settings settings = Settings.getInstance();
         moveRight = settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT);
@@ -69,24 +71,36 @@ public class Controls {
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
         hysteresisDown = moveDown/2;
-        Gdx.app.log("controls", "zero Y: " + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
+        Gdx.app.log("controls", "zero Y: "
+                +settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
 
         //System.out.println("peruna");
 
     }
 
+   /**
+    * gets used Y value
+    */
     public float accelerometerY() {
         accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
         //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
+   /**
+    * gets used X value
+    */
     public float accelerometerX() {
         accelX = Gdx.input.getAccelerometerY() - zeroPointX;
         //Gdx.app.log("TAG", "X:" + accelX);
         return accelX;
     }
 
+
+   /**
+    * gets value of movement to the right
+    * @param isTimed is timer used or not
+    */
     public boolean moveRight(boolean isTimed) {
         accelerometerX();
         if (accelX > moveRight && isAbleMoveRight) {
@@ -104,6 +118,11 @@ public class Controls {
         return false;
     }
 
+
+   /**
+    * gets value of movement to the left
+    * @param isTimed is timer used or not
+    */
     public boolean moveLeft(boolean isTimed) {
         accelerometerX();
         if (accelX < moveLeft && isAbleMoveLeft) {
@@ -122,6 +141,10 @@ public class Controls {
         return false;
     }
 
+   /**
+    * gets value of movement to the up direction
+    * @param isTimed is timer used or not
+    */
     public boolean moveUp(boolean isTimed) {
         accelerometerY();
         if (accelY > moveUp && isAbleMoveUp) {
@@ -139,6 +162,10 @@ public class Controls {
         return false;
     }
 
+   /**
+    * gets value of movement to the down direction
+    * @param isTimed is timer used or not
+    */
     public boolean moveDown(boolean isTimed) {
         accelerometerY();
         if (accelY < moveDown && isAbleMoveDown) {
@@ -155,6 +182,9 @@ public class Controls {
         return false;
     }
 
+    /**
+     * timer that counts up in seconds
+     */
     public boolean timer() {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= 3) {

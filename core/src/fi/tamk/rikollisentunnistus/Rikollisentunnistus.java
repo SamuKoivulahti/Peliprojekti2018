@@ -161,11 +161,6 @@ public class Rikollisentunnistus extends Game {
 
         return array;
     }
-
-	@Override
-	public void render () {
-		super.render();
-	}
 	
 	@Override
 	public void dispose () {
