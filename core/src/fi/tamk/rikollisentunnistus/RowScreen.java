@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -45,6 +47,7 @@ public class RowScreen implements Screen {
     private Texture desk;
     private Image lineUpImage;
     private Image deskImage;
+    private Image spotlightImage;
 
     Skin mySkin;
 
@@ -91,6 +94,8 @@ public class RowScreen implements Screen {
         lineUpImage.setPosition(0,0);
         lineUpImage.setSize(camera.viewportWidth, camera.viewportHeight);
 
+        spotlightImage = new Image(new Texture("selectionspotlight.png"));
+
         desk = new Texture("rowscreendesk.png");
         deskImage = new Image(desk);
         deskImage.setPosition(0,0);
@@ -119,6 +124,7 @@ public class RowScreen implements Screen {
         animation = new Animation<TextureRegion>(game.controls.timerTime / 26, animationFrames);
 
         stage.addActor(lineUpImage);
+        stage.addActor(spotlightImage);
         stage.addActor(deskImage);
         stage.addActor(pointsText);
         stage.addActor(levelText);
@@ -295,6 +301,10 @@ public class RowScreen implements Screen {
             }
         }
 
+        spotlightImage.setPosition(xCrd + startpoint*separation - spotlightImage.getWidth()/2, 0);
+        spotlightImage.addAction(Actions.sequence(Actions.alpha(0f),
+                Actions.fadeIn(1.5f), Actions.delay(0)));
+
         for (Face criminal : criminalRow) {
             criminal.setLocation(xCrd - width, height/8);
 
@@ -432,16 +442,24 @@ public class RowScreen implements Screen {
 
 
         game.batch.setProjectionMatrix(camera.combined);
+        // Gdx.gl.glClearColor(176/255f,179/255f,189/255f,1);
         Gdx.gl.glClearColor(220/255f,223/255f,229/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
         for (Face criminal : criminalRow) {
             if (criminal.active && !criminal.hasActions() && letMove) {
+                MoveToAction moveSpotlight = new MoveToAction();
+                moveSpotlight.setPosition(criminal.getX() - spotlightImage.getWidth()/2, 0);
+                moveSpotlight.setDuration(0.5f);
+                spotlightImage.addAction(moveSpotlight);
+
+
                 ScaleToAction scaleUp = new ScaleToAction();
-                scaleUp.setScale(1.25f);
+                scaleUp.setScale(1.3f);
                 scaleUp.setDuration(0.5f);
                 criminal.addAction(scaleUp);
+
                 if (delta != 0) {
                     criminal.toFront();
                 }

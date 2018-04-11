@@ -1,6 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  */
 
 public class IntermissionScreen implements Screen {
+    private final float MEDIUM_TEXT_SCALE = 0.5f;
 
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
@@ -29,8 +31,10 @@ public class IntermissionScreen implements Screen {
     private Label gameEndText;
     private Label chosenCriminalText;
     private Label correctCriminalText;
+    private Label moveForwardText;
     private Face chosenCriminal;
     private Face correctCriminal;
+    private boolean gameEnd;
     boolean win;
 
     Skin mySkin;
@@ -58,6 +62,7 @@ public class IntermissionScreen implements Screen {
         width = camera.viewportWidth;
         settings = Settings.getInstance();
         elapsedTime = 0;
+        gameEnd = false;
 
         textPrint();
         buttonBack();
@@ -91,10 +96,13 @@ public class IntermissionScreen implements Screen {
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
+        moveForwardText = new Label("Move forward by tapping screen or leaning to any direction", mySkin, "big");
+        moveForwardText.setFontScale(MEDIUM_TEXT_SCALE);
+        moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2*MEDIUM_TEXT_SCALE, height/100);
         correctCriminalText = new Label("Correct criminal", mySkin);
-        correctCriminalText.setPosition(width*5/6 - correctCriminalText.getWidth()/2, height*1/9f);
+        correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2, height*1/9f);
         chosenCriminalText = new Label("Your choice", mySkin);
-        chosenCriminalText.setPosition(width/6 - correctCriminalText.getWidth()/2, height*1/9f);
+        chosenCriminalText.setPosition(width*2/9 - correctCriminalText.getWidth()/2, height*1/9f);
 
         chosenCriminal = game.gameData.getChosenCriminal();
         correctCriminal = game.gameData.getCorrectCriminal();
@@ -108,8 +116,8 @@ public class IntermissionScreen implements Screen {
             chosenCriminal.changeScale(0.75f);
             correctCriminal.changeScale(0.75f);
 
-            chosenCriminal.setLocation(width/6,height/7);
-            correctCriminal.setLocation(width*5/6, height/7);
+            chosenCriminal.setLocation(width*2/9,height/7);
+            correctCriminal.setLocation(width*7/9, height/7);
         }
 
         stage.addActor(chosenCriminal);
@@ -122,6 +130,9 @@ public class IntermissionScreen implements Screen {
         stage.addActor(gameEndText);
         stage.addActor(correctCriminalText);
         stage.addActor(chosenCriminalText);
+        stage.addActor(moveForwardText);
+
+        moveForwardText.setVisible(true);
 
         if (win) {
             winText.setVisible(true);
@@ -164,6 +175,12 @@ public class IntermissionScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
     }
 
+    private boolean anyInput() {
+        return (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
+                game.controls.moveDown(false) || game.controls.moveUp(false) ||
+                game.controls.moveLeft(false) || game.controls.moveRight(false));
+    }
+
     @Override
     public void render(float delta) {
         if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
@@ -180,7 +197,29 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (timer(timeWaiting) && settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
+        if (anyInput()&&
+                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
+            elapsedTime = 0;
+            game.resetAll();
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
+            if (anyInput()) {
+                gameEnd = true;
+                gameEndText.setVisible(true);
+                winText.setVisible(false);
+                loseText.setVisible(false);
+                pointsText.setVisible(false);
+                correctCriminal.setVisible(false);
+                chosenCriminal.setVisible(false);
+                correctCriminalText.setVisible(false);
+                chosenCriminalText.setVisible(false);
+            }
+
+            if (gameEnd && timer(1) && anyInput()) {
+                game.setMainScreen();
+            }
+        }
+
+        /**if (timer(timeWaiting) && settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
         } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
@@ -196,7 +235,7 @@ public class IntermissionScreen implements Screen {
                     game.setMainScreen();
                 }
             }
-        }
+        }*/
     }
 
     @Override

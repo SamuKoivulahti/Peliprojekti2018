@@ -66,14 +66,6 @@ public class RowConstructor {
             faceShapeTextures[i]  = new Texture(stringPath);
         }
 
-        fileArray = Gdx.files.internal("bases").list();
-        baseTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            baseTextures[i]  = new Texture(stringPath);
-        }
-
         fileArray = Gdx.files.internal("hairs").list();
         hairTextures = new Texture[fileArray.length];
 
@@ -89,6 +81,11 @@ public class RowConstructor {
             stringPath = fileArray[i].path();
             accessoryTextures[i]  = new Texture(stringPath);
         }
+
+        baseTextures = new Texture[3];
+        baseTextures[0] = new Texture("bases/base01.png");
+        baseTextures[1] = new Texture("bases/base02.png");
+        baseTextures[2] = new Texture("bases/base03.png");
     }
 
     public Face[] makeRowDifficulty(int difficultyDegree) {
