@@ -104,19 +104,19 @@ public class RowScreen implements Screen {
         pointsText = new Label("Points: " + points, mySkin);
         pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
-        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 10);
+        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
 
-        selectionBar = new Texture("selectionBar.png");
+        selectionBar = new Texture("selectionBarBigG.png");
         Gdx.app.log("row", "sele" + selectionBar.toString());
 
-        TextureRegion[] animationFrames = new TextureRegion[10];
+        TextureRegion[] animationFrames = new TextureRegion[26];
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 26; i++) {
             int length = selectionBar.getHeight() / animationFrames.length;
             animationFrames[i] = new TextureRegion(selectionBar, 0, i * length, selectionBar.getWidth(), length);
         }
 
-        animation = new Animation<TextureRegion>(game.controls.timerTime / 10, animationFrames);
+        animation = new Animation<TextureRegion>(game.controls.timerTime / 26, animationFrames);
 
         stage.addActor(lineUpImage);
         stage.addActor(deskImage);
@@ -184,10 +184,10 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderD.setVisible(true);
                     game.settingsScreen.sensitivityGraphImage.setVisible(true);
                     game.settingsScreen.sliderR.setPosition(width/5,height/2 - game.settingsScreen.sliderR.getHeight()/2);
-                    game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.sliderSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
+                    game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.selectBoxSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
                     game.settingsScreen.sliderU.setPosition(width/5 - game.settingsScreen.sliderU.getWidth()/2,height/2);
-                    game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.sliderSize);
-                    game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.sliderSize, height/2 - game.settingsScreen.sliderSize);
+                    game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.selectBoxSize);
+                    game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
                 }
             }
         );
@@ -459,10 +459,10 @@ public class RowScreen implements Screen {
             TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
             game.batch.draw(
                     frame,
-                    (width - frame.getRegionWidth()) / 2,
+                    (width - frame.getRegionWidth()*1.5f) / 2,
                     row_height * 9,
-                    frame.getRegionWidth(),
-                    frame.getRegionHeight()
+                    frame.getRegionWidth()*1.5f,
+                    frame.getRegionHeight()*1.5f
             );
 
         }

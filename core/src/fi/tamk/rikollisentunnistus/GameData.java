@@ -64,6 +64,8 @@ public class GameData {
     public static final boolean DEFAULT_ASSETS = false;
     public static final boolean DEFAULT_USE_DIFFICULTY = false;
     public static final boolean DEFAULT_INCREASING_DIFFICULTY = false;
+    public static final int DEFAULT_WAITING_TIME = 3;
+    public static final int DEFAULT_FACE_SHOWN = 5;
 
 
 

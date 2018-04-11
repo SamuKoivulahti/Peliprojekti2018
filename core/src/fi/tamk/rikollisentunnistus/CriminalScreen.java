@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -39,6 +38,7 @@ public class CriminalScreen implements Screen {
     float timeShown;
     float timeWaiting;
     Skin mySkin;
+    Settings settings;
 
 
 
@@ -52,7 +52,7 @@ public class CriminalScreen implements Screen {
         height = camera.viewportHeight;
         width = camera.viewportWidth;
 
-        stage = new Stage(new FitViewport(camera.viewportWidth,camera.viewportHeight));
+        stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
         criminal = rightCriminal;
         criminal.changeScale(0.7f);
@@ -68,9 +68,10 @@ public class CriminalScreen implements Screen {
         frameMoveUp.setPosition((width - criminalFrame.getWidth())/2, height/6 - 79);
         frameMoveUp.setDuration(0.6f);
         criminalFrame.addAction(frameMoveUp);
+        settings = Settings.getInstance();
 
-        timeShown = 5f;
-        timeWaiting = 3f;
+        timeShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
+        timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
 
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
         waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
@@ -91,8 +92,8 @@ public class CriminalScreen implements Screen {
             timeShown = timeToShowAtMost - (game.difficulty*(timeToShowAtMost - timeToShowAtLeast))/14;
             timeWaiting = timeToWaitAtLeast + (game.difficulty*(timeToWaitAtMost - timeToWaitAtLeast))/14;
         } else {
-            timeShown = 5f;
-            timeWaiting = 3f;
+            timeShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
+            timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
         }
 
         Gdx.app.log("Time shown:", " " + timeShown );
