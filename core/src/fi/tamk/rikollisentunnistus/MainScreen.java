@@ -76,6 +76,7 @@ public class MainScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MainScreen", "settings");
                 host.setSettingsScreen();
             }
 
@@ -88,6 +89,7 @@ public class MainScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MainScreen", "exit");
                 Gdx.app.exit();
             }
 
@@ -104,10 +106,12 @@ public class MainScreen implements Screen {
                     tutorial.setVisible(false);
                     tutorialButton.setPosition(col_width*0.5f,row_height/2);
                     tutorialButton.setText("Controls");
+                    Gdx.app.log("MainScreen", "back");
                 } else {
                     tutorial.setVisible(true);
                     tutorialButton.setPosition(col_width*3.5f,row_height/2);
                     tutorialButton.setText("Back");
+                    Gdx.app.log("MainScreen", "tutorial");
                 }
             }
 

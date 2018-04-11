@@ -21,10 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.Set;
+
 /**
  * Created by Samu Koivulahti on 17.3.2018.
  */
-//TODO: Yleiset: kalibrointi, äänenvoimakkuus, soundeffektit
 public class SettingsScreen implements Screen {
 
     Rikollisentunnistus host;
@@ -313,7 +314,8 @@ public class SettingsScreen implements Screen {
     }
 
     public void setZeroPoint() {
-        Gdx.app.log("TAG", "save");
+        Gdx.app.log("SettingsScreen", "Zero point set");
+        settings = Settings.getInstance();
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
         settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
 

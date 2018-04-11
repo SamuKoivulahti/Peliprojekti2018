@@ -103,7 +103,7 @@ public class RowConstructor {
 
             for (int i = 0; i < files.length; i++) {
                 String fileName = String.format(fileMask, i + 1);
-                Gdx.app.log(fileName, "" +Gdx.files.internal(directoryPath).child(fileName).exists());
+                // Gdx.app.log(fileName, "" +Gdx.files.internal(directoryPath).child(fileName).exists());
                 if (Gdx.files.internal(directoryPath).child(fileName).exists()) {
                     textures[i] = new Texture(files[i].path());
                 }

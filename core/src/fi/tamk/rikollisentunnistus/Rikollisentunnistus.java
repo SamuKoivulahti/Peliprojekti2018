@@ -1,6 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -86,7 +87,7 @@ public class Rikollisentunnistus extends Game {
         useDifficulty = settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY);
         increasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
 
-        System.out.print("perunaxd");
+        Gdx.app.log("Rikollisentunnistus", "update settings");
 
         if (useDifficulty) {
             criminals = rowConstructor.makeRowDifficulty(difficulty);

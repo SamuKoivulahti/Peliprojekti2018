@@ -71,10 +71,8 @@ public class Controls {
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
         hysteresisDown = moveDown/2;
-        Gdx.app.log("controls", "zero Y: "
-                +settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
+        //Gdx.app.log("controls", "zero Y: "+settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
 
-        //System.out.println("peruna");
 
     }
 

@@ -81,7 +81,6 @@ public class RowScreen implements Screen {
         lose = false;
         elapsedTime = 0;
 
-
         row_height = camera.viewportHeight / 12;
         col_width = camera.viewportWidth / 12;
         width = camera.viewportWidth;
@@ -113,7 +112,6 @@ public class RowScreen implements Screen {
         levelText.setColor(Color.BLACK);
 
         selectionBar = new Texture("selectionBarBigG.png");
-        Gdx.app.log("row", "sele" + selectionBar.toString());
 
         TextureRegion[] animationFrames = new TextureRegion[26];
 
@@ -182,6 +180,7 @@ public class RowScreen implements Screen {
             new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    settings = Settings.getInstance();
                     pauseWindow.setVisible(false);
                     sensitivityWindow.setVisible(true);
                     game.settingsScreen.externalSensitivityWindow(stage);
@@ -191,9 +190,13 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderD.setVisible(true);
                     game.settingsScreen.sensitivityGraphImage.setVisible(true);
                     game.settingsScreen.sliderR.setPosition(width/5,height/2 - game.settingsScreen.sliderR.getHeight()/2);
+                    game.settingsScreen.sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
                     game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.selectBoxSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
+                    game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
                     game.settingsScreen.sliderU.setPosition(width/5 - game.settingsScreen.sliderU.getWidth()/2,height/2);
+                    game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
                     game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.selectBoxSize);
+                    game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
                     game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
                 }
             }
@@ -288,14 +291,14 @@ public class RowScreen implements Screen {
 
         if (criminalRow.length == 5 || criminalRow.length == 6) {
             float scale = separationEven / criminalRow[0].getSpriteWidth();
-            System.out.println(criminalRow[0].getSpriteWidth());
+            Gdx.app.log("RowScreen", "sprite width: " + criminalRow[0].getSpriteWidth());
 
             for (Face criminal : criminalRow) {
                 criminal.changeScale(scale);
             }
         } else {
             float scale = separationOdd / criminalRow[0].getSpriteWidth();
-            System.out.println(criminalRow[0].getSpriteWidth());
+            Gdx.app.log("RowScreen", "sprite width: " + criminalRow[0].getSpriteWidth());
 
             for (Face criminal : criminalRow) {
                 criminal.changeScale(scale);
@@ -338,10 +341,10 @@ public class RowScreen implements Screen {
             }
         }
 
-        System.out.println(rightSuspectID);
-        System.out.println(selectedID);
+        Gdx.app.log("RowScreen", "Correct suspect id: " + rightSuspectID);
+        Gdx.app.log("RowScreen", "Selected suspect id: "+ selectedID);
 
-        Gdx.app.log("Select", "selected");
+        Gdx.app.log("RowScreen", "selected");
         if (selectedID.equals(rightSuspectID)) {
             win = true;
             game.gameData.setPoints(points + 1);
