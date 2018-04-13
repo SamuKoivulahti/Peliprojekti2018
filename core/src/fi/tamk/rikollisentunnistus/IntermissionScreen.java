@@ -71,7 +71,7 @@ public class IntermissionScreen implements Screen {
 
     public void buttonBack() {
         Button back = new TextButton("Main Menu",mySkin,"small");
-        back.setSize(col_width*2,row_height*2);
+        back.setSize(col_width*2,row_height);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
 
@@ -100,10 +100,12 @@ public class IntermissionScreen implements Screen {
         moveForwardText = new Label("Continue by tapping the screen or leaning to any direction", mySkin, "big");
         moveForwardText.setFontScale(MEDIUM_TEXT_SCALE);
         moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2*MEDIUM_TEXT_SCALE, height/100);
-        correctCriminalText = new Label("Correct criminal", mySkin);
-        correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2, height*1/9f);
-        chosenCriminalText = new Label("Your choice", mySkin);
-        chosenCriminalText.setPosition(width*2/9 - correctCriminalText.getWidth()/2, height*1/9f);
+        correctCriminalText = new Label("Correct criminal", mySkin, "big");
+        correctCriminalText.setFontScale(MEDIUM_TEXT_SCALE);
+        correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2*MEDIUM_TEXT_SCALE, height*7/9f);
+        chosenCriminalText = new Label("Your choice", mySkin, "big");
+        chosenCriminalText.setFontScale(MEDIUM_TEXT_SCALE);
+        chosenCriminalText.setPosition(width*2/9 - chosenCriminalText.getWidth()/2*MEDIUM_TEXT_SCALE, height*7/9f);
 
         chosenCriminal = game.gameData.getChosenCriminal();
         correctCriminal = game.gameData.getCorrectCriminal();
@@ -117,8 +119,8 @@ public class IntermissionScreen implements Screen {
             chosenCriminal.changeScale(0.75f);
             correctCriminal.changeScale(0.75f);
 
-            chosenCriminal.setLocation(width*2/9,height/7);
-            correctCriminal.setLocation(width*7/9, height/7);
+            chosenCriminal.setLocation(width*2/9,height/10);
+            correctCriminal.setLocation(width*7/9, height/10);
         }
 
         stage.addActor(chosenCriminal);

@@ -30,71 +30,18 @@ public class RowConstructor {
     Texture[] accessoryTextures;
 
     public RowConstructor() {
-        String stringPath = "";
-
-        /*FileHandle[] fileArray = Gdx.files.internal("eyes").list();
-        eyesTextures = new Texture[fileArray.length];
-
-        System.out.println(fileArray.length);
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            eyesTextures[i] = new Texture(stringPath);
-        }
-
-        fileArray = Gdx.files.internal("noses").list();
-        noseTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            noseTextures[i]  = new Texture(stringPath);
-        }
-
-        fileArray = Gdx.files.internal("mouths").list();
-        mouthTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            mouthTextures[i]  = new Texture(stringPath);
-        }
-
-        fileArray = Gdx.files.internal("faceShapes").list();
-        faceShapeTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            faceShapeTextures[i]  = new Texture(stringPath);
-        }*/
         faceShapeTextures = filesToTextures("faceShapes", "face%02d.png");
         hairTextures = filesToTextures("hairs", "hair%02d.png");
         accessoryTextures = filesToTextures("accessories", "accessory%02d.png");
         mouthTextures = filesToTextures("mouths", "mouth%02d.png");
         eyesTextures = filesToTextures("eyes", "eyes%02d.png");
         noseTextures = filesToTextures("noses", "nose%02d.png");
-        //baseTextures = filesToTextures("bases", "base%02d.png");
-        /*fileArray = Gdx.files.internal("hairs").list();
-        hairTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            hairTextures[i]  = new Texture(stringPath);
-        }
-
-        fileArray = Gdx.files.internal("accessories").list();
-        accessoryTextures = new Texture[fileArray.length];
-
-        for (int i = 0; i < fileArray.length; i++) {
-            stringPath = fileArray[i].path();
-            accessoryTextures[i]  = new Texture(stringPath);
-        }
-*/
-        baseTextures = new Texture[3];
-        baseTextures[0] = new Texture("bases/base01.png");
-        baseTextures[1] = new Texture("bases/base02.png");
-        baseTextures[2] = new Texture("bases/base03.png");
-
+        baseTextures = filesToTextures("bases", "base%02d.png");
     }
 
+    /**
+     * Creates the textureRows from asset directories.
+     */
     private Texture[] filesToTextures(String directoryPath, String fileMask) {
         FileHandle[] files = Gdx.files.internal(directoryPath).list();
 
@@ -115,11 +62,23 @@ public class RowConstructor {
         return null;
     }
 
+    /**
+     * Assembles a row of Face objects by given difficulty.
+     *
+     * @param difficultyDegree
+     * @return row of Face objects
+     */
     public Face[] makeRowDifficulty(int difficultyDegree) {
+        /**
+         * Default values if there happens any kind of bug.
+         */
         int rowLength = 5;
         int sameFeatures = 2;
         boolean accessories = false;
 
+        /**
+         * Sets the rowLenght, sameFeatures and accessories values.
+         */
         if (difficultyDegree == 0) {
             rowLength = 3;
             sameFeatures = 0;
@@ -179,18 +138,42 @@ public class RowConstructor {
             }
         }
 
+        /**
+         * Assembles and returns a row with the values.
+         */
         return makeRow(rowLength,sameFeatures,accessories);
     }
 
+    /**
+     * Assembles a row of Face objects by given values.
+     *
+     * @param rowLength
+     * @param sameFeatures
+     * @param accessories
+     * @return row of Face objects
+     */
     public Face[] makeRow(int rowLength, int sameFeatures, boolean accessories) {
+        /**
+         * Sets given values to class variables.
+         */
         this.rowLength = rowLength;
         this.sameFeatures = sameFeatures;
         this.accessories = accessories;
 
+        /**
+         * Calls setSame method.
+         */
         setSame();
 
+        /**
+         * Calls generateTheFaces method.
+         */
         Face[] row = generateTheFaces();
 
+        /**
+         * If accessories is true, gives all other faces than the right criminal (first object
+         * of the array) an accessory with 80% chance.
+         */
         if (accessories) {
             for (int i = 1; i < row.length; i++) {
                 if (MathUtils.random(0f,1f) <= 0.8f) {
@@ -202,16 +185,18 @@ public class RowConstructor {
         return row;
     }
 
+    /**
+     * Randomly decides which features are same with every Face in a row.
+     */
     private void setSame() {
         boolean[] sameArray = new boolean[5];
 
-        for (boolean value : sameArray) {
-            value = false;
-        }
-
         if (sameFeatures >= 1 && sameFeatures <= 3) {
+            /**
+             * Generates random numbers and changes those values in sameArray into true.
+             */
             int sameToBeSet = sameFeatures;
-            int randomPoint = -1;
+            int randomPoint;
 
             while (sameToBeSet > 0) {
                 randomPoint = MathUtils.random(0, 4);
@@ -222,6 +207,9 @@ public class RowConstructor {
                 }
             }
         } else if (sameFeatures == 4) {
+            /**
+             * When there is four same features, faceshape will always be same.
+             */
             int randomPoint = MathUtils.random(1, 4);
 
             for (int i = 0; i <= 4; i++) {
@@ -231,6 +219,9 @@ public class RowConstructor {
             }
         }
 
+        /**
+         * Sets the values from sameArray into class variables.
+         */
         sameShape = sameArray[0];
         sameHair = sameArray[1];
         sameEyes = sameArray[2];
@@ -238,9 +229,21 @@ public class RowConstructor {
         sameMouth = sameArray[4];
     }
 
+    /**
+     * Generates a row of Face objects according class variables.
+     *
+     * @return a row of Face objects
+     */
     private Face[] generateTheFaces() {
+        /**
+         * Generates an array of Faces with lenght of  rowLenght;
+         */
         Face[] row = new Face[rowLength];
 
+        /**
+         * The first object in row will be the right criminal. Takes attributes of that object
+         * to use when generating the other objects.
+         */
         row[0] = new Face(baseTextures, faceShapeTextures, hairTextures, eyesTextures,
                 noseTextures, mouthTextures);
         int[] attributes = row[0].getFeatureIds();
@@ -248,6 +251,9 @@ public class RowConstructor {
         if (!sameShape && !sameHair && !sameEyes && !sameNose && !sameMouth) {
             row = addCriminalsToRow(row, attributes,false);
         } else {
+            /**
+             * Changes the attributes into -1 if it can be any of the available features.
+             */
             if (!sameShape) {
                 attributes[0] = -1;
             }
@@ -270,6 +276,14 @@ public class RowConstructor {
         return row;
     }
 
+    /**
+     * Adds Face objects to a given row according given attributes.
+     *
+     * @param row                   the row of criminals that needs to be filled
+     * @param attributes            facial features of the right criminal
+     * @param useSameAttributes     true if even one features will be the same in every face
+     * @return                      a row full of Face objects
+     */
     private Face[] addCriminalsToRow(Face[] row, int[] attributes,
                                         boolean useSameAttributes) {
         int criminalsToAdd = row.length - 1;
@@ -278,23 +292,35 @@ public class RowConstructor {
             Face criminal;
             boolean sameFound = false;
 
+            /**
+             * generates a Face object
+             */
             criminal = new Face(baseTextures, faceShapeTextures, hairTextures, eyesTextures,
                     noseTextures, mouthTextures, attributes, useSameAttributes);
 
-                for (int i = 0; i < row.length; i++) {
-                    if (row[i] != null) {
-                        if (row[i].getIdCode().equals(criminal.getIdCode())) {
-                            sameFound = true;
-                        }
-                    }
-                }
-
-                if (!sameFound) {
-                    row[row.length - criminalsToAdd] = criminal;
-                    criminalsToAdd--;
+            /**
+             * Checks if any of the objects in the row is exactly same than the generated object.
+             */
+            for (int i = 0; i < row.length; i++) {
+                if (row[i] != null) {
+                    if (row[i].getIdCode().equals(criminal.getIdCode())) {
+                        sameFound = true;}
                 }
             }
 
+            /**
+             * If none of the objects in the array is exactly same, add object to the array.
+             */
+            if (!sameFound) {
+                row[row.length - criminalsToAdd] = criminal;
+                criminalsToAdd--;
+            }
+        }
+
         return row;
+    }
+
+    public boolean getAccessories() {
+        return accessories;
     }
 }

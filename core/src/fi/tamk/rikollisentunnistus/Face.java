@@ -25,6 +25,16 @@ public class Face extends Actor {
 
     boolean active;
 
+    /**
+     * Generates a totally random face from given features.
+     *
+     * @param bases
+     * @param faceShapes
+     * @param hairs
+     * @param eyes
+     * @param noses
+     * @param mouths
+     */
     public Face(Texture[] bases, Texture[] faceShapes, Texture[] hairs,
                 Texture[] eyes, Texture[] noses, Texture[] mouths) {
         originalScale = 1f;
@@ -54,6 +64,18 @@ public class Face extends Actor {
         active = false;
     }
 
+    /**
+     * Generates a Face from given features according to other requirements.
+     *
+     * @param bases
+     * @param faceShapes
+     * @param hairs
+     * @param eyes
+     * @param noses
+     * @param mouths
+     * @param attributes            Facial feature IDs
+     * @param useSameAttributes     If given attributes should be used or not
+     */
     public Face(Texture[] bases, Texture[] faceShapes, Texture[] hairs, Texture[] eyes,
                 Texture[] noses, Texture[] mouths, int[] attributes, boolean useSameAttributes) {
         originalScale = 1f;
@@ -65,6 +87,12 @@ public class Face extends Actor {
         int mouthId = -1;
 
         if (useSameAttributes) {
+            /**
+             * If same features must be used, goes trough the attribute list. If the attribute id is
+             * -1, use a random attribute. In other cases use feature the attribute id is referring
+             * to.
+             */
+
             if (attributes[0] == -1) {
                 faceShapeId = MathUtils.random(0, faceShapes.length - 1);
             } else {
@@ -94,10 +122,12 @@ public class Face extends Actor {
             } else {
                 mouthId = attributes[4];
             }
-
-            idCode = faceShapeId + "-" + hairId + "-" + eyesId + "-" + noseId + "-" + mouthId;
-
         } else {
+            /**
+             * If none of the attributes given should be used, makes sure generated random number
+             * are not the same as given attribute IDs.
+             */
+
             boolean attributeSet = false;
             int index;
 
@@ -157,15 +187,25 @@ public class Face extends Actor {
             }
         }
 
+        /**
+         * Generates ID-code.
+         */
         idCode = faceShapeId + "-" + hairId + "-" + eyesId + "-" + noseId + "-" + mouthId;
 
+        /**
+         * BaseImage will be chosen according faceShape, so that the skintones match.
+         */
         baseImg = bases[faceShapeId%3];
+
         faceShapeImg = faceShapes[faceShapeId];
         hairImg = hairs[hairId];
         eyesImg = eyes[eyesId];
         noseImg = noses[noseId];
         mouthImg = mouths[mouthId];
 
+        /**
+         * Sets featureIDs.
+         */
         featureIds = new int[5];
         featureIds[0] = faceShapeId;
         featureIds[1] = hairId;
@@ -177,6 +217,11 @@ public class Face extends Actor {
         active = false;
     }
 
+    /**
+     * Sets a random accessory to the object.
+     *
+     * @param accessories
+     */
     public void addAccessory(Texture[] accessories) {
         int random = MathUtils.random(0, accessories.length - 1);
         accessoryImg = accessories[random];

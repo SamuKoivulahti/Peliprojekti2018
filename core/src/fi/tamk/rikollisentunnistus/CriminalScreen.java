@@ -50,11 +50,17 @@ public class CriminalScreen implements Screen {
         status = SHOWING;
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
+        /**
+         * Takes the height and width parameters from the camera.
+         */
         height = camera.viewportHeight;
         width = camera.viewportWidth;
 
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
+        /**
+         * Sets the criminal and gives it an action to move to the screen.
+         */
         criminal = rightCriminal;
         criminal.changeScale(0.7f);
         criminal.setLocation(width/2, -height);
@@ -63,6 +69,10 @@ public class CriminalScreen implements Screen {
         moveUp.setDuration(0.6f);
         criminal.addAction(moveUp);
 
+        /**
+         * Sets criminalFrame and gives it an action to move to the screen. The animation
+         * is the same as criminals, but the start and the end points are different.
+         */
         criminalFrame = new Image(new Texture("criminalframe.jpg"));
         criminalFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 79);
         MoveToAction frameMoveUp = new MoveToAction();
@@ -71,25 +81,41 @@ public class CriminalScreen implements Screen {
         criminalFrame.addAction(frameMoveUp);
         settings = Settings.getInstance();
 
+        /**
+         * Gets timeShown and timeWaiting from prefs-file.
+         */
         timeShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
         timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
 
+        /**
+         * Makes label for the timer counting down waiting time.
+         */
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
         waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
         waitingTimeText.setVisible(false);
         waitingTimeText.setAlignment(Align.center);
 
+        /**
+         * Adds actors to the stage.
+         */
         stage.addActor(waitingTimeText);
         stage.addActor(criminalFrame);
         stage.addActor(criminal);
     }
 
+    /**
+     * Updates times to show the criminal and wait the next screen.
+     *
+     * If game uses difficulty, counts the times between min and max values. Time to show increases
+     * and time to wait decreases steadily when difficulty level rises. If game does not use
+     * difficulty, takes the values from preferences-file.
+     */
     public void updateWaitingTimes() {
         if (game.useDifficulty) {
             float timeToShowAtMost = 5;
-            float timeToShowAtLeast = 1;
+            float timeToShowAtLeast = 1.25f;
             float timeToWaitAtMost = 8;
-            float timeToWaitAtLeast = 1;
+            float timeToWaitAtLeast = 1.5f;
 
             timeShown = timeToShowAtMost - (game.difficulty*(timeToShowAtMost - timeToShowAtLeast))/14;
             timeWaiting = timeToWaitAtLeast + (game.difficulty*(timeToWaitAtMost - timeToWaitAtLeast))/14;
@@ -102,6 +128,12 @@ public class CriminalScreen implements Screen {
         Gdx.app.log("Time waiting:", " " + timeWaiting);
     }
 
+    /**
+     * Returns true if given time has passed since the function was called for the first time.
+     *
+     * @param timeToPass
+     * @return
+     */
     public boolean timer(float timeToPass) {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= timeToPass) {
@@ -111,6 +143,9 @@ public class CriminalScreen implements Screen {
         return false;
     }
 
+    /**
+     * Resets the screen to default values.
+     */
     public void reset() {
         status = SHOWING;
         criminal.setLocation((Gdx.graphics.getWidth()-criminal.getSpriteWidth())/2, 125);
@@ -132,19 +167,27 @@ public class CriminalScreen implements Screen {
 
         stage.act();
         stage.draw();
+
         game.batch.begin();
 
         if (status == SHOWING) {
-            //Gdx.app.log("Criminal Screen", "Showing");
+            /**
+             * While status is showing, counts waiting time. When the time is up, changes the
+             * status to waiting.
+             */
 
             if (timer(timeShown)) {
                 status = WAITING;
                 elapsedTime = 0;
             }
 
-            criminal.setVisible(true);
-
         } else if (status == WAITING) {
+            /**
+             * Starts counting down the waiting time and updates it every frame. Gives criminal and
+             * the criminalFrame action to move out of screen. When the waiting time is over sets
+             * the rowScreen.
+             */
+
             waitingTimeText.setVisible(true);
 
             MoveToAction move = new MoveToAction();
@@ -168,6 +211,9 @@ public class CriminalScreen implements Screen {
             //Gdx.app.log("Criminal Screen", "Waiting");
         }
 
+        /**
+         * For cheating, shhh...
+         */
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
@@ -176,12 +222,6 @@ public class CriminalScreen implements Screen {
             criminal.clearActions();
             game.setCriminals();
         }
-        /*if (Gdx.input.isTouched() && status == SHOWING) {
-            status = WAITING;
-        } else if (Gdx.input.isTouched() && status == WAITING) {
-            game.setRowScreen();
-            game.setCriminals(criminal);
-        }*/
 
         game.batch.end();
     }

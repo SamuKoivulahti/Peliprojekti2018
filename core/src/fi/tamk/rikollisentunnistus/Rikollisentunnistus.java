@@ -60,22 +60,6 @@ public class Rikollisentunnistus extends Game {
         //setScreen(mainScreen);
 	}
 
-    private TextureRegion[] toArrays(TextureRegion[][] table) {
-        TextureRegion[] array = new TextureRegion[table.length * table[0].length];
-
-        int index = 0;
-
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[0].length; j++) {
-                array[index] = table[i][j];
-
-                index++;
-            }
-        }
-
-        return array;
-    }
-
     public void updateSettings() {
         Settings settings = Settings.getInstance();
 
@@ -108,10 +92,6 @@ public class Rikollisentunnistus extends Game {
 	    setScreen(criminalScreen);
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
     public void setRowScreen() {
         rowScreen = new RowScreen(this);
         setScreen(rowScreen);
@@ -133,6 +113,7 @@ public class Rikollisentunnistus extends Game {
 
     public void setCriminals() {
 	    String rightId = criminals[0].getIdCode();
+	    accessories = rowConstructor.getAccessories();
 
 	    if (accessories && MathUtils.random(0f,1f) <= 0.8f) {
 	        criminals[0].addAccessory(rowConstructor.accessoryTextures);
