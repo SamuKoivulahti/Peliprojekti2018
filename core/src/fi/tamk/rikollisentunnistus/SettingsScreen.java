@@ -2,6 +2,7 @@ package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,8 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
-import java.util.Set;
 
 /**
  * Created by Samu Koivulahti on 17.3.2018.
@@ -68,6 +68,7 @@ public class SettingsScreen implements Screen {
     private Label selectionWaitingTimeText;
     private Label faceShownText;
     private Label volumeText;
+    public Label savedText;
 
     private Texture sensitivityGraphTexture;
     public Image sensitivityGraphImage;
@@ -75,6 +76,7 @@ public class SettingsScreen implements Screen {
 
     Skin mySkin;
     Settings settings;
+    final float MEDIUM_TEXT_SCALE = 0.5f;
 
 
     public SettingsScreen(Rikollisentunnistus host) {
@@ -97,6 +99,10 @@ public class SettingsScreen implements Screen {
         calibrateText = new Label("Sensitivity", mySkin, "big");
         calibrateText.setPosition(col_width*5 - calibrateText.getWidth()/2, row_height * 13);
 
+        savedText = new Label("Saved!", mySkin, "big");
+        savedText.setPosition(col_width - savedText.getWidth()/2, row_height*2);
+        savedText.setAlignment(Align.center);
+        savedText.setVisible(false);
 
         stage.addActor(calibrateText);
         freePlaySettingsButton();
@@ -115,6 +121,7 @@ public class SettingsScreen implements Screen {
         buttonCalibrate();
         sliderVolume();
         soundEffects();
+        stage.addActor(savedText);
     }
 
     public void settingValues () {
@@ -133,6 +140,7 @@ public class SettingsScreen implements Screen {
         sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
         sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
         sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+
         sliderA.setChecked(settings.getBoolean("assets", GameData.DEFAULT_ASSETS));
         sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY));
     }
@@ -292,6 +300,10 @@ public class SettingsScreen implements Screen {
                 settings.setFloat("volume", sliderV.getValue());
                 settings.saveSettings();
                 host.controls.updateControls();
+                savedText.setVisible(true);
+                savedText.toFront();
+                savedText.addAction(Actions.sequence(Actions.alpha(1f),
+                        Actions.fadeOut(3.0f), Actions.delay(3f)));
             }
         });
         stage.addActor(save);
@@ -314,13 +326,13 @@ public class SettingsScreen implements Screen {
     }
 
     public void setZeroPoint() {
-        Gdx.app.log("SettingsScreen", "Zero point set");
         settings = Settings.getInstance();
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
         settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
 
         settings.saveSettings();
         host.controls.updateControls();
+        Gdx.app.log("SettingsScreen", "Zero point set");
         Gdx.app.log("SettingsScreen", "zeropointX" + settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X));
         Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
     }
@@ -393,7 +405,8 @@ public class SettingsScreen implements Screen {
 
     public void assetSlider() {
         sliderA = new CheckBox("Accessories", mySkin);
-        sliderA.setPosition(col_width *8 + (selectBoxSize *2 - sliderA.getWidth())/ 2, row_height * 11);
+        sliderA.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        sliderA.setPosition(col_width *8 + (selectBoxSize *2 - sliderA.getWidth())/ 2, row_height * 10);
         stage.addActor(sliderA);
     }
 
@@ -402,11 +415,12 @@ public class SettingsScreen implements Screen {
         String[] array = {"3","4","5","6"};
         sliderRow.setItems(array);
         sliderRow.setWidth(selectBoxSize *2);
-        sliderRow.setPosition(col_width *8, row_height * 9);
-        rowLengthText = new Label("Rows Length", mySkin);
-        rowLengthText.setPosition(col_width *8 + (selectBoxSize) - rowLengthText.getWidth()/2, row_height *10);
-        stage.addActor(rowLengthText);
+        sliderRow.setPosition(col_width *8, row_height * 7);
+        rowLengthText = new Label("Rows Length", mySkin,"big");
+        rowLengthText.setPosition(col_width *8 + (selectBoxSize*1.5f) - rowLengthText.getWidth()/2, row_height *8.5f);
+        rowLengthText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRow);
+        stage.addActor(rowLengthText);
     }
 
     public void waitingTime() {
@@ -414,9 +428,10 @@ public class SettingsScreen implements Screen {
         String[] array = {"1", "2", "3", "4", "5", "6", "7", "8"};
         waitingTime.setItems(array);
         waitingTime.setWidth(selectBoxSize *2);
-        waitingTime.setPosition(col_width*3, row_height * 13);
-        selectionWaitingTimeText = new Label("Waiting Time", mySkin);
-        selectionWaitingTimeText.setPosition(col_width *3 + (selectBoxSize) - selectionWaitingTimeText.getWidth()/2, row_height *14);
+        waitingTime.setPosition(col_width*3, row_height * 12);
+        selectionWaitingTimeText = new Label("Waiting Time", mySkin, "big");
+        selectionWaitingTimeText.setPosition(col_width *3 + (selectBoxSize*1.5f) - selectionWaitingTimeText.getWidth()/2, row_height *13.5f);
+        selectionWaitingTimeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(waitingTime);
         stage.addActor(selectionWaitingTimeText);
     }
@@ -426,9 +441,10 @@ public class SettingsScreen implements Screen {
         String[] array = {"1", "2", "3", "4", "5"};
         faceShown.setItems(array);
         faceShown.setWidth(selectBoxSize *2);
-        faceShown.setPosition(col_width * 3, row_height *11);
-        faceShownText = new Label("Face Shown", mySkin);
-        faceShownText.setPosition(col_width * 3 + selectBoxSize - faceShownText.getWidth()/2, row_height * 12);
+        faceShown.setPosition(col_width * 3, row_height *9);
+        faceShownText = new Label("Face Shown", mySkin, "big");
+        faceShownText.setPosition(col_width * 3 + selectBoxSize*1.5f - faceShownText.getWidth()/2, row_height * 10.5f);
+        faceShownText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(faceShown);
         stage.addActor(faceShownText);
     }
@@ -438,11 +454,12 @@ public class SettingsScreen implements Screen {
         String[] array = {"0", "1", "2", "3", "4"};
         sliderAttribute.setItems(array);
         sliderAttribute.setWidth(selectBoxSize *2);
-        sliderAttribute.setPosition(col_width *8, row_height * 7);
-        sameAttributesText = new Label("Same Attributes", mySkin);
-        sameAttributesText.setPosition(col_width *8 + (selectBoxSize) - sameAttributesText.getWidth()/2, row_height *8);
-        stage.addActor(sameAttributesText);
+        sliderAttribute.setPosition(col_width *8, row_height * 4);
+        sameAttributesText = new Label("Same Attributes", mySkin, "big");
+        sameAttributesText.setPosition(col_width *8 + (selectBoxSize*1.5f) - sameAttributesText.getWidth()/2, row_height *5.5f);
+        sameAttributesText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderAttribute);
+        stage.addActor(sameAttributesText);
     }
 
     public void roundSlider() {
@@ -450,11 +467,12 @@ public class SettingsScreen implements Screen {
         String[] array = {"5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
         sliderRound.setItems(array);
         sliderRound.setWidth(selectBoxSize *2);
-        sliderRound.setPosition(col_width *8, row_height * 13);
-        roundsText = new Label("Round Amount", mySkin);
-        roundsText.setPosition(col_width *8 + (selectBoxSize) - roundsText.getWidth()/2, row_height *14);
-        stage.addActor(roundsText);
+        sliderRound.setPosition(col_width *8, row_height * 12);
+        roundsText = new Label("Round Amount", mySkin, "big");
+        roundsText.setPosition(col_width *8 + (selectBoxSize*1.5f) - roundsText.getWidth()/2, row_height *13.5f);
+        roundsText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRound);
+        stage.addActor(roundsText);
     }
 
     public void startingDifficultySlider() {
@@ -462,22 +480,25 @@ public class SettingsScreen implements Screen {
         String[] array = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
         sliderStaringDifficulty.setItems(array);
         sliderStaringDifficulty.setWidth(selectBoxSize *2);
-        sliderStaringDifficulty.setPosition(col_width *3, row_height * 6);
-        startingDifficultyText = new Label("Starting Difficulty", mySkin);
-        startingDifficultyText.setPosition(col_width *3 + (selectBoxSize) - roundsText.getWidth()/2, row_height *7);
-        stage.addActor(startingDifficultyText);
+        sliderStaringDifficulty.setPosition(col_width *3, row_height * 3);
+        startingDifficultyText = new Label("Starting Difficulty", mySkin, "big");
+        startingDifficultyText.setPosition(col_width *3 + (selectBoxSize*1.5f) - startingDifficultyText.getWidth()/2, row_height *4.5f);
+        startingDifficultyText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderStaringDifficulty);
+        stage.addActor(startingDifficultyText);
     }
 
     public void useDifficultySlider() {
         sliderUseDifficulty = new CheckBox("Use Difficulty", mySkin);
-        sliderUseDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderUseDifficulty.getWidth())/ 2, row_height * 9);
+        sliderUseDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        sliderUseDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderUseDifficulty.getWidth())/ 2, row_height * 7);
         stage.addActor(sliderUseDifficulty);
     }
 
     public void increasingDifficultySlider() {
         sliderIncreasingDifficulty = new CheckBox("Increasing Difficulty", mySkin);
-        sliderIncreasingDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderIncreasingDifficulty.getWidth())/ 2, row_height * 8);
+        sliderIncreasingDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        sliderIncreasingDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderIncreasingDifficulty.getWidth())/ 2, row_height * 6);
         stage.addActor(sliderIncreasingDifficulty);
     }
 
@@ -487,14 +508,16 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
-        volumeText = new Label("Volume", mySkin);
-        volumeText.setPosition(col_width *8 + (selectBoxSize) - volumeText.getWidth()/2, row_height *14);
+        volumeText = new Label("Volume", mySkin, "big");
+        volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()/2, row_height *14);
+        volumeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderV);
         stage.addActor(volumeText);
     }
 
     public void soundEffects() {
         soundEffects = new CheckBox("Sound Effects", mySkin);
+        soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 12);
         stage.addActor(soundEffects);
     }

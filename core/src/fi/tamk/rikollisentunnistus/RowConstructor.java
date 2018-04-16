@@ -44,6 +44,7 @@ public class RowConstructor {
         baseTextures[2] = new Texture("bases/base03.png");
     }
 
+
     /**
      * Creates the textureRows from asset directories.
      */

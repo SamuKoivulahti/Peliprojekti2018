@@ -179,6 +179,7 @@ public class IntermissionScreen implements Screen {
     }
 
     private boolean anyInput() {
+        Gdx.app.log("intermissionScreen", ""+ game.controls.moveUp);
         return (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
                 game.controls.moveDown(false) || game.controls.moveUp(false) ||
                 game.controls.moveLeft(false) || game.controls.moveRight(false));

@@ -36,6 +36,9 @@ public class Controls {
     public boolean timer;
 
     public float timerTime;
+    float timeUp;
+    float timeDown;
+    float timeSides;
 
     public Controls() {
         Gdx.app.log("Controls", "constructor");
@@ -47,12 +50,14 @@ public class Controls {
 
         elapsedTime = 0;
 
-        timerTime = 3;
-
         isAbleMoveLeft = true;
         isAbleMoveRight = true;
         isAbleMoveUp = true;
         isAbleMoveDown = true;
+
+        timeUp = 2;
+        timeDown = 0.5f;
+        timeSides = 0.1f;
 
         timer = false;
     }
@@ -111,7 +116,7 @@ public class Controls {
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Rback");
         } else if (accelX > moveRight && !isAbleMoveRight && timer) {
-            return timer();
+            return timer(timeSides);
         }
         return false;
     }
@@ -134,7 +139,7 @@ public class Controls {
             //Gdx.app.log("TAG", "Lback");
         }
         else if (accelX < moveLeft && !isAbleMoveLeft && timer) {
-            return timer();
+            return timer(timeSides);
         }
         return false;
     }
@@ -155,7 +160,7 @@ public class Controls {
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Lback");
         } else if (accelY > moveUp && !isAbleMoveUp && timer) {
-            return timer();
+            return timer(timeUp);
         }
         return false;
     }
@@ -175,7 +180,7 @@ public class Controls {
             isAbleMoveDown = true;
             elapsedTime = 0;
         } else if (accelY < moveDown && !isAbleMoveDown && timer) {
-            return timer();
+            return timer(timeDown);
         }
         return false;
     }
@@ -183,9 +188,9 @@ public class Controls {
     /**
      * timer that counts up in seconds
      */
-    public boolean timer() {
+    public boolean timer(float timeLeaned) {
         elapsedTime += Gdx.graphics.getDeltaTime();
-        if (elapsedTime >= 3) {
+        if (elapsedTime >= timeLeaned) {
             elapsedTime = 0;
             timer = false;
             return true;

@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -42,6 +43,8 @@ public class RowScreen implements Screen {
 
     private Label pointsText;
     private Label levelText;
+    private Label savedText;
+    private Label calibratedText;
 
     private Texture lineUp;
     private Texture desk;
@@ -111,6 +114,14 @@ public class RowScreen implements Screen {
         levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
         levelText.setColor(Color.BLACK);
 
+        savedText = new Label("Saved!", mySkin, "big");
+        savedText.setPosition(width/5 - savedText.getWidth(), height/2 - savedText.getHeight()/2);
+        savedText.setAlignment(Align.center);
+        savedText.setColor(Color.BLUE);
+        savedText.setVisible(false);
+
+
+
         selectionBar = new Texture("selectionBarBigG.png");
 
         TextureRegion[] animationFrames = new TextureRegion[26];
@@ -120,7 +131,7 @@ public class RowScreen implements Screen {
             animationFrames[i] = new TextureRegion(selectionBar, 0, i * length, selectionBar.getWidth(), length);
         }
 
-        animation = new Animation<TextureRegion>(game.controls.timerTime / 26, animationFrames);
+        animation = new Animation<TextureRegion>(game.controls.timeUp / 26, animationFrames);
 
         stage.addActor(lineUpImage);
         stage.addActor(spotlightImage);
@@ -128,6 +139,7 @@ public class RowScreen implements Screen {
         stage.addActor(pointsText);
         stage.addActor(levelText);
         createPauseWindow();
+        stage.addActor(savedText);
 
         letMove = false;
         timeToMove = 0;
@@ -224,6 +236,11 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderU.setVisible(false);
                     game.settingsScreen.sliderD.setVisible(false);
                     game.settingsScreen.sensitivityGraphImage.setVisible(false);
+                    savedText.setVisible(true);
+                    savedText.toFront();
+                    savedText.addAction(Actions.sequence(Actions.alpha(1f),
+                            Actions.fadeOut(3.0f), Actions.delay(3f)));
+                    game.controls.updateControls();
                 }
             }
         );
@@ -424,15 +441,16 @@ public class RowScreen implements Screen {
         if (pauseWindow.isVisible() || sensitivityWindow.isVisible()) {
             delta = 0;
         }
-        if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
+        if (game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY) {
             game.gameData.setStillLeaning(true);
             stillLeaning = game.gameData.getStillLeaning();
         }
 
-        if (((game.controls.accelerometerY() > game.controls.moveUp) && letMove && stillLeaning)
+        if (((game.controls.accelerometerY() > game.controls.hysteresisUp - game.controls.zeroPointY)
+                && !game.controls.isAbleMoveUp && letMove && stillLeaning)
                 || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime += delta;
-        } else if ((game.controls.accelerometerY() < game.controls.hysteresisUp)
+        } else if ((game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY)
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime = 0;
         }
@@ -492,12 +510,12 @@ public class RowScreen implements Screen {
 
         if (delta != 0) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) ||
-                    game.controls.moveRight(false)) {
+                    game.controls.moveRight(true)) {
                 moveRight();
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) ||
-                    game.controls.moveLeft(false)) {
+                    game.controls.moveLeft(true)) {
                 moveLeft();
             }
 
@@ -520,6 +538,7 @@ public class RowScreen implements Screen {
 
         }
         game.batch.end();
+        //Gdx.app.log("RowScreen", ""+game.controls.hysteresisUp);
 
     }
 

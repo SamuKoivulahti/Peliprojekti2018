@@ -67,7 +67,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
 		checkboxOn: checkbox
 		checkboxOff: checkbox-off
-		font: font
+		font: font-big
 		fontColor: white
 	}
 	radio: {
@@ -111,7 +111,7 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		background: list
 	}
 	plain: {
-		font: font
+		font: font-big
 		fontColorSelected: white
 		fontColorUnselected: dark-cyan
 		selection: pale-blue
@@ -144,7 +144,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: font
+		font: font-big
 		fontColor: dark-cyan
 		background: select-box
 		backgroundOpen: select-box-down
