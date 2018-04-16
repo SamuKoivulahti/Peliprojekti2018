@@ -40,16 +40,16 @@ button-small-down
   index: -1
 checkbox
   rotate: false
-  xy: 66, 319
-  size: 25, 20
-  orig: 25, 20
+  xy: 718, 923
+  size: 41, 42
+  orig: 43, 42
   offset: 0, 0
   index: -1
 checkbox-off
   rotate: false
-  xy: 643, 923
-  size: 25, 20
-  orig: 25, 20
+  xy: 759, 923
+  size: 41, 42
+  orig: 43, 42
   offset: 0, 0
   index: -1
 font-big-export
@@ -180,7 +180,7 @@ select-box-down
   xy: 476, 826
   size: 47, 32
   split: 4, 35, 28, 3
-  pad: 3, 36, 3, 3
+  pad: 7, 36, 3, 3
   orig: 47, 32
   offset: 0, 0
   index: -1

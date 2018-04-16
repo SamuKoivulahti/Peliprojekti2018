@@ -3,6 +3,7 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.MathUtils;
 
 /**
@@ -36,7 +37,11 @@ public class RowConstructor {
         mouthTextures = filesToTextures("mouths", "mouth%02d.png");
         eyesTextures = filesToTextures("eyes", "eyes%02d.png");
         noseTextures = filesToTextures("noses", "nose%02d.png");
-        baseTextures = filesToTextures("bases", "base%02d.png");
+
+        baseTextures = new Texture[3];
+        baseTextures[0] = new Texture("bases/base01.png");
+        baseTextures[1] = new Texture("bases/base02.png");
+        baseTextures[2] = new Texture("bases/base03.png");
     }
 
     /**
