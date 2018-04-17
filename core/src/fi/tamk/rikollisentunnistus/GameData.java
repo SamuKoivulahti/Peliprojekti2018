@@ -117,4 +117,7 @@ public class GameData {
     public static final int DEFAULT_FACE_SHOWN = 5;
     public static final float DEFAULT_VOLUME = 50;
     public static final boolean DEFAULT_SOUND_EFFECTS = true;
+    public static final float DEFAULT_TIMER_SIDES = 0.25f;
+    public static final float DEFAULT_TIMER_UP = 3f;
+    public static final float DEFAULT_TIMER_DOWN = 1f;
 }

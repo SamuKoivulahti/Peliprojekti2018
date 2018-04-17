@@ -36,9 +36,9 @@ public class Controls {
     public boolean timer;
 
     public float timerTime;
-    float timeUp;
-    float timeDown;
-    float timeSides;
+    float timerUp;
+    float timerDown;
+    float timerSides;
 
     public Controls() {
         Gdx.app.log("Controls", "constructor");
@@ -55,10 +55,6 @@ public class Controls {
         isAbleMoveUp = true;
         isAbleMoveDown = true;
 
-        timeUp = 2;
-        timeDown = 0.5f;
-        timeSides = 0.1f;
-
         timer = false;
     }
    /**
@@ -72,6 +68,9 @@ public class Controls {
         moveDown = settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN);
         zeroPointX = settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X);
         zeroPointY = settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y);
+        timerSides = settings.getFloat("timerSides", GameData.DEFAULT_TIMER_SIDES);
+        timerUp = settings.getFloat("timerUp", GameData.DEFAULT_TIMER_UP);
+        timerDown = settings.getFloat("timerDown", GameData.DEFAULT_TIMER_DOWN);
         hysteresisRight = moveRight/2;
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
@@ -116,7 +115,7 @@ public class Controls {
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Rback");
         } else if (accelX > moveRight && !isAbleMoveRight && timer) {
-            return timer(timeSides);
+            return timer(timerSides);
         }
         return false;
     }
@@ -139,7 +138,7 @@ public class Controls {
             //Gdx.app.log("TAG", "Lback");
         }
         else if (accelX < moveLeft && !isAbleMoveLeft && timer) {
-            return timer(timeSides);
+            return timer(timerSides);
         }
         return false;
     }
@@ -160,7 +159,7 @@ public class Controls {
             elapsedTime = 0;
             //Gdx.app.log("TAG", "Lback");
         } else if (accelY > moveUp && !isAbleMoveUp && timer) {
-            return timer(timeUp);
+            return timer(timerUp);
         }
         return false;
     }
@@ -180,7 +179,7 @@ public class Controls {
             isAbleMoveDown = true;
             elapsedTime = 0;
         } else if (accelY < moveDown && !isAbleMoveDown && timer) {
-            return timer(timeDown);
+            return timer(timerDown);
         }
         return false;
     }

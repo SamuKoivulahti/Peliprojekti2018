@@ -66,24 +66,6 @@ public class IntermissionScreen implements Screen {
         gameEnd = false;
 
         textPrint();
-        buttonBack();
-    }
-
-    public void buttonBack() {
-        Button back = new TextButton("Main Menu",mySkin,"small");
-        back.setSize(col_width*2,row_height);
-        back.setPosition(0,height - back.getHeight());
-        back.addListener(new ClickListener(){
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("TAG", "back");
-                game.resetAll();
-                MainScreen MainScreen = new MainScreen(game);
-                game.setScreen(MainScreen);
-            }
-        });
-        stage.addActor(back);
     }
 
     public void textPrint() {

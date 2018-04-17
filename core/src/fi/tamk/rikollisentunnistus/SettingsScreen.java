@@ -52,6 +52,9 @@ public class SettingsScreen implements Screen {
     public TextButton back;
     public Slider sliderV;
     public CheckBox soundEffects;
+    public SelectBox timerSides;
+    public SelectBox timerUp;
+    public SelectBox timerDown;
 
     float selectBoxSize;
 
@@ -69,6 +72,9 @@ public class SettingsScreen implements Screen {
     private Label faceShownText;
     private Label volumeText;
     public Label savedText;
+    private Label timerSidesText;
+    private Label timerUpText;
+    private Label timerDownText;
 
     private Texture sensitivityGraphTexture;
     public Image sensitivityGraphImage;
@@ -121,6 +127,9 @@ public class SettingsScreen implements Screen {
         buttonCalibrate();
         sliderVolume();
         soundEffects();
+        timerSides();
+        timerUp();
+        timerDown();
         stage.addActor(savedText);
     }
 
@@ -136,11 +145,27 @@ public class SettingsScreen implements Screen {
         faceShown.setSelectedIndex(settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN)-1);
         waitingTime.setSelectedIndex(settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME)-1);
         sliderRow.setSelectedIndex(settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH)-3);
-        sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
-        sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
-        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
-        sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+        sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.5f);
+        sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
+        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.8f);
+        sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
+        if (timerSides.getSelectedIndex() == 0.25f) {
+            timerSides.setSelectedIndex(0);
+        } else {
+            timerSides.setSelectedIndex((int)settings.getFloat("timerSides", GameData.DEFAULT_TIMER_SIDES));
+        }
 
+        if (timerUp.getSelectedIndex() == 0.25f) {
+            timerUp.setSelectedIndex(0);
+        } else {
+            timerUp.setSelectedIndex((int)settings.getFloat("timerUp", GameData.DEFAULT_TIMER_UP));
+        }
+
+        if (timerDown.getSelectedIndex() == 0.25f) {
+            timerDown.setSelectedIndex(0);
+        } else {
+            timerDown.setSelectedIndex((int)settings.getFloat("timerDown", GameData.DEFAULT_TIMER_DOWN));
+        }
         sliderA.setChecked(settings.getBoolean("assets", GameData.DEFAULT_ASSETS));
         sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY));
     }
@@ -193,6 +218,12 @@ public class SettingsScreen implements Screen {
                 sliderV.setVisible(true);
                 volumeText.setVisible(true);
                 soundEffects.setVisible(true);
+                timerSides.setVisible(true);
+                timerSidesText.setVisible(true);
+                timerUp.setVisible(true);
+                timerUpText.setVisible(true);
+                timerDown.setVisible(true);
+                timerDownText.setVisible(true);
                 general.setVisible(false);
                 freePlay.setVisible(false);
                 save.setVisible(true);
@@ -239,6 +270,12 @@ public class SettingsScreen implements Screen {
                 sliderV.setVisible(false);
                 volumeText.setVisible(false);
                 soundEffects.setVisible(false);
+                timerSides.setVisible(false);
+                timerSidesText.setVisible(false);
+                timerUp.setVisible(false);
+                timerUpText.setVisible(false);
+                timerDown.setVisible(false);
+                timerDownText.setVisible(false);
                 save.setVisible(true);
 
             }
@@ -284,10 +321,10 @@ public class SettingsScreen implements Screen {
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
                 //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
-                settings.setFloat("sensitivityRight", sliderR.getValue());
-                settings.setFloat("sensitivityLeft", sliderL.getValue());
-                settings.setFloat("sensitivityUp", sliderU.getValue());
-                settings.setFloat("sensitivityDown", sliderD.getValue());
+                settings.setFloat("sensitivityRight", sliderR.getValue()*0.5f);
+                settings.setFloat("sensitivityLeft", sliderL.getValue()*0.5f);
+                settings.setFloat("sensitivityUp", sliderU.getValue()*0.8f);
+                settings.setFloat("sensitivityDown", sliderD.getValue()*0.3f);
                 settings.setInteger("rowLength", sliderRow.getSelectedIndex()+3);
                 settings.setInteger("sameAttributes", sliderAttribute.getSelectedIndex());
                 settings.setBoolean("assets", sliderA.isChecked());
@@ -298,6 +335,23 @@ public class SettingsScreen implements Screen {
                 settings.setInteger("waitingTime", waitingTime.getSelectedIndex()+1);
                 settings.setInteger("faceShown", faceShown.getSelectedIndex()+1);
                 settings.setFloat("volume", sliderV.getValue());
+                if (timerSides.getSelectedIndex() == 0) {
+                    settings.setFloat("timerSides", timerSides.getSelectedIndex() + 0.25f);
+                } else {
+                    settings.setFloat("timerSides", timerSides.getSelectedIndex());
+                }
+
+                if (timerUp.getSelectedIndex() == 0) {
+                    settings.setFloat("timerUp", timerUp.getSelectedIndex() + 0.25f);
+                } else {
+                    settings.setFloat("timerUp", timerUp.getSelectedIndex());
+                }
+
+                if (timerDown.getSelectedIndex() == 0) {
+                    settings.setFloat("timerDown", timerDown.getSelectedIndex() + 0.25f);
+                } else {
+                    settings.setFloat("timerDown", timerDown.getSelectedIndex());
+                }
                 settings.saveSettings();
                 host.controls.updateControls();
                 savedText.setVisible(true);
@@ -313,7 +367,7 @@ public class SettingsScreen implements Screen {
     public void buttonCalibrate() {
         calibrate = new TextButton("Calibrate", mySkin, "small");
         calibrate.setSize(selectBoxSize*2, row_height*2);
-        calibrate.setPosition(col_width*8 + selectBoxSize - calibrate.getWidth()/2, row_height * 9);
+        calibrate.setPosition(col_width*5 - calibrate.getWidth()/2, row_height * 2);
         calibrate.addListener(new ClickListener(){
 
             @Override
@@ -327,6 +381,7 @@ public class SettingsScreen implements Screen {
 
     public void setZeroPoint() {
         settings = Settings.getInstance();
+
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
         settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
 
@@ -509,7 +564,7 @@ public class SettingsScreen implements Screen {
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
         volumeText = new Label("Volume", mySkin, "big");
-        volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()/2, row_height *14);
+        volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()*1.5f/2, row_height *14);
         volumeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderV);
         stage.addActor(volumeText);
@@ -518,9 +573,49 @@ public class SettingsScreen implements Screen {
     public void soundEffects() {
         soundEffects = new CheckBox("Sound Effects", mySkin);
         soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
-        soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 12);
+        soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 11);
         stage.addActor(soundEffects);
     }
+
+    public void timerSides() {
+        timerSides = new SelectBox(mySkin);
+        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        timerSides.setItems(array);
+        timerSides.setWidth(selectBoxSize *2);
+        timerSides.setPosition(col_width *8 , row_height * 8);
+        timerSidesText = new Label("Timer Sides", mySkin, "big");
+        timerSidesText.setPosition(col_width *8 + (selectBoxSize) - timerSidesText.getWidth()*0.5f/2, row_height * 9.5f);
+        timerSidesText.setFontScale(MEDIUM_TEXT_SCALE);
+        stage.addActor(timerSides);
+        stage.addActor(timerSidesText);
+    }
+
+    public void timerUp() {
+        timerUp = new SelectBox(mySkin);
+        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        timerUp.setItems(array);
+        timerUp.setWidth(selectBoxSize *2);
+        timerUp.setPosition(col_width *8, row_height * 5);
+        timerUpText = new Label("Timer Up", mySkin, "big");
+        timerUpText.setPosition(col_width *8 + (selectBoxSize) - timerUpText.getWidth()*0.5f/2, row_height * 6.5f);
+        timerUpText.setFontScale(MEDIUM_TEXT_SCALE);
+        stage.addActor(timerUp);
+        stage.addActor(timerUpText);
+    }
+
+    public void timerDown() {
+        timerDown = new SelectBox(mySkin);
+        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        timerDown.setItems(array);
+        timerDown.setWidth(selectBoxSize *2);
+        timerDown.setPosition(col_width *8, row_height * 2);
+        timerDownText = new Label("Timer Down", mySkin, "big");
+        timerDownText.setPosition(col_width *8 + (selectBoxSize) - timerDownText.getWidth()*0.5f/2, row_height *3.5f);
+        timerDownText.setFontScale(MEDIUM_TEXT_SCALE);
+        stage.addActor(timerDown);
+        stage.addActor(timerDownText);
+    }
+
     public void hideSettings() {
         sliderR.setVisible(false);
         sliderL.setVisible(false);
@@ -547,6 +642,12 @@ public class SettingsScreen implements Screen {
         sliderV.setVisible(false);
         volumeText.setVisible(false);
         soundEffects.setVisible(false);
+        timerSides.setVisible(false);
+        timerSidesText.setVisible(false);
+        timerUp.setVisible(false);
+        timerUpText.setVisible(false);
+        timerDown.setVisible(false);
+        timerDownText.setVisible(false);
     }
 
     @Override

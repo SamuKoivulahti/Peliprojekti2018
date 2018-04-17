@@ -108,10 +108,11 @@ public class RowScreen implements Screen {
         level = game.gameData.getLevel();
 
         game.gameData.setLevel(level + 1);
-        pointsText = new Label("Points: " + points, mySkin);
-        pointsText.setPosition(camera.viewportWidth / 12 * 11, camera.viewportHeight - pointsText.getHeight()*2);
+        pointsText = new Label("Points: " + points, mySkin, "big");
+        pointsText.setFontScale(0.5f);
+        pointsText.setPosition(width - pointsText.getWidth()*0.5f - width/100, height - pointsText.getHeight());
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
-        levelText.setPosition(camera.viewportWidth/2 - levelText.getWidth()/2, camera.viewportHeight/12 * 11);
+        levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 11);
         levelText.setColor(Color.BLACK);
 
         savedText = new Label("Saved!", mySkin, "big");
@@ -131,7 +132,7 @@ public class RowScreen implements Screen {
             animationFrames[i] = new TextureRegion(selectionBar, 0, i * length, selectionBar.getWidth(), length);
         }
 
-        animation = new Animation<TextureRegion>(game.controls.timeUp / 26, animationFrames);
+        animation = new Animation<TextureRegion>(game.controls.timerUp / 26, animationFrames);
 
         stage.addActor(lineUpImage);
         stage.addActor(spotlightImage);
@@ -202,13 +203,13 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderD.setVisible(true);
                     game.settingsScreen.sensitivityGraphImage.setVisible(true);
                     game.settingsScreen.sliderR.setPosition(width/5,height/2 - game.settingsScreen.sliderR.getHeight()/2);
-                    game.settingsScreen.sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
+                    game.settingsScreen.sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.5f);
                     game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.selectBoxSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
-                    game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
+                    game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
                     game.settingsScreen.sliderU.setPosition(width/5 - game.settingsScreen.sliderU.getWidth()/2,height/2);
-                    game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
+                    game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.8f);
                     game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.selectBoxSize);
-                    game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+                    game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
                     game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
                 }
             }
@@ -220,15 +221,15 @@ public class RowScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     settings = Settings.getInstance();
-                    settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue());
-                    settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue());
-                    settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue());
-                    settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue());
+                    settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue()*0.5f);
+                    settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue()*0.5f);
+                    settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue()*0.8f);
+                    settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue()*0.3f);
+                    settings.saveSettings();
                     game.controls.hysteresisRight = game.settingsScreen.sliderR.getValue()/2;
                     game.controls.hysteresisLeft = game.settingsScreen.sliderL.getValue()/2;
                     game.controls.hysteresisUp = game.settingsScreen.sliderU.getValue()/2;
                     game.controls.hysteresisDown = game.settingsScreen.sliderD.getValue()/2;
-                    settings.saveSettings();
                     pauseWindow.setVisible(true);
                     sensitivityWindow.setVisible(false);
                     game.settingsScreen.sliderR.setVisible(false);
@@ -446,11 +447,13 @@ public class RowScreen implements Screen {
             stillLeaning = game.gameData.getStillLeaning();
         }
 
-        if (((game.controls.accelerometerY() > game.controls.hysteresisUp - game.controls.zeroPointY)
+        if (((game.controls.elapsedTime != 0)
                 && !game.controls.isAbleMoveUp && letMove && stillLeaning)
                 || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            elapsedTime += delta;
-        } else if ((game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY)
+            if (game.controls.elapsedTime > elapsedTime) {
+                elapsedTime += delta;
+            }
+        } else if (game.controls.elapsedTime == 0
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime = 0;
         }
@@ -519,7 +522,7 @@ public class RowScreen implements Screen {
                 moveLeft();
             }
 
-            if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= 3)
+            if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= game.controls.timerUp)
                     || (game.controls.moveUp(true) && letMove && stillLeaning)) {
                 select();
             }
