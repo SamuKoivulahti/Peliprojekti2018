@@ -453,6 +453,10 @@ public class RowScreen implements Screen {
             if (game.controls.elapsedTime > elapsedTime) {
                 elapsedTime += delta;
             }
+
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                elapsedTime += delta;
+            }
         } else if (game.controls.elapsedTime == 0
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime = 0;
