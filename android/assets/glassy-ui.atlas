@@ -40,15 +40,15 @@ button-small-down
   index: -1
 checkbox
   rotate: false
-  xy: 718, 923
-  size: 41, 42
+  xy: 717, 924
+  size: 40, 43
   orig: 43, 42
   offset: 0, 0
   index: -1
 checkbox-off
   rotate: false
-  xy: 759, 923
-  size: 41, 42
+  xy: 758, 924
+  size: 41, 43
   orig: 43, 42
   offset: 0, 0
   index: -1

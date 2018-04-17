@@ -5,14 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -45,8 +40,6 @@ public class IntermissionScreen implements Screen {
     float height;
     float width;
     float elapsedTime;
-    int timeWaiting = 3;
-    int gameEndWait = 5;
     Settings settings;
 
     public IntermissionScreen(Rikollisentunnistus g) {
@@ -183,7 +176,7 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (anyInput()&&
+        if (anyInput() &&
                 settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
@@ -204,24 +197,6 @@ public class IntermissionScreen implements Screen {
                 game.setMainScreen();
             }
         }
-
-        /**if (timer(timeWaiting) && settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
-            elapsedTime = 0;
-            game.resetAll();
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
-            Gdx.app.log("inter", "time 1 " + elapsedTime);
-            if (timer(timeWaiting)) {
-                Gdx.app.log("inter", "time 2 " + elapsedTime);
-                gameEndText.setVisible(true);
-                winText.setVisible(false);
-                loseText.setVisible(false);
-                pointsText.setVisible(false);
-                if (elapsedTime > (timeWaiting + gameEndWait)) {
-                    elapsedTime = 0;
-                    game.setMainScreen();
-                }
-            }
-        }*/
     }
 
     @Override

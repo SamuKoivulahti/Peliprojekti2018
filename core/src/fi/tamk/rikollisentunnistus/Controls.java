@@ -35,7 +35,6 @@ public class Controls {
 
     public boolean timer;
 
-    public float timerTime;
     float timerUp;
     float timerDown;
     float timerSides;
@@ -57,9 +56,9 @@ public class Controls {
 
         timer = false;
     }
-   /**
-    * Gets all control values
-    */
+    /**
+     * Gets all control values
+     */
     public void updateControls() {
         Settings settings = Settings.getInstance();
         moveRight = settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT);
@@ -80,18 +79,18 @@ public class Controls {
 
     }
 
-   /**
-    * gets used Y value
-    */
+    /**
+     * gets used Y value
+     */
     public float accelerometerY() {
         accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
         //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
-   /**
-    * gets used X value
-    */
+    /**
+     * gets used X value
+     */
     public float accelerometerX() {
         accelX = Gdx.input.getAccelerometerY() - zeroPointX;
         //Gdx.app.log("TAG", "X:" + accelX);
@@ -99,10 +98,10 @@ public class Controls {
     }
 
 
-   /**
-    * gets value of movement to the right
-    * @param isTimed is timer used or not
-    */
+    /**
+     * gets value of movement to the right
+     * @param isTimed is timer used or not
+     */
     public boolean moveRight(boolean isTimed) {
         accelerometerX();
         if (accelX > moveRight && isAbleMoveRight) {
@@ -121,10 +120,10 @@ public class Controls {
     }
 
 
-   /**
-    * gets value of movement to the left
-    * @param isTimed is timer used or not
-    */
+    /**
+     * gets value of movement to the left
+     * @param isTimed is timer used or not
+     */
     public boolean moveLeft(boolean isTimed) {
         accelerometerX();
         if (accelX < moveLeft && isAbleMoveLeft) {
@@ -143,10 +142,10 @@ public class Controls {
         return false;
     }
 
-   /**
-    * gets value of movement to the up direction
-    * @param isTimed is timer used or not
-    */
+    /**
+     * gets value of movement to the up direction
+     * @param isTimed is timer used or not
+     */
     public boolean moveUp(boolean isTimed) {
         accelerometerY();
         if (accelY > moveUp && isAbleMoveUp) {
@@ -164,10 +163,10 @@ public class Controls {
         return false;
     }
 
-   /**
-    * gets value of movement to the down direction
-    * @param isTimed is timer used or not
-    */
+    /**
+     * gets value of movement to the down direction
+     * @param isTimed is timer used or not
+     */
     public boolean moveDown(boolean isTimed) {
         accelerometerY();
         if (accelY < moveDown && isAbleMoveDown) {
