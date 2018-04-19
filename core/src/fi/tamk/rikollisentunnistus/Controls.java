@@ -23,7 +23,10 @@ public class Controls {
     public float hysteresisUp;
     public float hysteresisDown;
 
-    public float elapsedTime;
+    public float elapsedTimeR;
+    public float elapsedTimeL;
+    public float elapsedTimeU;
+    public float elapsedTimeD;
 
     public boolean isAbleMoveLeft;
     public boolean isAbleMoveRight;
@@ -33,7 +36,11 @@ public class Controls {
     float zeroPointX;
     float zeroPointY;
 
-    public boolean timer;
+    public boolean timerR;
+    public boolean timerL;
+    public boolean timerU;
+    public boolean timerD;
+
 
     float timerUp;
     float timerDown;
@@ -47,14 +54,22 @@ public class Controls {
 
         updateControls();
 
-        elapsedTime = 0;
+        elapsedTimeR = 0;
+        elapsedTimeL = 0;
+        elapsedTimeU = 0;
+        elapsedTimeD = 0;
+
 
         isAbleMoveLeft = true;
         isAbleMoveRight = true;
         isAbleMoveUp = true;
         isAbleMoveDown = true;
 
-        timer = false;
+        timerR = false;
+        timerL = false;
+        timerU = false;
+        timerD = false;
+
     }
     /**
      * Gets all control values
@@ -106,15 +121,13 @@ public class Controls {
         accelerometerX();
         if (accelX > moveRight && isAbleMoveRight) {
             isAbleMoveRight = false;
-            timer = isTimed;
-            //Gdx.app.log("TAG", "R");
+            timerR = isTimed;
             return !isTimed;
         } else if (!isAbleMoveRight && accelX < hysteresisRight && accelX > 0) {
             isAbleMoveRight = true;
-            elapsedTime = 0;
-            //Gdx.app.log("TAG", "Rback");
-        } else if (accelX > moveRight && !isAbleMoveRight && timer) {
-            return timer(timerSides);
+            elapsedTimeR = 0;
+        } else if (accelX > moveRight && !isAbleMoveRight && timerR) {
+            return timerR(timerSides);
         }
         return false;
     }
@@ -128,16 +141,16 @@ public class Controls {
         accelerometerX();
         if (accelX < moveLeft && isAbleMoveLeft) {
             isAbleMoveLeft = false;
-            timer = isTimed;
+            timerL = isTimed;
             //Gdx.app.log("TAG", "L");
             return !isTimed;
         } else if (!isAbleMoveLeft && accelX > hysteresisLeft && accelX < 0) {
             isAbleMoveLeft = true;
-            elapsedTime = 0;
+            elapsedTimeL = 0;
             //Gdx.app.log("TAG", "Lback");
         }
-        else if (accelX < moveLeft && !isAbleMoveLeft && timer) {
-            return timer(timerSides);
+        else if (accelX < moveLeft && !isAbleMoveLeft && timerL) {
+            return timerL(timerSides);
         }
         return false;
     }
@@ -150,15 +163,15 @@ public class Controls {
         accelerometerY();
         if (accelY > moveUp && isAbleMoveUp) {
             //Gdx.app.log("TAG", "L");
-            timer = isTimed;
+            timerU = isTimed;
             isAbleMoveUp = false;
             return !isTimed;
         } else if (!isAbleMoveUp && accelY < hysteresisUp && accelY > 0) {
             isAbleMoveUp = true;
-            elapsedTime = 0;
+            elapsedTimeU = 0;
             //Gdx.app.log("TAG", "Lback");
-        } else if (accelY > moveUp && !isAbleMoveUp && timer) {
-            return timer(timerUp);
+        } else if (accelY > moveUp && !isAbleMoveUp && timerU) {
+            return timerU(timerUp);
         }
         return false;
     }
@@ -170,15 +183,15 @@ public class Controls {
     public boolean moveDown(boolean isTimed) {
         accelerometerY();
         if (accelY < moveDown && isAbleMoveDown) {
-            timer = isTimed;
+            timerD = isTimed;
             isAbleMoveDown = false;
             return !isTimed;
 
         } else if (!isAbleMoveDown && accelY > hysteresisDown && accelY < 0) {
             isAbleMoveDown = true;
-            elapsedTime = 0;
-        } else if (accelY < moveDown && !isAbleMoveDown && timer) {
-            return timer(timerDown);
+            elapsedTimeD = 0;
+        } else if (accelY < moveDown && !isAbleMoveDown && timerD) {
+            return timerD(timerDown);
         }
         return false;
     }
@@ -186,11 +199,41 @@ public class Controls {
     /**
      * timer that counts up in seconds
      */
-    public boolean timer(float timeLeaned) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-        if (elapsedTime >= timeLeaned) {
-            elapsedTime = 0;
-            timer = false;
+    public boolean timerR(float timeLeaned) {
+        elapsedTimeR += Gdx.graphics.getDeltaTime();
+        if (elapsedTimeR >= timeLeaned) {
+            elapsedTimeR = 0;
+            timerR = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean timerL(float timeLeaned) {
+        elapsedTimeL += Gdx.graphics.getDeltaTime();
+        if (elapsedTimeL >= timeLeaned) {
+            elapsedTimeL = 0;
+            timerL = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean timerU(float timeLeaned) {
+        elapsedTimeU += Gdx.graphics.getDeltaTime();
+        if (elapsedTimeU >= timeLeaned) {
+            elapsedTimeU = 0;
+            timerU = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean timerD(float timeLeaned) {
+        elapsedTimeD += Gdx.graphics.getDeltaTime();
+        if (elapsedTimeD >= timeLeaned) {
+            elapsedTimeD = 0;
+            timerD = false;
             return true;
         }
         return false;

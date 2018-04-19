@@ -71,7 +71,8 @@ public class SettingsScreen implements Screen {
     private Label selectionWaitingTimeText;
     private Label faceShownText;
     private Label volumeText;
-    public Label savedText;
+    private Label savedText;
+    private Label calibratedText;
     private Label timerSidesText;
     private Label timerUpText;
     private Label timerDownText;
@@ -110,6 +111,11 @@ public class SettingsScreen implements Screen {
         savedText.setAlignment(Align.center);
         savedText.setVisible(false);
 
+        calibratedText = new Label("Calibrated!", mySkin, "big");
+        calibratedText.setPosition(col_width*1.5f - calibratedText.getWidth()/2, row_height*2);
+        calibratedText.setAlignment(Align.center);
+        calibratedText.setVisible(false);
+
         stage.addActor(calibrateText);
         freePlaySettingsButton();
         gameSettingsButton();
@@ -131,6 +137,7 @@ public class SettingsScreen implements Screen {
         timerUp();
         timerDown();
         stage.addActor(savedText);
+        stage.addActor(calibratedText);
     }
 
     public void settingValues () {
@@ -373,6 +380,10 @@ public class SettingsScreen implements Screen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 setZeroPoint();
+                calibratedText.setVisible(true);
+                calibratedText.toFront();
+                calibratedText.addAction(Actions.sequence(Actions.alpha(1f),
+                        Actions.fadeOut(3.0f), Actions.delay(3f)));
             }
 
         });

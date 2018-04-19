@@ -103,7 +103,6 @@ public class RowScreen implements Screen {
         deskImage.setPosition(0,0);
         deskImage.setSize(width, height/8);
 
-
         points = game.gameData.getPoints();
         level = game.gameData.getLevel();
 
@@ -116,10 +115,14 @@ public class RowScreen implements Screen {
         levelText.setColor(Color.BLACK);
 
         savedText = new Label("Saved!", mySkin, "big");
-        savedText.setPosition(width/5 - savedText.getWidth(), height/2 - savedText.getHeight()/2);
+        savedText.setPosition(width/2 - savedText.getWidth()/2, row_height/2);
         savedText.setAlignment(Align.center);
-        savedText.setColor(Color.BLUE);
         savedText.setVisible(false);
+
+        calibratedText = new Label("Calibrated!", mySkin, "big");
+        calibratedText.setPosition(width/2 - calibratedText.getWidth()/2, row_height/2);
+        calibratedText.setAlignment(Align.center);
+        calibratedText.setVisible(false);
 
 
 
@@ -141,6 +144,7 @@ public class RowScreen implements Screen {
         stage.addActor(levelText);
         createPauseWindow();
         stage.addActor(savedText);
+        stage.addActor(calibratedText);
 
         letMove = false;
         timeToMove = 0;
@@ -179,6 +183,10 @@ public class RowScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.settingsScreen.setZeroPoint();
+                    calibratedText.setVisible(true);
+                    calibratedText.toFront();
+                    calibratedText.addAction(Actions.sequence(Actions.alpha(1f),
+                            Actions.fadeOut(3.0f), Actions.delay(3f)));
                 }
             }
         );
@@ -447,17 +455,17 @@ public class RowScreen implements Screen {
             stillLeaning = game.gameData.getStillLeaning();
         }
 
-        if (((game.controls.elapsedTime != 0)
+        if (((game.controls.elapsedTimeU != 0)
                 && !game.controls.isAbleMoveUp && letMove && stillLeaning)
                 || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (game.controls.elapsedTime > elapsedTime) {
+            if (game.controls.elapsedTimeU > elapsedTime) {
                 elapsedTime += delta;
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 elapsedTime += delta;
             }
-        } else if (game.controls.elapsedTime == 0
+        } else if (game.controls.elapsedTimeU == 0
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
             elapsedTime = 0;
         }
@@ -514,7 +522,7 @@ public class RowScreen implements Screen {
 
         }
         //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
-
+        //Gdx.app.log("RowScreen", ""+ game.controls.hysteresisRight);
         if (delta != 0) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) ||
                     game.controls.moveRight(true)) {

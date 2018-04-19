@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,6 +32,8 @@ public class MainScreen implements Screen {
     Stage stage;
     Image background;
     Image tutorial;
+
+    SelectBox playerProfile;
 
     public MainScreen(final Rikollisentunnistus host) {
         Gdx.app.log("MainScreen", "Constructor");
@@ -56,7 +58,7 @@ public class MainScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        Button play = new TextButton("PLAY",mySkin,"small");
+        TextButton play = new TextButton("PLAY",mySkin,"small");
         play.setSize(col_width*2,row_height*1.5f);
         play.setPosition(col_width * 3.5f,row_height/2);
         play.addListener(new ClickListener(){
@@ -69,7 +71,7 @@ public class MainScreen implements Screen {
 
         });
 
-        Button settings = new TextButton("Settings",mySkin,"small");
+        TextButton settings = new TextButton("Settings",mySkin,"small");
         settings.setSize(col_width*2,row_height*1.5f);
         settings.setPosition(col_width * 6.5f,row_height/2);
         settings.addListener(new ClickListener(){
@@ -82,7 +84,7 @@ public class MainScreen implements Screen {
 
         });
 
-        Button exit = new TextButton("Exit Game",mySkin,"small");
+        TextButton exit = new TextButton("Exit Game",mySkin,"small");
         exit.setSize(col_width*2,row_height*1.5f);
         exit.setPosition(col_width * 9.5f,row_height/2);
         exit.addListener(new ClickListener(){
@@ -118,12 +120,22 @@ public class MainScreen implements Screen {
         });
 
         stage.addActor(background);
+        playerProfileSelection();
         stage.addActor(play);
         stage.addActor(settings);
         stage.addActor(exit);
         stage.addActor(tutorial);
         stage.addActor(tutorialButton);
 
+    }
+
+    public void playerProfileSelection() {
+        playerProfile = new SelectBox(mySkin);
+        String[] array = {"Free Play", "Player 1", "Player 2", "Player 3"};
+        playerProfile.setItems(array);
+        playerProfile.setWidth(col_width*2.7f);
+        playerProfile.setPosition(col_width * 0.5f,row_height*2);
+        stage.addActor(playerProfile);
     }
 
     @Override
