@@ -16,11 +16,13 @@ public class Rikollisentunnistus extends Game {
     MainScreen mainScreen;
     SettingsScreen settingsScreen;
     SplashScreen splashScreen;
+    SaveFileSelectScreen saveFileSelectScreen;
 
     public Controls controls;
-
 	SpriteBatch batch;
-	GameData gameData;
+
+    GameData gameData;
+    public SaveFiles saveFiles;
 
     private RowConstructor rowConstructor;
     private Face[] criminals;
@@ -40,9 +42,11 @@ public class Rikollisentunnistus extends Game {
 
         controls = new Controls();
         gameData = new GameData();
+        saveFiles = new SaveFiles();
 
         mainScreen = new MainScreen(this);
         settingsScreen = new SettingsScreen(this);
+        saveFileSelectScreen = new SaveFileSelectScreen(this);
 
 
         batch = new SpriteBatch();
@@ -110,6 +114,10 @@ public class Rikollisentunnistus extends Game {
     public void setSettingsScreen() {
 	    setScreen(settingsScreen);
     }
+
+    public void setSaveFileSelectScreen() {
+	    setScreen(saveFileSelectScreen);
+	}
 
     public void setCriminals() {
 	    String rightId = criminals[0].getIdCode();

@@ -11,6 +11,7 @@ public class GameData {
     private Face chosenCriminal;
     private Face correctCriminal;
     private boolean stillLeaning;
+    int profileUsed;
 
    /**
     * getter for points
@@ -96,6 +97,14 @@ public class GameData {
         correctCriminal = criminal;
     }
 
+    public int getProfileUsed() {
+        return  profileUsed;
+    }
+
+    public void setProfileUsed(int profileUsed) {
+        this.profileUsed = profileUsed;
+    }
+
     public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;
     public static final float DEFAULT_SENSITIVITY_LEFT = -5f;
     public static final float DEFAULT_SENSITIVITY_UP = 5f;
@@ -120,4 +129,5 @@ public class GameData {
     public static final float DEFAULT_TIMER_SIDES = 0.25f;
     public static final float DEFAULT_TIMER_UP = 3f;
     public static final float DEFAULT_TIMER_DOWN = 1f;
+    public static final int DEFAULT_POINTS = 0;
 }

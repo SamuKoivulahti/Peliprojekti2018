@@ -41,6 +41,9 @@ public class IntermissionScreen implements Screen {
     float width;
     float elapsedTime;
     Settings settings;
+    int points;
+    GameData gameData;
+    SaveFiles saveFiles;
 
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
@@ -58,6 +61,16 @@ public class IntermissionScreen implements Screen {
         elapsedTime = 0;
         gameEnd = false;
 
+        if (game.gameData.getProfileUsed() == 1) {
+            points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 2) {
+            points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 3) {
+            points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 0) {
+            points = game.gameData.getPoints();
+        }
+
         textPrint();
     }
 
@@ -66,7 +79,7 @@ public class IntermissionScreen implements Screen {
         winText.setPosition(width/2 - winText.getWidth()/2, height/2 - winText.getHeight() / 2);
         loseText = new Label("Wrong!", mySkin, "big");
         loseText.setPosition(width/2 - loseText.getWidth()/2, height/2 - loseText.getHeight() / 2);
-        pointsText = new Label("points: " + game.gameData.getPoints(), mySkin);
+        pointsText = new Label("points: " + points, mySkin);
         pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
         levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);

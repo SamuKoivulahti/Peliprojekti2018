@@ -71,6 +71,8 @@ public class RowScreen implements Screen {
     Window pauseWindow;
     Window sensitivityWindow;
     Settings settings;
+    SaveFiles saveFiles;
+    GameData gameData;
 
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
@@ -102,8 +104,15 @@ public class RowScreen implements Screen {
         deskImage = new Image(desk);
         deskImage.setPosition(0,0);
         deskImage.setSize(width, height/8);
-
-        points = game.gameData.getPoints();
+        if (game.gameData.getProfileUsed() == 1) {
+            points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 2) {
+            points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 3) {
+            points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
+        } else if (game.gameData.getProfileUsed() == 0) {
+            points = game.gameData.getPoints();
+        }
         level = game.gameData.getLevel();
 
         game.gameData.setLevel(level + 1);
@@ -215,7 +224,7 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderL.setPosition(width/5 - game.settingsScreen.selectBoxSize,height/2 - game.settingsScreen.sliderL.getHeight()/2);
                     game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
                     game.settingsScreen.sliderU.setPosition(width/5 - game.settingsScreen.sliderU.getWidth()/2,height/2);
-                    game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.8f);
+                    game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
                     game.settingsScreen.sliderD.setPosition(width/5 - game.settingsScreen.sliderD.getWidth()/2,height/2 - game.settingsScreen.selectBoxSize);
                     game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
                     game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
@@ -231,7 +240,7 @@ public class RowScreen implements Screen {
                     settings = Settings.getInstance();
                     settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue()*0.5f);
                     settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue()*0.5f);
-                    settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue()*0.8f);
+                    settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue()*0.7f);
                     settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue()*0.3f);
                     settings.saveSettings();
                     game.controls.hysteresisRight = game.settingsScreen.sliderR.getValue()/2;
@@ -373,6 +382,14 @@ public class RowScreen implements Screen {
         Gdx.app.log("RowScreen", "selected");
         if (selectedID.equals(rightSuspectID)) {
             win = true;
+            if (game.gameData.profileUsed == 1) {
+                game.saveFiles.setInteger("points1", points + 1);
+            } else if (game.gameData.profileUsed == 2) {
+                game.saveFiles.setInteger("points2", points + 1);
+            } else if (game.gameData.profileUsed == 3) {
+                game.saveFiles.setInteger("points3", points + 1);
+            }
+            game.saveFiles.saveNewFiles();
             game.gameData.setPoints(points + 1);
             game.gameData.setWin(true);
 

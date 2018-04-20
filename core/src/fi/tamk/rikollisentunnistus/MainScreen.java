@@ -33,7 +33,7 @@ public class MainScreen implements Screen {
     Image background;
     Image tutorial;
 
-    SelectBox playerProfile;
+    GameData gameData;
 
     public MainScreen(final Rikollisentunnistus host) {
         Gdx.app.log("MainScreen", "Constructor");
@@ -59,21 +59,35 @@ public class MainScreen implements Screen {
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         TextButton play = new TextButton("PLAY",mySkin,"small");
-        play.setSize(col_width*2,row_height*1.5f);
-        play.setPosition(col_width * 3.5f,row_height/2);
+        play.setSize(col_width*1.8f,row_height*1.5f);
+        play.setPosition(col_width * 0.5f,row_height/2);
         play.addListener(new ClickListener(){
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("MainScreen", "Play");
+                host.setSaveFileSelectScreen();
+            }
+
+        });
+
+        TextButton freePlay = new TextButton("FREE PLAY",mySkin,"small");
+        freePlay.setSize(col_width*1.8f,row_height*1.5f);
+        freePlay.setPosition(col_width * 2.8f,row_height/2);
+        freePlay.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MainScreen", "Play");
+                host.gameData.setProfileUsed(0);
                 host.setCriminalScreen();
             }
 
         });
 
         TextButton settings = new TextButton("Settings",mySkin,"small");
-        settings.setSize(col_width*2,row_height*1.5f);
-        settings.setPosition(col_width * 6.5f,row_height/2);
+        settings.setSize(col_width*1.8f,row_height*1.5f);
+        settings.setPosition(col_width * 5.1f,row_height/2);
         settings.addListener(new ClickListener(){
 
             @Override
@@ -91,9 +105,9 @@ public class MainScreen implements Screen {
 
         });
 
-        TextButton exit = new TextButton("Exit Game",mySkin,"small");
-        exit.setSize(col_width*2,row_height*1.5f);
-        exit.setPosition(col_width * 9.5f,row_height/2);
+        TextButton exit = new TextButton("Exit",mySkin,"small");
+        exit.setSize(col_width*1.8f,row_height*1.5f);
+        exit.setPosition(col_width * 9.7f,row_height/2);
         exit.addListener(new ClickListener(){
 
             @Override
@@ -105,8 +119,8 @@ public class MainScreen implements Screen {
         });
 
         final TextButton tutorialButton = new TextButton("Controls",mySkin,"small");
-        tutorialButton.setSize(col_width*2,row_height);
-        tutorialButton.setPosition(col_width * 0.5f,row_height/2);
+        tutorialButton.setSize(col_width*1.8f,row_height*1.5f);
+        tutorialButton.setPosition(col_width * 7.4f,row_height/2);
         tutorialButton.addListener(new ClickListener(){
 
             @Override
@@ -127,22 +141,13 @@ public class MainScreen implements Screen {
         });
 
         stage.addActor(background);
-        playerProfileSelection();
         stage.addActor(play);
+        stage.addActor(freePlay);
         stage.addActor(settings);
         stage.addActor(exit);
         stage.addActor(tutorial);
         stage.addActor(tutorialButton);
 
-    }
-
-    public void playerProfileSelection() {
-        playerProfile = new SelectBox(mySkin);
-        String[] array = {"Free Play", "Player 1", "Player 2", "Player 3"};
-        playerProfile.setItems(array);
-        playerProfile.setWidth(col_width*2.7f);
-        playerProfile.setPosition(col_width * 0.5f,row_height*2);
-        stage.addActor(playerProfile);
     }
 
     @Override

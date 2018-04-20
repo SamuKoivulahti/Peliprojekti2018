@@ -51,7 +51,7 @@ public class SaveFiles {
         prefs.putBoolean(key, value);
     }
 
-    public void saveSettings() {
+    public void saveNewFiles() {
         prefs.flush();
     }
 }

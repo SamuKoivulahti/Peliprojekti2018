@@ -154,7 +154,7 @@ public class SettingsScreen implements Screen {
         sliderRow.setSelectedIndex(settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH)-3);
         sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.5f);
         sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
-        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.8f);
+        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
         sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
         if (timerSides.getSelectedIndex() == 0.25f) {
             timerSides.setSelectedIndex(0);
@@ -330,7 +330,7 @@ public class SettingsScreen implements Screen {
                 //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
                 settings.setFloat("sensitivityRight", sliderR.getValue()*0.5f);
                 settings.setFloat("sensitivityLeft", sliderL.getValue()*0.5f);
-                settings.setFloat("sensitivityUp", sliderU.getValue()*0.8f);
+                settings.setFloat("sensitivityUp", sliderU.getValue()*0.7f);
                 settings.setFloat("sensitivityDown", sliderD.getValue()*0.3f);
                 settings.setInteger("rowLength", sliderRow.getSelectedIndex()+3);
                 settings.setInteger("sameAttributes", sliderAttribute.getSelectedIndex());
