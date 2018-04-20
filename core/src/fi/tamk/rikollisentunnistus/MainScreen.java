@@ -77,7 +77,14 @@ public class MainScreen implements Screen {
         settings.addListener(new ClickListener(){
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound();
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("MainScreen", "settings");
                 host.setSettingsScreen();
             }

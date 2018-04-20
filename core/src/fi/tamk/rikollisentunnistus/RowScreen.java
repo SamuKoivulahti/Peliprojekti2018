@@ -406,6 +406,7 @@ public class RowScreen implements Screen {
         }
 
         if (help <= criminalRow.length - 2 && letMove) {
+            SoundManager.playChangeSelectionSound();
             ScaleToAction scaleDown = new ScaleToAction();
             scaleDown.setScale(1.0f);
             scaleDown.setDuration(0.5f);
@@ -428,6 +429,7 @@ public class RowScreen implements Screen {
         }
 
         if (help >= 1 && letMove) {
+            SoundManager.playChangeSelectionSound();
             ScaleToAction scaleDown = new ScaleToAction();
             scaleDown.setScale(1.0f);
             scaleDown.setDuration(0.5f);
@@ -462,11 +464,16 @@ public class RowScreen implements Screen {
                 elapsedTime += delta;
             }
 
+            if (!SoundManager.isSelectionBarSoundPlaying()) {
+                SoundManager.playSelectionBarSound();
+            }
+
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 elapsedTime += delta;
             }
         } else if (game.controls.elapsedTimeU == 0
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            SoundManager.stopSelectionBarSound();
             elapsedTime = 0;
         }
 
@@ -536,6 +543,7 @@ public class RowScreen implements Screen {
 
             if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= game.controls.timerUp)
                     || (game.controls.moveUp(true) && letMove && stillLeaning)) {
+                SoundManager.stopSelectionBarSound();
                 select();
             }
 

@@ -3,6 +3,7 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -179,6 +180,7 @@ public class CriminalScreen implements Screen {
             if (timer(timeShown)) {
                 status = WAITING;
                 elapsedTime = 0;
+                SoundManager.playTimerSound();
             }
 
         } else if (status == WAITING) {
@@ -201,6 +203,7 @@ public class CriminalScreen implements Screen {
             criminalFrame.addAction(moveFrame);
 
             if (timer(timeWaiting)) {
+                SoundManager.stopTimerSound();
                 elapsedTime = 0;
                 criminal.setVisible(true);
                 criminal.clearActions();
@@ -215,8 +218,10 @@ public class CriminalScreen implements Screen {
          * For cheating, shhh...
          */
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
+            SoundManager.playTimerSound();
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
+            SoundManager.stopTimerSound();
             game.setRowScreen();
             criminal.setVisible(true);
             criminal.clearActions();
@@ -244,6 +249,7 @@ public class CriminalScreen implements Screen {
     @Override
     public void hide() {
         dispose();
+        SoundManager.stopTimerSound();
         Gdx.input.setCatchBackKey(false);
     }
 
