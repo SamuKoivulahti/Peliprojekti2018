@@ -115,6 +115,7 @@ public class GameData {
     public static final float DEFAULT_HYSTERESIS_DOWN = DEFAULT_SENSITIVITY_DOWN/2;
     public static final float DEFAULT_ZERO_POINT_X= 0;
     public static final float DEFAULT_ZERO_POINT_Y = 0;
+    public static final float DEFAULT_ZERO_POINT_Z = 0;
     public static final int DEFAULT_ROW_LENGTH = 5;
     public static final int DEFAULT_SAME_ATTRIBUTES = 2;
     public static final int DEFAULT_ROUND_AMOUNT = 7;
@@ -130,4 +131,5 @@ public class GameData {
     public static final float DEFAULT_TIMER_UP = 3f;
     public static final float DEFAULT_TIMER_DOWN = 1f;
     public static final int DEFAULT_POINTS = 0;
+    public static final boolean DEFAULT_HORIZONTAL_AXIS = false;
 }

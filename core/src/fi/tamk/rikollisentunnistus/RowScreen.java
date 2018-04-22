@@ -71,8 +71,6 @@ public class RowScreen implements Screen {
     Window pauseWindow;
     Window sensitivityWindow;
     Settings settings;
-    SaveFiles saveFiles;
-    GameData gameData;
 
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
@@ -104,6 +102,8 @@ public class RowScreen implements Screen {
         deskImage = new Image(desk);
         deskImage.setPosition(0,0);
         deskImage.setSize(width, height/8);
+
+        // Sets points depending on which profile player chose
         if (game.gameData.getProfileUsed() == 1) {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
         } else if (game.gameData.getProfileUsed() == 2) {
@@ -116,6 +116,8 @@ public class RowScreen implements Screen {
         level = game.gameData.getLevel();
 
         game.gameData.setLevel(level + 1);
+
+
         pointsText = new Label("Points: " + points, mySkin, "big");
         pointsText.setFontScale(0.5f);
         pointsText.setPosition(width - pointsText.getWidth()*0.5f - width/100, height - pointsText.getHeight());
@@ -135,7 +137,7 @@ public class RowScreen implements Screen {
 
 
 
-        selectionBar = new Texture("selectionBarBigG.png");
+        selectionBar = new Texture("selectionBarYellowToGreen.png");
 
         TextureRegion[] animationFrames = new TextureRegion[26];
 
@@ -469,9 +471,16 @@ public class RowScreen implements Screen {
         if (pauseWindow.isVisible() || sensitivityWindow.isVisible()) {
             delta = 0;
         }
-        if (game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY) {
-            game.gameData.setStillLeaning(true);
-            stillLeaning = game.gameData.getStillLeaning();
+        if (game.settingsScreen.horizontalAxis.isChecked()) {
+            if (game.controls.accelerometerY() > game.controls.hysteresisUp - game.controls.zeroPointZ) {
+                game.gameData.setStillLeaning(true);
+                stillLeaning = game.gameData.getStillLeaning();
+            }
+        } else {
+            if (game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY) {
+                game.gameData.setStillLeaning(true);
+                stillLeaning = game.gameData.getStillLeaning();
+            }
         }
 
         if (((game.controls.elapsedTimeU != 0)
@@ -538,10 +547,10 @@ public class RowScreen implements Screen {
             TextureRegion frame = animation.getKeyFrame(elapsedTime, false);
             game.batch.draw(
                     frame,
-                    (width - frame.getRegionWidth()*1.5f) / 2,
+                    (width - frame.getRegionWidth()) / 2,
                     row_height * 9,
-                    frame.getRegionWidth()*1.5f,
-                    frame.getRegionHeight()*1.5f
+                    frame.getRegionWidth(),
+                    frame.getRegionHeight()
             );
 
         }

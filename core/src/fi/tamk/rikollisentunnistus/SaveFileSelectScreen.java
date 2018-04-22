@@ -52,8 +52,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile1Button() {
         profile1Button = new TextButton("Player 1", mySkin);
-        profile1Button.setSize(col_width*2, row_height*1.5f);
-        profile1Button.setPosition(col_width, height/2 - profile1Button.getHeight()/2);
+        profile1Button.setSize(col_width*3, row_height*1.5f);
+        profile1Button.setPosition(col_width*0.75f, height/2 - profile1Button.getHeight()/2);
         profile1Button.addListener(new ClickListener(){
 
             @Override
@@ -69,8 +69,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile2Button() {
         profile2Button = new TextButton("Player 2",mySkin);
-        profile2Button.setSize(col_width*2,row_height*1.5f);
-        profile2Button.setPosition(col_width*5,height/2 - profile2Button.getHeight()/2);
+        profile2Button.setSize(col_width*3,row_height*1.5f);
+        profile2Button.setPosition(col_width*4.5f,height/2 - profile2Button.getHeight()/2);
         profile2Button.addListener(new ClickListener(){
 
             @Override
@@ -86,8 +86,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile3Button() {
         profile3Button = new TextButton("Player 3",mySkin);
-        profile3Button.setSize(col_width*2,row_height*1.5f);
-        profile3Button.setPosition(col_width*9,height/2 - profile3Button.getHeight()/2);
+        profile3Button.setSize(col_width*3,row_height*1.5f);
+        profile3Button.setPosition(col_width*8.25f,height/2 - profile3Button.getHeight()/2);
         profile3Button.addListener(new ClickListener(){
 
             @Override
@@ -102,7 +102,7 @@ public class SaveFileSelectScreen implements Screen {
     }
 
     public void buttonBack() {
-        TextButton back = new TextButton("Main Menu",mySkin,"small");
+        TextButton back = new TextButton("Back",mySkin,"small");
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){

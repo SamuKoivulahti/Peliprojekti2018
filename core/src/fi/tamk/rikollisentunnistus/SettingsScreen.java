@@ -55,6 +55,10 @@ public class SettingsScreen implements Screen {
     public SelectBox timerSides;
     public SelectBox timerUp;
     public SelectBox timerDown;
+    public TextButton clearProfile1;
+    public TextButton clearProfile2;
+    public TextButton clearProfile3;
+    public CheckBox horizontalAxis;
 
     float selectBoxSize;
 
@@ -136,6 +140,10 @@ public class SettingsScreen implements Screen {
         timerSides();
         timerUp();
         timerDown();
+        clearProfile1Button();
+        clearProfile2Button();
+        clearProfile3Button();
+        horizontalAxis();
         stage.addActor(savedText);
         stage.addActor(calibratedText);
     }
@@ -156,6 +164,7 @@ public class SettingsScreen implements Screen {
         sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
         sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
         sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
+        horizontalAxis.setChecked(settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS));
         if (timerSides.getSelectedIndex() == 0.25f) {
             timerSides.setSelectedIndex(0);
         } else {
@@ -188,6 +197,51 @@ public class SettingsScreen implements Screen {
         sliderLeft(stage);
         sliderUp(stage);
         sliderDown(stage);
+    }
+
+    public void clearProfile1Button () {
+        clearProfile1 = new TextButton("Clear Profile 1",mySkin,"small");
+        clearProfile1.setSize(col_width*2,row_height*2);
+        clearProfile1.setPosition(0,row_height*10);
+        clearProfile1.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
+            }
+
+        });
+        stage.addActor(clearProfile1);
+    }
+
+    public void clearProfile2Button () {
+        clearProfile2 = new TextButton("Clear Profile 2",mySkin,"small");
+        clearProfile2.setSize(col_width*2,row_height*2);
+        clearProfile2.setPosition(0,row_height* 7.5f);
+        clearProfile2.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
+            }
+
+        });
+        stage.addActor(clearProfile2);
+    }
+
+    public void clearProfile3Button () {
+        clearProfile3 = new TextButton("Clear Profile 3",mySkin,"small");
+        clearProfile3.setSize(col_width*2,row_height*2);
+        clearProfile3.setPosition(0, row_height*5);
+        clearProfile3.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
+            }
+
+        });
+        stage.addActor(clearProfile3);
     }
 
     public void gameSettingsButton() {
@@ -234,6 +288,10 @@ public class SettingsScreen implements Screen {
                 general.setVisible(false);
                 freePlay.setVisible(false);
                 save.setVisible(true);
+                clearProfile1.setVisible(true);
+                clearProfile2.setVisible(true);
+                clearProfile3.setVisible(true);
+                horizontalAxis.setVisible(true);
             }
 
         });
@@ -284,7 +342,10 @@ public class SettingsScreen implements Screen {
                 timerDown.setVisible(false);
                 timerDownText.setVisible(false);
                 save.setVisible(true);
-
+                clearProfile1.setVisible(false);
+                clearProfile2.setVisible(false);
+                clearProfile3.setVisible(false);
+                horizontalAxis.setVisible(false);
             }
 
         });
@@ -342,6 +403,7 @@ public class SettingsScreen implements Screen {
                 settings.setInteger("waitingTime", waitingTime.getSelectedIndex()+1);
                 settings.setInteger("faceShown", faceShown.getSelectedIndex()+1);
                 settings.setFloat("volume", sliderV.getValue());
+                settings.setBoolean("horizontalAxis", horizontalAxis.isChecked());
                 if (timerSides.getSelectedIndex() == 0) {
                     settings.setFloat("timerSides", timerSides.getSelectedIndex() + 0.25f);
                 } else {
@@ -395,6 +457,7 @@ public class SettingsScreen implements Screen {
 
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
         settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+        settings.setFloat("zeroPointZ", Gdx.input.getAccelerometerX());
 
         settings.saveSettings();
         host.controls.updateControls();
@@ -627,6 +690,13 @@ public class SettingsScreen implements Screen {
         stage.addActor(timerDownText);
     }
 
+    public void horizontalAxis() {
+        horizontalAxis = new CheckBox("Horizontal Axis", mySkin);
+        horizontalAxis.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        horizontalAxis.setPosition(col_width*8 + selectBoxSize - horizontalAxis.getWidth()/2, row_height * 0.5f);
+        stage.addActor(horizontalAxis);
+    }
+
     public void hideSettings() {
         sliderR.setVisible(false);
         sliderL.setVisible(false);
@@ -659,6 +729,10 @@ public class SettingsScreen implements Screen {
         timerUpText.setVisible(false);
         timerDown.setVisible(false);
         timerDownText.setVisible(false);
+        clearProfile1.setVisible(false);
+        clearProfile2.setVisible(false);
+        clearProfile3.setVisible(false);
+        horizontalAxis.setVisible(false);
     }
 
     @Override

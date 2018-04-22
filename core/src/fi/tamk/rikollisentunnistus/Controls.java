@@ -35,22 +35,26 @@ public class Controls {
 
     float zeroPointX;
     float zeroPointY;
+    float zeroPointZ;
 
     public boolean timerR;
     public boolean timerL;
     public boolean timerU;
     public boolean timerD;
 
-
     float timerUp;
     float timerDown;
     float timerSides;
+
+    boolean horizontalAxis;
+    Rikollisentunnistus game;
 
     public Controls() {
         Gdx.app.log("Controls", "constructor");
 
         zeroPointX = Gdx.input.getAccelerometerY();
         zeroPointY = Gdx.input.getAccelerometerZ();
+        zeroPointZ = Gdx.input.getAccelerometerX();
 
         updateControls();
 
@@ -70,6 +74,8 @@ public class Controls {
         timerU = false;
         timerD = false;
 
+
+
     }
     /**
      * Gets all control values
@@ -82,9 +88,11 @@ public class Controls {
         moveDown = settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN);
         zeroPointX = settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X);
         zeroPointY = settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y);
+        zeroPointZ = settings.getFloat("zeroPointZ", GameData.DEFAULT_ZERO_POINT_Z);
         timerSides = settings.getFloat("timerSides", GameData.DEFAULT_TIMER_SIDES);
         timerUp = settings.getFloat("timerUp", GameData.DEFAULT_TIMER_UP);
         timerDown = settings.getFloat("timerDown", GameData.DEFAULT_TIMER_DOWN);
+        horizontalAxis = settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS);
         hysteresisRight = moveRight/2;
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
@@ -98,8 +106,12 @@ public class Controls {
      * gets used Y value
      */
     public float accelerometerY() {
-        accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
-        //Gdx.app.log("TAG", "Y:" + accelY);
+        if (horizontalAxis) {
+            accelY = -Gdx.input.getAccelerometerX() + zeroPointZ;
+        } else {
+            accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
+        }
+            //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
