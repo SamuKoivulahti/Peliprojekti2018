@@ -491,7 +491,7 @@ public class RowScreen implements Screen {
             }
 
             if (!SoundManager.isSelectionBarSoundPlaying()) {
-                SoundManager.playSelectionBarSound();
+                SoundManager.playSelectionBarSound(game.soundEffectsOn);
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -499,7 +499,7 @@ public class RowScreen implements Screen {
             }
         } else if (game.controls.elapsedTimeU == 0
                 || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            SoundManager.stopSelectionBarSound();
+            SoundManager.stopSelectionBarSound(game.soundEffectsOn);
             elapsedTime = 0;
         }
 
@@ -569,7 +569,7 @@ public class RowScreen implements Screen {
 
             if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= game.controls.timerUp)
                     || (game.controls.moveUp(true) && letMove && stillLeaning)) {
-                SoundManager.stopSelectionBarSound();
+                SoundManager.stopSelectionBarSound(game.soundEffectsOn);
                 select();
             }
 

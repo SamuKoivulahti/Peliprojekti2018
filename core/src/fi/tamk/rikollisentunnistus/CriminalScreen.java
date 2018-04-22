@@ -180,7 +180,7 @@ public class CriminalScreen implements Screen {
             if (timer(timeShown)) {
                 status = WAITING;
                 elapsedTime = 0;
-                SoundManager.playTimerSound();
+                SoundManager.playTimerSound(game.soundEffectsOn);
             }
 
         } else if (status == WAITING) {
@@ -218,7 +218,7 @@ public class CriminalScreen implements Screen {
          * For cheating, shhh...
          */
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
-            SoundManager.playTimerSound();
+            SoundManager.playTimerSound(game.soundEffectsOn);
             status = WAITING;
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
             SoundManager.stopTimerSound();

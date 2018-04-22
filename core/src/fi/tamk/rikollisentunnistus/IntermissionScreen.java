@@ -126,7 +126,7 @@ public class IntermissionScreen implements Screen {
         moveForwardText.setVisible(true);
 
         if (win) {
-            SoundManager.playRightAnswerSound();
+            SoundManager.playRightAnswerSound(game.soundEffectsOn);
             winText.setVisible(true);
             loseText.setVisible(false);
             chosenCriminal.setVisible(false);
@@ -134,7 +134,7 @@ public class IntermissionScreen implements Screen {
             chosenCriminalText.setVisible(false);
             correctCriminalText.setVisible(false);
         } else {
-            SoundManager.playWrongAnswerSound();
+            SoundManager.playWrongAnswerSound(game.soundEffectsOn);
             winText.setVisible(false);
             loseText.setVisible(true);
             chosenCriminal.setVisible(true);
