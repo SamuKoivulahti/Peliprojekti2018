@@ -204,13 +204,19 @@ public class SettingsScreen implements Screen {
         clearProfile1.setSize(col_width*2,row_height*2);
         clearProfile1.setPosition(0,row_height*10);
         clearProfile1.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
             }
 
         });
+
         stage.addActor(clearProfile1);
     }
 
@@ -219,13 +225,19 @@ public class SettingsScreen implements Screen {
         clearProfile2.setSize(col_width*2,row_height*2);
         clearProfile2.setPosition(0,row_height* 7.5f);
         clearProfile2.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
             }
 
         });
+
         stage.addActor(clearProfile2);
     }
 
@@ -234,13 +246,19 @@ public class SettingsScreen implements Screen {
         clearProfile3.setSize(col_width*2,row_height*2);
         clearProfile3.setPosition(0, row_height*5);
         clearProfile3.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
             }
 
         });
+
         stage.addActor(clearProfile3);
     }
 
@@ -249,9 +267,14 @@ public class SettingsScreen implements Screen {
         general.setSize(col_width*2,row_height*2);
         general.setPosition(col_width * 3,height/2 - general.getHeight());
         general.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 back.setText("Back");
                 sliderRound.setVisible(false);
                 roundsText.setVisible(false);
@@ -295,6 +318,7 @@ public class SettingsScreen implements Screen {
             }
 
         });
+
         stage.addActor(general);
     }
 
@@ -303,9 +327,14 @@ public class SettingsScreen implements Screen {
         freePlay.setSize(col_width*2,row_height*2);
         freePlay.setPosition(col_width * 7,height/2 - freePlay.getHeight());
         freePlay.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 back.setText("Back");
                 freePlay.setVisible(false);
                 general.setVisible(false);
@@ -349,6 +378,7 @@ public class SettingsScreen implements Screen {
             }
 
         });
+
         stage.addActor(freePlay);
     }
 
@@ -357,9 +387,14 @@ public class SettingsScreen implements Screen {
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "back");
                 if (general.isVisible() && freePlay.isVisible()) {
                     host.setMainScreen();
@@ -374,6 +409,7 @@ public class SettingsScreen implements Screen {
             }
 
         });
+
         stage.addActor(back);
     }
 
@@ -382,9 +418,14 @@ public class SettingsScreen implements Screen {
         save.setSize(col_width*2,row_height*2);
         save.setPosition(0,0);
         save.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
@@ -423,13 +464,16 @@ public class SettingsScreen implements Screen {
                     settings.setFloat("timerDown", timerDown.getSelectedIndex());
                 }
                 settings.saveSettings();
+                host.updateSettings();
                 host.controls.updateControls();
                 savedText.setVisible(true);
                 savedText.toFront();
                 savedText.addAction(Actions.sequence(Actions.alpha(1f),
                         Actions.fadeOut(3.0f), Actions.delay(3f)));
             }
+
         });
+
         stage.addActor(save);
         save.setVisible(false);
     }
@@ -439,9 +483,14 @@ public class SettingsScreen implements Screen {
         calibrate.setSize(selectBoxSize*2, row_height*2);
         calibrate.setPosition(col_width*5 - calibrate.getWidth()/2, row_height * 2);
         calibrate.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 setZeroPoint();
                 calibratedText.setVisible(true);
                 calibratedText.toFront();
@@ -450,6 +499,7 @@ public class SettingsScreen implements Screen {
             }
 
         });
+
         stage.addActor(calibrate);
     }
 

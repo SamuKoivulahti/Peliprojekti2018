@@ -171,36 +171,55 @@ public class RowScreen implements Screen {
         continueButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     pauseWindow.setVisible(false);
                 }
-            }
-        );
+
+            });
 
         TextButton exitButton = new TextButton("Exit to Main Menu", mySkin);
         exitButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     game.resetAll();
                     game.setMainScreen();
                 }
-            }
-        );
+
+            });
 
         TextButton calibrateButton = new TextButton("Calibrate", mySkin);
         calibrateButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     game.settingsScreen.setZeroPoint();
                     calibratedText.setVisible(true);
                     calibratedText.toFront();
                     calibratedText.addAction(Actions.sequence(Actions.alpha(1f),
                             Actions.fadeOut(3.0f), Actions.delay(3f)));
                 }
-            }
-        );
+
+            });
+
 
         sensitivityWindow = new Window("Sensitivity", mySkin);
         sensitivityWindow.setVisible(false);
@@ -211,7 +230,13 @@ public class RowScreen implements Screen {
         sensitivityButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     settings = Settings.getInstance();
                     pauseWindow.setVisible(false);
                     sensitivityWindow.setVisible(true);
@@ -231,14 +256,20 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
                     game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
                 }
-            }
-        );
+
+            });
 
         TextButton saveButton = new TextButton("Save", mySkin);
         saveButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     settings = Settings.getInstance();
                     settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue()*0.5f);
                     settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue()*0.5f);
@@ -262,14 +293,20 @@ public class RowScreen implements Screen {
                             Actions.fadeOut(3.0f), Actions.delay(3f)));
                     game.controls.updateControls();
                 }
-            }
-        );
+
+            });
 
         TextButton cancelButton = new TextButton("Cancel", mySkin);
         cancelButton.addListener(
             new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundManager.playButtonPushSound(game.soundEffectsOn);
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     pauseWindow.setVisible(true);
                     sensitivityWindow.setVisible(false);
                     game.settingsScreen.sliderR.setVisible(false);
@@ -277,10 +314,9 @@ public class RowScreen implements Screen {
                     game.settingsScreen.sliderU.setVisible(false);
                     game.settingsScreen.sliderD.setVisible(false);
                     game.settingsScreen.sensitivityGraphImage.setVisible(false);
-
                 }
-            }
-        );
+
+            });
 
         pauseWindow.add(continueButton).pad(10).row();
         pauseWindow.add(calibrateButton).pad(10).row();

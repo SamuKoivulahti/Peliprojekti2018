@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -55,9 +54,14 @@ public class SaveFileSelectScreen implements Screen {
         profile1Button.setSize(col_width*3, row_height*1.5f);
         profile1Button.setPosition(col_width*0.75f, height/2 - profile1Button.getHeight()/2);
         profile1Button.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(game.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(1);
                 game.setCriminalScreen();
             }
@@ -72,9 +76,14 @@ public class SaveFileSelectScreen implements Screen {
         profile2Button.setSize(col_width*3,row_height*1.5f);
         profile2Button.setPosition(col_width*4.5f,height/2 - profile2Button.getHeight()/2);
         profile2Button.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(game.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(2);
                 game.setCriminalScreen();
             }
@@ -89,9 +98,14 @@ public class SaveFileSelectScreen implements Screen {
         profile3Button.setSize(col_width*3,row_height*1.5f);
         profile3Button.setPosition(col_width*8.25f,height/2 - profile3Button.getHeight()/2);
         profile3Button.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(game.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(3);
                 game.setCriminalScreen();
             }
@@ -106,14 +120,20 @@ public class SaveFileSelectScreen implements Screen {
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(game.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "back");
-                    game.setMainScreen();
+                game.setMainScreen();
             }
 
         });
+
         stage.addActor(back);
     }
 

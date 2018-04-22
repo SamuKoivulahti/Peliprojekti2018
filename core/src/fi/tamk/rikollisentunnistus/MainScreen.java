@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -62,14 +61,21 @@ public class MainScreen implements Screen {
         play.setSize(col_width*1.8f,row_height*1.5f);
         play.setPosition(col_width * 0.5f,row_height/2);
         play.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("MainScreen", "Play");
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.setSaveFileSelectScreen();
+                Gdx.app.log("MainScreen", "Play");
             }
 
         });
+
 
         TextButton freePlay = new TextButton("FREE PLAY",mySkin,"small");
         freePlay.setSize(col_width*1.8f,row_height*1.5f);
@@ -77,7 +83,14 @@ public class MainScreen implements Screen {
         freePlay.addListener(new ClickListener(){
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("MainScreen", "Play");
                 host.gameData.setProfileUsed(0);
                 host.setCriminalScreen();
@@ -89,7 +102,6 @@ public class MainScreen implements Screen {
         settings.setSize(col_width*1.8f,row_height*1.5f);
         settings.setPosition(col_width * 5.1f,row_height/2);
         settings.addListener(new ClickListener(){
-
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 SoundManager.playButtonPushSound(host.soundEffectsOn);
@@ -109,9 +121,14 @@ public class MainScreen implements Screen {
         exit.setSize(col_width*1.8f,row_height*1.5f);
         exit.setPosition(col_width * 9.7f,row_height/2);
         exit.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("MainScreen", "exit");
                 Gdx.app.exit();
             }
@@ -122,12 +139,17 @@ public class MainScreen implements Screen {
         tutorialButton.setSize(col_width*1.8f,row_height*1.5f);
         tutorialButton.setPosition(col_width * 7.4f,row_height/2);
         tutorialButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
 
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (tutorial.isVisible()) {
                     tutorial.setVisible(false);
-                    tutorialButton.setPosition(col_width*7.4f,row_height/2);
+                    tutorialButton.setPosition(col_width * 7.4f,row_height/2);
                     tutorialButton.setText("Controls");
                     Gdx.app.log("MainScreen", "back");
                 } else {
