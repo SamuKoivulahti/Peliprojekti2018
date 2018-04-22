@@ -92,7 +92,7 @@ public class MainScreen implements Screen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                SoundManager.playButtonPushSound();
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
 
                 return true;
             }
@@ -127,7 +127,7 @@ public class MainScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (tutorial.isVisible()) {
                     tutorial.setVisible(false);
-                    tutorialButton.setPosition(col_width*0.5f,row_height/2);
+                    tutorialButton.setPosition(col_width*7.4f,row_height/2);
                     tutorialButton.setText("Controls");
                     Gdx.app.log("MainScreen", "back");
                 } else {

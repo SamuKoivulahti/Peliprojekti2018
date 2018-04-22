@@ -22,48 +22,66 @@ public class SoundManager {
     private static Music menuMusic;
     private static Music ingameMusic;
 
-    public static void playChangeSelectionSound() {
-        //changeSelectionSound.play();
+    public static void playChangeSelectionSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            //changeSelectionSound.play();
+        }
     }
 
-    public static void playSelectionBarSound() {
-        selectionBarSound.setLooping(true);
-        selectionBarSound.play();
+    public static void playSelectionBarSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            selectionBarSound.setLooping(true);
+            selectionBarSound.play();
+        }
     }
 
     public static boolean isSelectionBarSoundPlaying() {
         return selectionBarSound.isPlaying();
     }
 
-    public static void stopSelectionBarSound() {
-        selectionBarSound.stop();
+    public static void stopSelectionBarSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            selectionBarSound.stop();
+        }
     }
 
-    public static void playTimerSound() {
-        timerSound.loop();
+    public static void playTimerSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            timerSound.loop();
+        }
     }
 
     public static void stopTimerSound() {
         timerSound.stop();
     }
 
-    public static void playRightAnswerSound() {
-        rightAnswerSound.play();
+    public static void playRightAnswerSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            rightAnswerSound.play();
+        }
     }
 
-    public static void playWrongAnswerSound() {
-        wrongAnswerSound.play();
+    public static void playWrongAnswerSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            wrongAnswerSound.play();
+        }
     }
 
-    public static void playButtonPushSound() {
-        buttonPushSound.play();
+    public static void playButtonPushSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            buttonPushSound.play();
+        }
     }
 
-    public static void playButtonUpSound() {
-        buttonUpSound.play();
+    public static void playButtonUpSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            buttonUpSound.play();
+        }
     }
 
-    public static void playClickSound() {
-        clickSound.play();
+    public static void playClickSound(boolean soundEffectsOn) {
+        if (soundEffectsOn) {
+            clickSound.play();
+        }
     }
 }

@@ -24,6 +24,8 @@ public class Rikollisentunnistus extends Game {
     GameData gameData;
     public SaveFiles saveFiles;
 
+    boolean soundEffectsOn;
+
     private RowConstructor rowConstructor;
     private Face[] criminals;
 
@@ -74,6 +76,7 @@ public class Rikollisentunnistus extends Game {
         difficulty = settings.getInteger("startingDifficulty", GameData.DEFAULT_STARTING_DIFFICULTY);
         useDifficulty = settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY);
         increasingDifficulty = settings.getBoolean("increasingDifficulty", GameData.DEFAULT_INCREASING_DIFFICULTY);
+        soundEffectsOn = settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS);
 
         Gdx.app.log("Rikollisentunnistus", "update settings");
 

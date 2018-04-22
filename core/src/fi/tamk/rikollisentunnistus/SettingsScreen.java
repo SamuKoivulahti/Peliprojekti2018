@@ -402,6 +402,7 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("increasingDifficulty", sliderIncreasingDifficulty.isChecked());
                 settings.setInteger("waitingTime", waitingTime.getSelectedIndex()+1);
                 settings.setInteger("faceShown", faceShown.getSelectedIndex()+1);
+                settings.setBoolean("soundEffects", soundEffects.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("horizontalAxis", horizontalAxis.isChecked());
                 if (timerSides.getSelectedIndex() == 0) {

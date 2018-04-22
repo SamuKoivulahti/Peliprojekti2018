@@ -425,7 +425,7 @@ public class RowScreen implements Screen {
         }
 
         if (help <= criminalRow.length - 2 && letMove) {
-            SoundManager.playChangeSelectionSound();
+            SoundManager.playChangeSelectionSound(game.soundEffectsOn);
             ScaleToAction scaleDown = new ScaleToAction();
             scaleDown.setScale(1.0f);
             scaleDown.setDuration(0.5f);
@@ -448,7 +448,7 @@ public class RowScreen implements Screen {
         }
 
         if (help >= 1 && letMove) {
-            SoundManager.playChangeSelectionSound();
+            SoundManager.playChangeSelectionSound(game.soundEffectsOn);
             ScaleToAction scaleDown = new ScaleToAction();
             scaleDown.setScale(1.0f);
             scaleDown.setDuration(0.5f);
