@@ -61,7 +61,6 @@ public class RowScreen implements Screen {
 
     int points;
     int level;
-    boolean stillLeaning;
 
     float elapsedTime;
 
@@ -507,20 +506,20 @@ public class RowScreen implements Screen {
         if (pauseWindow.isVisible() || sensitivityWindow.isVisible()) {
             delta = 0;
         }
+
         if (game.settingsScreen.horizontalAxis.isChecked()) {
-            if (game.controls.accelerometerY() > game.controls.hysteresisUp - game.controls.zeroPointZ) {
+            if (game.controls.accelerometerY() > game.controls.hysteresisUp) {
                 game.gameData.setStillLeaning(true);
-                stillLeaning = game.gameData.getStillLeaning();
             }
         } else {
-            if (game.controls.accelerometerY() < game.controls.hysteresisUp - game.controls.zeroPointY) {
+            if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
                 game.gameData.setStillLeaning(true);
-                stillLeaning = game.gameData.getStillLeaning();
+                Gdx.app.log("RowScreen", ""+game.gameData.getStillLeaning());
             }
         }
 
         if (((game.controls.elapsedTimeU != 0)
-                && !game.controls.isAbleMoveUp && letMove && stillLeaning)
+                && !game.controls.isAbleMoveUp && letMove && game.gameData.getStillLeaning())
                 || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if (game.controls.elapsedTimeU > elapsedTime) {
                 elapsedTime += delta;
@@ -604,7 +603,7 @@ public class RowScreen implements Screen {
             }
 
             if ((Gdx.input.isKeyPressed(Input.Keys.UP) && elapsedTime >= game.controls.timerUp)
-                    || (game.controls.moveUp(true) && letMove && stillLeaning)) {
+                    || (game.controls.moveUp(true) && letMove && game.gameData.getStillLeaning())) {
                 SoundManager.stopSelectionBarSound(game.soundEffectsOn);
                 select();
             }
