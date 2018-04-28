@@ -27,6 +27,8 @@ public class CriminalScreen implements Screen {
     private Stage stage;
     private Face criminal;
     private Image criminalFrame;
+    private Image criminalText;
+    private Image backgroundImage;
 
     private Label waitingTimeText;
 
@@ -59,6 +61,9 @@ public class CriminalScreen implements Screen {
 
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
 
+        backgroundImage = new Image(new Texture("criminalscreenbackground.jpg"));
+        backgroundImage.setBounds(0,0,width,height);
+
         /**
          * Sets the criminal and gives it an action to move to the screen.
          */
@@ -80,11 +85,18 @@ public class CriminalScreen implements Screen {
         frameMoveUp.setPosition((width - criminalFrame.getWidth())/2, height/6 - 79);
         frameMoveUp.setDuration(0.6f);
         criminalFrame.addAction(frameMoveUp);
-        settings = Settings.getInstance();
+
+        criminalText = new Image(new Texture("textimages/en_criminalscreentext.png"));
+        criminalText.setPosition((width - criminalText.getWidth())/2, -height - 79);
+        MoveToAction textMoveUp = new MoveToAction();
+        textMoveUp.setPosition((width - criminalText.getWidth())/2, height/6 - 79);
+        textMoveUp.setDuration(0.6f);
+        criminalText.addAction(textMoveUp);
 
         /**
          * Gets timeShown and timeWaiting from prefs-file.
          */
+        settings = Settings.getInstance();
         timeShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
         timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
 
@@ -99,8 +111,10 @@ public class CriminalScreen implements Screen {
         /**
          * Adds actors to the stage.
          */
+        stage.addActor(backgroundImage);
         stage.addActor(waitingTimeText);
         stage.addActor(criminalFrame);
+        stage.addActor(criminalText);
         stage.addActor(criminal);
     }
 
@@ -201,6 +215,11 @@ public class CriminalScreen implements Screen {
             moveFrame.setPosition((width - criminalFrame.getWidth())/2, -height - 80);
             moveFrame.setDuration(0.6f);
             criminalFrame.addAction(moveFrame);
+
+            MoveToAction moveText = new MoveToAction();
+            moveText.setPosition((width - criminalText.getWidth())/2, -height - 80);
+            moveText.setDuration(0.6f);
+            criminalText.addAction(moveText);
 
             if (timer(timeWaiting)) {
                 SoundManager.stopTimerSound();

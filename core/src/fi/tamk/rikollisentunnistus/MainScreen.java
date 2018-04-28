@@ -31,6 +31,7 @@ public class MainScreen implements Screen {
     Stage stage;
     Image background;
     Image tutorial;
+    Image title;
 
     GameData gameData;
 
@@ -54,6 +55,10 @@ public class MainScreen implements Screen {
         tutorial.setSize(width,height);
         tutorial.setPosition(0,0);
         tutorial.setVisible(false);
+
+        title = new Image(new Texture("textimages/en_title.png"));
+        title.setPosition(width*5/8f - title.getWidth()/2, height*5/6f);
+        title.setVisible(true);
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -163,6 +168,7 @@ public class MainScreen implements Screen {
         });
 
         stage.addActor(background);
+        stage.addActor(title);
         stage.addActor(play);
         stage.addActor(freePlay);
         stage.addActor(settings);
