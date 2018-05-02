@@ -60,6 +60,7 @@ public class SettingsScreen implements Screen {
     public TextButton clearProfile2;
     public TextButton clearProfile3;
     public CheckBox horizontalAxis;
+    public CheckBox useChair;
 
     float selectBoxSize;
 
@@ -145,6 +146,7 @@ public class SettingsScreen implements Screen {
         clearProfile2Button();
         clearProfile3Button();
         horizontalAxis();
+        useChair();
         stage.addActor(savedText);
         stage.addActor(calibratedText);
     }
@@ -161,10 +163,18 @@ public class SettingsScreen implements Screen {
         faceShown.setSelectedIndex(settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN)-1);
         waitingTime.setSelectedIndex(settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME)-1);
         sliderRow.setSelectedIndex(settings.getInteger("rowLength", GameData.DEFAULT_ROW_LENGTH)-3);
-        sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.5f);
-        sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
-        sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
-        sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
+        if (useChair.isChecked()) {
+            sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.5f);
+            sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.5f);
+            sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
+            sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
+        } else {
+            sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
+            sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
+            sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
+            sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+        }
+
         horizontalAxis.setChecked(settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS));
         if (timerSides.getSelectedIndex() == 0.25f) {
             timerSides.setSelectedIndex(0);
@@ -214,6 +224,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
+                host.saveFiles.setInteger("level1", GameData.DEFAULT_LEVEL);
             }
 
         });
@@ -235,6 +246,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
+                host.saveFiles.setInteger("level2", GameData.DEFAULT_LEVEL);
             }
 
         });
@@ -256,6 +268,7 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
+                host.saveFiles.setInteger("level3", GameData.DEFAULT_LEVEL);
             }
 
         });
@@ -316,6 +329,7 @@ public class SettingsScreen implements Screen {
                 clearProfile2.setVisible(true);
                 clearProfile3.setVisible(true);
                 horizontalAxis.setVisible(true);
+                useChair.setVisible(true);
             }
 
         });
@@ -376,6 +390,7 @@ public class SettingsScreen implements Screen {
                 clearProfile2.setVisible(false);
                 clearProfile3.setVisible(false);
                 horizontalAxis.setVisible(false);
+                useChair.setVisible(false);
             }
 
         });
@@ -431,10 +446,18 @@ public class SettingsScreen implements Screen {
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
                 //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
-                settings.setFloat("sensitivityRight", sliderR.getValue()*0.5f);
-                settings.setFloat("sensitivityLeft", sliderL.getValue()*0.5f);
-                settings.setFloat("sensitivityUp", sliderU.getValue()*0.7f);
-                settings.setFloat("sensitivityDown", sliderD.getValue()*0.3f);
+                if (useChair.isChecked()) {
+                    settings.setFloat("sensitivityRight", sliderR.getValue()*0.5f);
+                    settings.setFloat("sensitivityLeft", sliderL.getValue()*0.5f);
+                    settings.setFloat("sensitivityUp", sliderU.getValue()*0.7f);
+                    settings.setFloat("sensitivityDown", sliderD.getValue()*0.3f);
+                } else {
+                    settings.setFloat("sensitivityRight", sliderR.getValue());
+                    settings.setFloat("sensitivityLeft", sliderL.getValue());
+                    settings.setFloat("sensitivityUp", sliderU.getValue());
+                    settings.setFloat("sensitivityDown", sliderD.getValue());
+                }
+
                 settings.setInteger("rowLength", sliderRow.getSelectedIndex()+3);
                 settings.setInteger("sameAttributes", sliderAttribute.getSelectedIndex());
                 settings.setBoolean("assets", sliderA.isChecked());
@@ -447,6 +470,7 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("soundEffects", soundEffects.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("horizontalAxis", horizontalAxis.isChecked());
+                settings.setBoolean("useChair", useChair.isChecked());
                 if (timerSides.getSelectedIndex() == 0) {
                     settings.setFloat("timerSides", timerSides.getSelectedIndex() + 0.25f);
                 } else {
@@ -750,6 +774,13 @@ public class SettingsScreen implements Screen {
         stage.addActor(horizontalAxis);
     }
 
+    public void useChair() {
+        useChair = new CheckBox("Use Chair", mySkin);
+        useChair.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        useChair.setPosition(col_width*5 - useChair.getWidth()/2, row_height * 0.5f);
+        stage.addActor(useChair);
+    }
+
     public void hideSettings() {
         sliderR.setVisible(false);
         sliderL.setVisible(false);
@@ -786,6 +817,7 @@ public class SettingsScreen implements Screen {
         clearProfile2.setVisible(false);
         clearProfile3.setVisible(false);
         horizontalAxis.setVisible(false);
+        useChair.setVisible(false);
     }
 
     @Override

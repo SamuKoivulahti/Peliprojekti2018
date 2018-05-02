@@ -182,7 +182,7 @@ public class MainScreen implements Screen {
     @Override
     public void show() {
         host.updateSettings();
-        host.gameData.setLevel(0);
+        host.gameData.setLevel(1);
         host.gameData.setPoints(0);
 
         Settings settings = Settings.getInstance();

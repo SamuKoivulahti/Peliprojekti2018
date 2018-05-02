@@ -131,5 +131,7 @@ public class GameData {
     public static final float DEFAULT_TIMER_UP = 3f;
     public static final float DEFAULT_TIMER_DOWN = 1f;
     public static final int DEFAULT_POINTS = 0;
+    public static final int DEFAULT_LEVEL = 1;
     public static final boolean DEFAULT_HORIZONTAL_AXIS = false;
+    public static final boolean DEFAULT_USE_CHAIR = false;
 }

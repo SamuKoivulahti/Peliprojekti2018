@@ -42,6 +42,7 @@ public class IntermissionScreen implements Screen {
     float elapsedTime;
     Settings settings;
     int points;
+    int level;
     GameData gameData;
     SaveFiles saveFiles;
 
@@ -63,12 +64,16 @@ public class IntermissionScreen implements Screen {
 
         if (game.gameData.getProfileUsed() == 1) {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
+            level = game.saveFiles.getInteger("level1", GameData.DEFAULT_LEVEL);
         } else if (game.gameData.getProfileUsed() == 2) {
             points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
+            level = game.saveFiles.getInteger("level2", GameData.DEFAULT_LEVEL);
         } else if (game.gameData.getProfileUsed() == 3) {
             points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
+            level = game.saveFiles.getInteger("level3", GameData.DEFAULT_LEVEL);
         } else if (game.gameData.getProfileUsed() == 0) {
             points = game.gameData.getPoints();
+            level = game.gameData.getLevel();
         }
 
         textPrint();
@@ -81,7 +86,7 @@ public class IntermissionScreen implements Screen {
         loseText.setPosition(width/2 - loseText.getWidth()/2, height/2 - loseText.getHeight() / 2);
         pointsText = new Label("points: " + points, mySkin);
         pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
-        levelText = new Label("Level " + game.gameData.getLevel(), mySkin, "big");
+        levelText = new Label("Level " + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
@@ -195,7 +200,7 @@ public class IntermissionScreen implements Screen {
                 settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel()) {
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel() && gameData.getProfileUsed() == 0) {
             if (anyInput()) {
                 gameEnd = true;
                 gameEndText.setVisible(true);
@@ -234,6 +239,17 @@ public class IntermissionScreen implements Screen {
     public void hide() {
         dispose();
         Gdx.input.setCatchBackKey(false);
+        if (game.gameData.getProfileUsed() == 1) {
+            game.saveFiles.setInteger("level1", level +1);
+        } else if (game.gameData.getProfileUsed() == 2) {
+            game.saveFiles.setInteger("level2",level +1);
+        } else if (game.gameData.getProfileUsed() == 3) {
+            game.saveFiles.setInteger("level3", level +1);
+        } else if (game.gameData.getProfileUsed() == 0) {
+            game.gameData.setLevel(game.gameData.getLevel() + 1);
+        }
+        game.saveFiles.saveNewFiles();
+
     }
 
     @Override
