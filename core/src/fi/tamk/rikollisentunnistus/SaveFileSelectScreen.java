@@ -63,6 +63,7 @@ public class SaveFileSelectScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(1);
+                SoundManager.stopMenuMusic();
                 game.setCriminalScreen();
             }
 
@@ -85,6 +86,7 @@ public class SaveFileSelectScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(2);
+                SoundManager.stopMenuMusic();
                 game.setCriminalScreen();
             }
 
@@ -107,6 +109,7 @@ public class SaveFileSelectScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.gameData.setProfileUsed(3);
+                SoundManager.stopMenuMusic();
                 game.setCriminalScreen();
             }
 

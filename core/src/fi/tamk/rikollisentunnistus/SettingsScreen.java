@@ -2,6 +2,7 @@ package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -463,6 +464,7 @@ public class SettingsScreen implements Screen {
                 } else {
                     settings.setFloat("timerDown", timerDown.getSelectedIndex());
                 }
+                SoundManager.changeVolume(settings.getFloat("volume", 50)/100f);
                 settings.saveSettings();
                 host.updateSettings();
                 host.controls.updateControls();

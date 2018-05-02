@@ -169,6 +169,7 @@ public class CriminalScreen implements Screen {
 
     @Override
     public void show() {
+        SoundManager.playIngameMusic();
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);
     }

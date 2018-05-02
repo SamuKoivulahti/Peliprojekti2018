@@ -97,6 +97,7 @@ public class MainScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("MainScreen", "Play");
+                SoundManager.stopMenuMusic();
                 host.gameData.setProfileUsed(0);
                 host.setCriminalScreen();
             }
@@ -183,6 +184,11 @@ public class MainScreen implements Screen {
         host.updateSettings();
         host.gameData.setLevel(0);
         host.gameData.setPoints(0);
+
+        Settings settings = Settings.getInstance();
+
+        SoundManager.changeVolume(settings.getFloat("volume", 50)/100f);
+        SoundManager.playMenuMusic();
 
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);

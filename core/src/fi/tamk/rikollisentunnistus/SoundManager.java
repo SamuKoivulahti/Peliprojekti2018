@@ -19,8 +19,9 @@ public class SoundManager {
     private static Sound buttonUpSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonpush.wav"));
     private static Sound clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/pew.wav"));
 
-    private static Music menuMusic;
-    private static Music ingameMusic;
+    private static Music menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/spyglass.mp3"));
+    private static Music ingameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/bossaantigua.mp3"));
+    private static Music lastCutSceneMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/hepcats.mp3"));
 
     public static void playChangeSelectionSound(boolean soundEffectsOn) {
         if (soundEffectsOn) {
@@ -82,6 +83,51 @@ public class SoundManager {
     public static void playClickSound(boolean soundEffectsOn) {
         if (soundEffectsOn) {
             clickSound.play();
+        }
+    }
+
+    public static void changeVolume(float volume) {
+        menuMusic.setVolume(volume);
+        ingameMusic.setVolume(volume);
+        lastCutSceneMusic.setVolume(volume);
+    }
+
+    public static void playMenuMusic() {
+        if (!menuMusic.isPlaying()) {
+            menuMusic.setLooping(true);
+            menuMusic.play();
+        }
+    }
+
+    public static void stopMenuMusic() {
+        if (menuMusic.isPlaying()) {
+            menuMusic.stop();
+        }
+    }
+
+    public static void playIngameMusic() {
+        if (!ingameMusic.isPlaying()) {
+            ingameMusic.setLooping(true);
+            ingameMusic.play();
+        }
+    }
+
+    public static void stopIngameMusic() {
+        if (ingameMusic.isPlaying()) {
+            ingameMusic.stop();
+        }
+    }
+
+    public static void playLastCutsceneMusic () {
+        if (!lastCutSceneMusic.isPlaying()) {
+            lastCutSceneMusic.setLooping(true);
+            lastCutSceneMusic.play();
+        }
+    }
+
+    public static void stopLastCutsceneMusic() {
+        if (lastCutSceneMusic.isPlaying()) {
+            lastCutSceneMusic.stop();
         }
     }
 }

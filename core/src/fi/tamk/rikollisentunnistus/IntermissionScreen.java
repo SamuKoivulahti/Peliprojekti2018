@@ -210,6 +210,7 @@ public class IntermissionScreen implements Screen {
 
             if (gameEnd && timer(1) && anyInput()) {
                 game.setMainScreen();
+                SoundManager.stopIngameMusic();
             }
         }
     }
