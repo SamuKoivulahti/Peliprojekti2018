@@ -52,18 +52,32 @@ checkbox-off
   orig: 43, 42
   offset: 0, 0
   index: -1
-font-big-export
+old-font-big-export
   rotate: false
   xy: 1, 616
   size: 341, 350
   orig: 341, 350
   offset: 0, 0
   index: -1
-font-export
+old-font-export
   rotate: false
   xy: 1, 341
   size: 116, 117
   orig: 116, 117
+  offset: 0, 0
+  index: -1
+font-big-export
+  rotate: false
+  xy: 662, 416
+  size: 275, 510
+  orig: 275, 510
+  offset: 0, 0
+  index: -1
+font-export
+  rotate: false
+  xy: 105, 25
+  size: 94, 316
+  orig: 94, 316
   offset: 0, 0
   index: -1
 horizontal-scroll-bar
