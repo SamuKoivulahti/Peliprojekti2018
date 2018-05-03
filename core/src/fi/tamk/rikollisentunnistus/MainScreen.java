@@ -5,13 +5,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -62,7 +66,7 @@ public class MainScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        TextButton play = new TextButton("PLAY",mySkin,"small");
+        final TextButton play = new TextButton(host.texts.get(1),mySkin,"small");
         play.setSize(col_width*1.8f,row_height*1.5f);
         play.setPosition(col_width * 0.5f,row_height/2);
         play.addListener(new ClickListener(){
@@ -82,7 +86,7 @@ public class MainScreen implements Screen {
         });
 
 
-        TextButton freePlay = new TextButton("FREE PLAY",mySkin,"small");
+        final TextButton freePlay = new TextButton(host.texts.get(2),mySkin,"small");
         freePlay.setSize(col_width*1.8f,row_height*1.5f);
         freePlay.setPosition(col_width * 2.8f,row_height/2);
         freePlay.addListener(new ClickListener(){
@@ -104,7 +108,7 @@ public class MainScreen implements Screen {
 
         });
 
-        TextButton settings = new TextButton("Settings",mySkin,"small");
+        final TextButton settings = new TextButton(host.texts.get(3),mySkin,"small");
         settings.setSize(col_width*1.8f,row_height*1.5f);
         settings.setPosition(col_width * 5.1f,row_height/2);
         settings.addListener(new ClickListener(){
@@ -123,7 +127,7 @@ public class MainScreen implements Screen {
 
         });
 
-        TextButton exit = new TextButton("Exit",mySkin,"small");
+        final TextButton exit = new TextButton(host.texts.get(5),mySkin,"small");
         exit.setSize(col_width*1.8f,row_height*1.5f);
         exit.setPosition(col_width * 9.7f,row_height/2);
         exit.addListener(new ClickListener(){
@@ -141,7 +145,7 @@ public class MainScreen implements Screen {
 
         });
 
-        final TextButton tutorialButton = new TextButton("Controls",mySkin,"small");
+        final TextButton tutorialButton = new TextButton(host.texts.get(4),mySkin,"small");
         tutorialButton.setSize(col_width*1.8f,row_height*1.5f);
         tutorialButton.setPosition(col_width * 7.4f,row_height/2);
         tutorialButton.addListener(new ClickListener(){
@@ -156,14 +160,61 @@ public class MainScreen implements Screen {
                 if (tutorial.isVisible()) {
                     tutorial.setVisible(false);
                     tutorialButton.setPosition(col_width * 7.4f,row_height/2);
-                    tutorialButton.setText("Controls");
+                    tutorialButton.setText(host.texts.get(4));
                     Gdx.app.log("MainScreen", "back");
                 } else {
                     tutorial.setVisible(true);
                     tutorialButton.setPosition(col_width*3.5f,row_height/2);
-                    tutorialButton.setText("Back");
+                    tutorialButton.setText(host.texts.get(6));
                     Gdx.app.log("MainScreen", "tutorial");
                 }
+            }
+
+        });
+
+
+        final ImageButton finnishButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("finnishFlag.png"))));
+        finnishButton.setSize(col_width*1.5f,row_height*1.5f);
+        finnishButton.setPosition(0,height-finnishButton.getHeight());
+        finnishButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                host.updateLanguage("FI");
+                play.setText(host.texts.get(1));
+                freePlay.setText(host.texts.get(2));
+                settings.setText(host.texts.get(3));
+                tutorialButton.setText(host.texts.get(4));
+                exit.setText(host.texts.get(5));
+
+
+            }
+
+        });
+
+        final ImageButton englishButton= new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("britainFlag.png"))));
+        englishButton.setSize(col_width*1.5f,row_height*1.5f);
+        englishButton.setPosition(englishButton.getWidth(),height-englishButton.getHeight());
+        englishButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                SoundManager.playButtonPushSound(host.soundEffectsOn);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                host.updateLanguage("EN");
+                play.setText(host.texts.get(1));
+                freePlay.setText(host.texts.get(2));
+                settings.setText(host.texts.get(3));
+                tutorialButton.setText(host.texts.get(4));
+                exit.setText(host.texts.get(5));
             }
 
         });
@@ -174,6 +225,8 @@ public class MainScreen implements Screen {
         stage.addActor(freePlay);
         stage.addActor(settings);
         stage.addActor(exit);
+        stage.addActor(finnishButton);
+        stage.addActor(englishButton);
         stage.addActor(tutorial);
         stage.addActor(tutorialButton);
 

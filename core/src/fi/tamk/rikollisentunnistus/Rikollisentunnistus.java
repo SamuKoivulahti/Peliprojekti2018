@@ -5,10 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class Rikollisentunnistus extends Game {
     CriminalScreen criminalScreen;
@@ -37,6 +40,8 @@ public class Rikollisentunnistus extends Game {
 	boolean useDifficulty;
 	boolean increasingDifficulty;
 
+	public ArrayList<String> texts;
+
 	@Override
 	public void create () {
         splashScreen = new SplashScreen(this);
@@ -45,6 +50,7 @@ public class Rikollisentunnistus extends Game {
         controls = new Controls();
         gameData = new GameData();
         saveFiles = new SaveFiles();
+        language();
 
         mainScreen = new MainScreen(this);
         settingsScreen = new SettingsScreen(this);
@@ -65,6 +71,50 @@ public class Rikollisentunnistus extends Game {
 
         //setScreen(mainScreen);
 	}
+
+	public void updateLanguage(String language) {
+	    Locale locale;
+	    if (language.equals("FI")) {
+	        locale = new Locale("fi", "FI");
+        } else {
+	        locale = new Locale("en", "US");
+        }
+
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        texts = new ArrayList<String>();
+        int i = 0;
+
+        while (true) {
+            try {
+                myBundle.get(Integer.toString(i));
+                texts.add(myBundle.get(Integer.toString(i)));
+                i++;
+            } catch (Exception e) {
+                break;
+            }
+        }
+
+        settingsScreen = new SettingsScreen(this);
+    }
+
+	public void language() {
+        Locale locale = new Locale("fi", "FI");
+        Locale defaultLocale = Locale.getDefault();
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        texts = new ArrayList<String>();
+        int i = 0;
+
+        while (true) {
+            try {
+                myBundle.get(Integer.toString(i));
+                texts.add(myBundle.get(Integer.toString(i)));
+                i++;
+            } catch (Exception e) {
+                break;
+            }
+        }
+
+    }
 
     public void updateSettings() {
         Settings settings = Settings.getInstance();

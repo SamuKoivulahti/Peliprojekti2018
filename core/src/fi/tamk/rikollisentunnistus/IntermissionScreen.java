@@ -78,21 +78,21 @@ public class IntermissionScreen implements Screen {
     }
 
     public void textPrint() {
-        winText = new Label("Correct!", mySkin, "big");
+        winText = new Label(game.texts.get(19), mySkin, "big");
         winText.setPosition(width/2 - winText.getWidth()/2, height/2 - winText.getHeight() / 2);
-        loseText = new Label("Wrong!", mySkin, "big");
+        loseText = new Label(game.texts.get(18), mySkin, "big");
         loseText.setPosition(width/2 - loseText.getWidth()/2, height/2 - loseText.getHeight() / 2);
-        pointsText = new Label("points: " + points, mySkin);
+        pointsText = new Label(game.texts.get(11) + points, mySkin);
         pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
-        levelText = new Label("Level " + level, mySkin, "big");
+        levelText = new Label(game.texts.get(10) + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
-        gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
+        gameEndText = new Label(game.texts.get(41)+ game.gameData.getPoints() + " " + game.texts.get(42), mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
-        moveForwardText = new Label("Continue by tapping the screen or leaning to any direction", mySkin);
+        moveForwardText = new Label(game.texts.get(20), mySkin);
         moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2, height/100);
-        correctCriminalText = new Label("Correct criminal", mySkin);
+        correctCriminalText = new Label(game.texts.get(17), mySkin);
         correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2, height*7/9f);
-        chosenCriminalText = new Label("Your choice", mySkin);
+        chosenCriminalText = new Label(game.texts.get(16), mySkin);
         chosenCriminalText.setPosition(width*2/9 - chosenCriminalText.getWidth()/2, height*7/9f);
 
         chosenCriminal = game.gameData.getChosenCriminal();

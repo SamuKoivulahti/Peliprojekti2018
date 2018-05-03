@@ -118,19 +118,19 @@ public class RowScreen implements Screen {
             level = game.gameData.getLevel();
         }
 
-        pointsText = new Label("Points: " + points, mySkin, "big");
+        pointsText = new Label(game.texts.get(11)+ points, mySkin, "big");
         pointsText.setFontScale(0.5f);
         pointsText.setPosition(width - pointsText.getWidth()*0.5f - width/100, height - pointsText.getHeight());
-        levelText = new Label("Level " + level, mySkin, "big");
+        levelText = new Label(game.texts.get(10) + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 11);
         levelText.setColor(Color.BLACK);
 
-        savedText = new Label("Saved!", mySkin, "big");
+        savedText = new Label(game.texts.get(39), mySkin, "big");
         savedText.setPosition(width/2 - savedText.getWidth()/2, row_height/2);
         savedText.setAlignment(Align.center);
         savedText.setVisible(false);
 
-        calibratedText = new Label("Calibrated!", mySkin, "big");
+        calibratedText = new Label(game.texts.get(40), mySkin, "big");
         calibratedText.setPosition(width/2 - calibratedText.getWidth()/2, row_height/2);
         calibratedText.setAlignment(Align.center);
         calibratedText.setVisible(false);
@@ -162,12 +162,12 @@ public class RowScreen implements Screen {
     }
 
     public void createPauseWindow () {
-        pauseWindow = new Window("Pause", mySkin);
+        pauseWindow = new Window(game.texts.get(43), mySkin);
         pauseWindow.setVisible(false);
         pauseWindow.setResizable(false);
         pauseWindow.setMovable(false);
 
-        TextButton continueButton = new TextButton("Continue", mySkin);
+        TextButton continueButton = new TextButton(game.texts.get(12), mySkin);
         continueButton.addListener(
             new ClickListener() {
                 @Override
@@ -183,7 +183,7 @@ public class RowScreen implements Screen {
 
             });
 
-        TextButton exitButton = new TextButton("Exit to Main Menu", mySkin);
+        TextButton exitButton = new TextButton(game.texts.get(15), mySkin);
         exitButton.addListener(
             new ClickListener() {
                 @Override
@@ -201,7 +201,7 @@ public class RowScreen implements Screen {
 
             });
 
-        TextButton calibrateButton = new TextButton("Calibrate", mySkin);
+        TextButton calibrateButton = new TextButton(game.texts.get(13), mySkin);
         calibrateButton.addListener(
             new ClickListener() {
                 @Override
@@ -222,12 +222,12 @@ public class RowScreen implements Screen {
             });
 
 
-        sensitivityWindow = new Window("Sensitivity", mySkin);
+        sensitivityWindow = new Window(game.texts.get(14), mySkin);
         sensitivityWindow.setVisible(false);
         sensitivityWindow.setResizable(false);
         sensitivityWindow.setMovable(false);
 
-        TextButton sensitivityButton = new TextButton("Sensitivity", mySkin);
+        TextButton sensitivityButton = new TextButton(game.texts.get(14), mySkin);
         sensitivityButton.addListener(
             new ClickListener() {
                 @Override
@@ -268,7 +268,7 @@ public class RowScreen implements Screen {
 
             });
 
-        TextButton saveButton = new TextButton("Save", mySkin);
+        TextButton saveButton = new TextButton(game.texts.get(22), mySkin);
         saveButton.addListener(
             new ClickListener() {
                 @Override
@@ -313,7 +313,7 @@ public class RowScreen implements Screen {
 
             });
 
-        TextButton cancelButton = new TextButton("Cancel", mySkin);
+        TextButton cancelButton = new TextButton(game.texts.get(44), mySkin);
         cancelButton.addListener(
             new ClickListener() {
                 @Override

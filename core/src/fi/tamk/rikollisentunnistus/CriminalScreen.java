@@ -86,7 +86,11 @@ public class CriminalScreen implements Screen {
         frameMoveUp.setDuration(0.6f);
         criminalFrame.addAction(frameMoveUp);
 
-        criminalText = new Image(new Texture("textimages/en_criminalscreentext.png"));
+        if (game.texts.get(0).equals("FI")) {
+            criminalText = new Image(new Texture("textimages/fi_criminalscreentext.png"));
+        } else {
+            criminalText = new Image(new Texture("textimages/en_criminalscreentext.png"));
+        }
         criminalText.setPosition((width - criminalText.getWidth())/2, -height - 79);
         MoveToAction textMoveUp = new MoveToAction();
         textMoveUp.setPosition((width - criminalText.getWidth())/2, height/6 - 79);

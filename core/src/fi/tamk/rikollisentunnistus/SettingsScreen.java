@@ -109,15 +109,15 @@ public class SettingsScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        calibrateText = new Label("Sensitivity", mySkin, "big");
+        calibrateText = new Label(host.texts.get(14), mySkin, "big");
         calibrateText.setPosition(col_width*5 - calibrateText.getWidth()/2, row_height * 13);
 
-        savedText = new Label("Saved!", mySkin, "big");
+        savedText = new Label(host.texts.get(39), mySkin, "big");
         savedText.setPosition(col_width - savedText.getWidth()/2, row_height*2);
         savedText.setAlignment(Align.center);
         savedText.setVisible(false);
 
-        calibratedText = new Label("Calibrated!", mySkin, "big");
+        calibratedText = new Label(host.texts.get(40), mySkin, "big");
         calibratedText.setPosition(col_width*1.5f - calibratedText.getWidth()/2, row_height*2);
         calibratedText.setAlignment(Align.center);
         calibratedText.setVisible(false);
@@ -211,7 +211,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void clearProfile1Button () {
-        clearProfile1 = new TextButton("Clear Profile 1",mySkin,"small");
+        clearProfile1 = new TextButton(host.texts.get(21) + " 1",mySkin,"small");
         clearProfile1.setSize(col_width*2,row_height*2);
         clearProfile1.setPosition(0,row_height*10);
         clearProfile1.addListener(new ClickListener(){
@@ -233,7 +233,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void clearProfile2Button () {
-        clearProfile2 = new TextButton("Clear Profile 2",mySkin,"small");
+        clearProfile2 = new TextButton(host.texts.get(21) + " 2",mySkin,"small");
         clearProfile2.setSize(col_width*2,row_height*2);
         clearProfile2.setPosition(0,row_height* 7.5f);
         clearProfile2.addListener(new ClickListener(){
@@ -255,7 +255,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void clearProfile3Button () {
-        clearProfile3 = new TextButton("Clear Profile 3",mySkin,"small");
+        clearProfile3 = new TextButton(host.texts.get(21) + " 3",mySkin,"small");
         clearProfile3.setSize(col_width*2,row_height*2);
         clearProfile3.setPosition(0, row_height*5);
         clearProfile3.addListener(new ClickListener(){
@@ -277,7 +277,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void gameSettingsButton() {
-        general = new TextButton("General Settings",mySkin,"small");
+        general = new TextButton(host.texts.get(8),mySkin,"small");
         general.setHeight(row_height*2);
         general.setPosition(width/3*2 - general.getWidth()/2,height/2 - general.getHeight());
         general.addListener(new ClickListener(){
@@ -289,7 +289,7 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                back.setText("Back");
+                back.setText(host.texts.get(6));
                 sliderRound.setVisible(false);
                 roundsText.setVisible(false);
                 sliderA.setVisible(false);
@@ -338,7 +338,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void freePlaySettingsButton() {
-        freePlay = new TextButton("Free Play Settings",mySkin,"small");
+        freePlay = new TextButton(host.texts.get(9),mySkin,"small");
         freePlay.setHeight(row_height*2);
         freePlay.setPosition(width/3 - freePlay.getWidth()/2,height/2 - freePlay.getHeight());
         freePlay.addListener(new ClickListener(){
@@ -350,7 +350,7 @@ public class SettingsScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                back.setText("Back");
+                back.setText(host.texts.get(6));
                 freePlay.setVisible(false);
                 general.setVisible(false);
                 sliderRound.setVisible(true);
@@ -399,7 +399,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonBack() {
-        back = new TextButton("Main Menu",mySkin,"small");
+        back = new TextButton(host.texts.get(7),mySkin,"small");
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
@@ -419,7 +419,7 @@ public class SettingsScreen implements Screen {
                     freePlay.setVisible(true);
                     general.setVisible(true);
                     save.setVisible(false);
-                    back.setText("Main Menu");
+                    back.setText(host.texts.get(7));
                     settingValues();
                 }
             }
@@ -430,7 +430,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonSave() {
-        save = new TextButton("SAVE",mySkin);
+        save = new TextButton(host.texts.get(22),mySkin);
         save.setSize(col_width*2,row_height*2);
         save.setPosition(0,0);
         save.addListener(new ClickListener(){
@@ -505,7 +505,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonCalibrate() {
-        calibrate = new TextButton("Calibrate", mySkin, "small");
+        calibrate = new TextButton(host.texts.get(13), mySkin, "small");
         calibrate.setSize(selectBoxSize*2, row_height*2);
         calibrate.setPosition(col_width*5 - calibrate.getWidth()/2, row_height * 2);
         calibrate.addListener(new ClickListener(){
@@ -610,7 +610,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void assetSlider() {
-        sliderA = new CheckBox("Accessories", mySkin);
+        sliderA = new CheckBox(host.texts.get(36), mySkin);
         sliderA.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         sliderA.setPosition(col_width *8 + (selectBoxSize *2 - sliderA.getWidth())/ 2, row_height * 10);
         stage.addActor(sliderA);
@@ -622,7 +622,7 @@ public class SettingsScreen implements Screen {
         sliderRow.setItems(array);
         sliderRow.setWidth(selectBoxSize *2);
         sliderRow.setPosition(col_width *8, row_height * 7);
-        rowLengthText = new Label("Rows Length", mySkin,"big");
+        rowLengthText = new Label(host.texts.get(37), mySkin,"big");
         rowLengthText.setPosition(col_width *8 + (selectBoxSize*1.5f) - rowLengthText.getWidth()/2, row_height *8.5f);
         rowLengthText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRow);
@@ -635,7 +635,7 @@ public class SettingsScreen implements Screen {
         waitingTime.setItems(array);
         waitingTime.setWidth(selectBoxSize *2);
         waitingTime.setPosition(col_width*3, row_height * 12);
-        selectionWaitingTimeText = new Label("Waiting Time", mySkin, "big");
+        selectionWaitingTimeText = new Label(host.texts.get(30), mySkin, "big");
         selectionWaitingTimeText.setPosition(col_width *3 + (selectBoxSize*1.5f) - selectionWaitingTimeText.getWidth()/2, row_height *13.5f);
         selectionWaitingTimeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(waitingTime);
@@ -648,7 +648,7 @@ public class SettingsScreen implements Screen {
         faceShown.setItems(array);
         faceShown.setWidth(selectBoxSize *2);
         faceShown.setPosition(col_width * 3, row_height *9);
-        faceShownText = new Label("Face Shown", mySkin, "big");
+        faceShownText = new Label(host.texts.get(31), mySkin, "big");
         faceShownText.setPosition(col_width * 3 + selectBoxSize*1.5f - faceShownText.getWidth()/2, row_height * 10.5f);
         faceShownText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(faceShown);
@@ -661,7 +661,7 @@ public class SettingsScreen implements Screen {
         sliderAttribute.setItems(array);
         sliderAttribute.setWidth(selectBoxSize *2);
         sliderAttribute.setPosition(col_width *8, row_height * 4);
-        sameAttributesText = new Label("Same Attributes", mySkin, "big");
+        sameAttributesText = new Label(host.texts.get(38), mySkin, "big");
         sameAttributesText.setPosition(col_width *8 + (selectBoxSize*1.5f) - sameAttributesText.getWidth()/2, row_height *5.5f);
         sameAttributesText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderAttribute);
@@ -674,7 +674,7 @@ public class SettingsScreen implements Screen {
         sliderRound.setItems(array);
         sliderRound.setWidth(selectBoxSize *2);
         sliderRound.setPosition(col_width *8, row_height * 12);
-        roundsText = new Label("Round Amount", mySkin, "big");
+        roundsText = new Label(host.texts.get(35), mySkin, "big");
         roundsText.setPosition(col_width *8 + (selectBoxSize*1.5f) - roundsText.getWidth()/2, row_height *13.5f);
         roundsText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRound);
@@ -687,7 +687,7 @@ public class SettingsScreen implements Screen {
         sliderStaringDifficulty.setItems(array);
         sliderStaringDifficulty.setWidth(selectBoxSize *2);
         sliderStaringDifficulty.setPosition(col_width *3, row_height * 3);
-        startingDifficultyText = new Label("Starting Difficulty", mySkin, "big");
+        startingDifficultyText = new Label(host.texts.get(34), mySkin, "big");
         startingDifficultyText.setPosition(col_width *3 + (selectBoxSize*1.5f) - startingDifficultyText.getWidth()/2, row_height *4.5f);
         startingDifficultyText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderStaringDifficulty);
@@ -695,14 +695,14 @@ public class SettingsScreen implements Screen {
     }
 
     public void useDifficultySlider() {
-        sliderUseDifficulty = new CheckBox("Use Difficulty", mySkin);
+        sliderUseDifficulty = new CheckBox(host.texts.get(32), mySkin);
         sliderUseDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         sliderUseDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderUseDifficulty.getWidth())/ 2, row_height * 7);
         stage.addActor(sliderUseDifficulty);
     }
 
     public void increasingDifficultySlider() {
-        sliderIncreasingDifficulty = new CheckBox("Increasing Difficulty", mySkin);
+        sliderIncreasingDifficulty = new CheckBox(host.texts.get(33), mySkin);
         sliderIncreasingDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         sliderIncreasingDifficulty.setPosition(col_width *3 + (selectBoxSize *2 - sliderIncreasingDifficulty.getWidth())/ 2, row_height * 6);
         stage.addActor(sliderIncreasingDifficulty);
@@ -714,7 +714,7 @@ public class SettingsScreen implements Screen {
         //slider.setAnimateDuration(0.1f);
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
-        volumeText = new Label("Volume", mySkin, "big");
+        volumeText = new Label(host.texts.get(24), mySkin, "big");
         volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()*1.5f/2, row_height *14);
         volumeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderV);
@@ -722,7 +722,7 @@ public class SettingsScreen implements Screen {
     }
 
     public void soundEffects() {
-        soundEffects = new CheckBox("Sound Effects", mySkin);
+        soundEffects = new CheckBox(host.texts.get(25), mySkin);
         soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 11);
         stage.addActor(soundEffects);
@@ -730,11 +730,11 @@ public class SettingsScreen implements Screen {
 
     public void timerSides() {
         timerSides = new SelectBox(mySkin);
-        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
         timerSides.setItems(array);
         timerSides.setWidth(selectBoxSize *2);
         timerSides.setPosition(col_width *8 , row_height * 8);
-        timerSidesText = new Label("Timer Sides", mySkin, "big");
+        timerSidesText = new Label(host.texts.get(26), mySkin, "big");
         timerSidesText.setPosition(col_width *8 + (selectBoxSize) - timerSidesText.getWidth()*0.5f/2, row_height * 9.5f);
         timerSidesText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(timerSides);
@@ -743,11 +743,11 @@ public class SettingsScreen implements Screen {
 
     public void timerUp() {
         timerUp = new SelectBox(mySkin);
-        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
         timerUp.setItems(array);
         timerUp.setWidth(selectBoxSize *2);
         timerUp.setPosition(col_width *8, row_height * 5);
-        timerUpText = new Label("Timer Up", mySkin, "big");
+        timerUpText = new Label(host.texts.get(27), mySkin, "big");
         timerUpText.setPosition(col_width *8 + (selectBoxSize) - timerUpText.getWidth()*0.5f/2, row_height * 6.5f);
         timerUpText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(timerUp);
@@ -756,11 +756,11 @@ public class SettingsScreen implements Screen {
 
     public void timerDown() {
         timerDown = new SelectBox(mySkin);
-        String[] array = {"No Timer", "1", "2", "3", "4", "5"};
+        String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
         timerDown.setItems(array);
         timerDown.setWidth(selectBoxSize *2);
         timerDown.setPosition(col_width *8, row_height * 2);
-        timerDownText = new Label("Timer Down", mySkin, "big");
+        timerDownText = new Label(host.texts.get(28), mySkin, "big");
         timerDownText.setPosition(col_width *8 + (selectBoxSize) - timerDownText.getWidth()*0.5f/2, row_height *3.5f);
         timerDownText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(timerDown);
@@ -768,14 +768,14 @@ public class SettingsScreen implements Screen {
     }
 
     public void horizontalAxis() {
-        horizontalAxis = new CheckBox("Horizontal Axis", mySkin);
+        horizontalAxis = new CheckBox(host.texts.get(29), mySkin);
         horizontalAxis.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         horizontalAxis.setPosition(col_width*8 + selectBoxSize - horizontalAxis.getWidth()/2, row_height * 0.5f);
         stage.addActor(horizontalAxis);
     }
 
     public void useChair() {
-        useChair = new CheckBox("Use Chair", mySkin);
+        useChair = new CheckBox(host.texts.get(23), mySkin);
         useChair.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
         useChair.setPosition(col_width*5 - useChair.getWidth()/2, row_height * 0.5f);
         stage.addActor(useChair);
