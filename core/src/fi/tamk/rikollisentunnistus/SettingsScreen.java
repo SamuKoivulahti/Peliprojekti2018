@@ -278,8 +278,8 @@ public class SettingsScreen implements Screen {
 
     public void gameSettingsButton() {
         general = new TextButton("General Settings",mySkin,"small");
-        general.setSize(col_width*2,row_height*2);
-        general.setPosition(col_width * 3,height/2 - general.getHeight());
+        general.setHeight(row_height*2);
+        general.setPosition(width/3*2 - general.getWidth()/2,height/2 - general.getHeight());
         general.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -339,8 +339,8 @@ public class SettingsScreen implements Screen {
 
     public void freePlaySettingsButton() {
         freePlay = new TextButton("Free Play Settings",mySkin,"small");
-        freePlay.setSize(col_width*2,row_height*2);
-        freePlay.setPosition(col_width * 7,height/2 - freePlay.getHeight());
+        freePlay.setHeight(row_height*2);
+        freePlay.setPosition(width/3 - freePlay.getWidth()/2,height/2 - freePlay.getHeight());
         freePlay.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

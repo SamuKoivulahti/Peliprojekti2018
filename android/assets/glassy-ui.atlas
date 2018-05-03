@@ -7,19 +7,19 @@ repeat: none
 button
   rotate: false
   xy: 1, 508
-  size: 297, 106
+  size: 298, 108
   split: 49, 48, 52, 51
   pad: 28, 27, 7, 7
-  orig: 297, 106
+  orig: 298, 108
   offset: 0, 0
   index: -1
 button-down
   rotate: false
   xy: 344, 860
-  size: 297, 106
+  size: 298, 108
   split: 49, 48, 52, 51
   pad: 28, 27, 7, 7
-  orig: 297, 106
+  orig: 298, 108
   offset: 0, 0
   index: -1
 button-small
@@ -76,8 +76,8 @@ font-big-export
 font-export
   rotate: false
   xy: 119, 264
-  size: 212, 128
-  orig: 212, 128
+  size: 402, 128
+  orig: 402, 128
   offset: 0, 0
   index: -1
 horizontal-scroll-bar
