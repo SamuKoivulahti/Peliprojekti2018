@@ -452,7 +452,7 @@ public class RowScreen implements Screen {
             lose = true;
         }
 
-        if (game.useDifficulty && game.increasingDifficulty) {
+        if (game.useDifficulty && game.increasingDifficulty && game.gameData.getProfileUsed() == 0) {
             game.difficulty++;
         }
 

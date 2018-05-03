@@ -15,8 +15,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  */
 
 public class IntermissionScreen implements Screen {
-    private final float MEDIUM_TEXT_SCALE = 0.5f;
-
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
     private Stage stage;
@@ -90,15 +88,12 @@ public class IntermissionScreen implements Screen {
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
         gameEndText = new Label("Congratulations! You got " + game.gameData.getPoints() + " points!", mySkin, "big");
         gameEndText.setPosition(width/2 - gameEndText.getWidth()/2, row_height*8);
-        moveForwardText = new Label("Continue by tapping the screen or leaning to any direction", mySkin, "big");
-        moveForwardText.setFontScale(MEDIUM_TEXT_SCALE);
-        moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2*MEDIUM_TEXT_SCALE, height/100);
-        correctCriminalText = new Label("Correct criminal", mySkin, "big");
-        correctCriminalText.setFontScale(MEDIUM_TEXT_SCALE);
-        correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2*MEDIUM_TEXT_SCALE, height*7/9f);
-        chosenCriminalText = new Label("Your choice", mySkin, "big");
-        chosenCriminalText.setFontScale(MEDIUM_TEXT_SCALE);
-        chosenCriminalText.setPosition(width*2/9 - chosenCriminalText.getWidth()/2*MEDIUM_TEXT_SCALE, height*7/9f);
+        moveForwardText = new Label("Continue by tapping the screen or leaning to any direction", mySkin);
+        moveForwardText.setPosition(width/2 - moveForwardText.getWidth()/2, height/100);
+        correctCriminalText = new Label("Correct criminal", mySkin);
+        correctCriminalText.setPosition(width*7/9 - correctCriminalText.getWidth()/2, height*7/9f);
+        chosenCriminalText = new Label("Your choice", mySkin);
+        chosenCriminalText.setPosition(width*2/9 - chosenCriminalText.getWidth()/2, height*7/9f);
 
         chosenCriminal = game.gameData.getChosenCriminal();
         correctCriminal = game.gameData.getCorrectCriminal();
