@@ -68,16 +68,16 @@ old-font-export
   index: -1
 font-big-export
   rotate: false
-  xy: 662, 416
-  size: 275, 510
-  orig: 275, 510
+  xy: 65, 0
+  size: 599, 256
+  orig: 599, 256
   offset: 0, 0
   index: -1
 font-export
   rotate: false
-  xy: 105, 25
-  size: 94, 316
-  orig: 94, 316
+  xy: 119, 264
+  size: 212, 128
+  orig: 212, 128
   offset: 0, 0
   index: -1
 horizontal-scroll-bar

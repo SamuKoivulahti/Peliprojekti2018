@@ -200,7 +200,7 @@ public class IntermissionScreen implements Screen {
                 settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
             elapsedTime = 0;
             game.resetAll();
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel() && gameData.getProfileUsed() == 0) {
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel() && game.gameData.getProfileUsed() == 0) {
             if (anyInput()) {
                 gameEnd = true;
                 gameEndText.setVisible(true);

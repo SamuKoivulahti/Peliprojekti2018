@@ -32,6 +32,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
+	orange: {
+		r: 0.9333333333
+		g: 0.615686
+		b: 0.1294117
+		a:1
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	pale-blue: {
@@ -106,14 +112,14 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: font
 		fontColorSelected: white
-		fontColorUnselected: dark-cyan
+		fontColorUnselected: orange
 		selection: pale-blue
 		background: list
 	}
 	plain: {
 		font: font-big
 		fontColorSelected: white
-		fontColorUnselected: dark-cyan
+		fontColorUnselected: orange
 		selection: pale-blue
 	}
 }
@@ -145,7 +151,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
 		font: font-big
-		fontColor: dark-cyan
+		fontColor: orange
 		background: select-box
 		backgroundOpen: select-box-down
 		scrollStyle: scroll
