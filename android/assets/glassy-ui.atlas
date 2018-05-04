@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 button
   rotate: false
-  xy: 1, 508
+  xy: 1, 507
   size: 298, 108
   split: 49, 48, 52, 51
   pad: 28, 27, 7, 7
@@ -15,7 +15,7 @@ button
   index: -1
 button-down
   rotate: false
-  xy: 344, 860
+  xy: 344, 859
   size: 298, 108
   split: 49, 48, 52, 51
   pad: 28, 27, 7, 7

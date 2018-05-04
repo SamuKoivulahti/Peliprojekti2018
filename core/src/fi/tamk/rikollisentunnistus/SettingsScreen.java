@@ -212,7 +212,7 @@ public class SettingsScreen implements Screen {
 
     public void clearProfile1Button () {
         clearProfile1 = new TextButton(host.texts.get(21) + " 1",mySkin,"small");
-        clearProfile1.setSize(col_width*2,row_height*2);
+        clearProfile1.setHeight(row_height*2);
         clearProfile1.setPosition(0,row_height*10);
         clearProfile1.addListener(new ClickListener(){
             @Override
@@ -225,6 +225,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level1", GameData.DEFAULT_LEVEL);
+                host.saveFiles.remove1();
             }
 
         });
@@ -234,7 +235,7 @@ public class SettingsScreen implements Screen {
 
     public void clearProfile2Button () {
         clearProfile2 = new TextButton(host.texts.get(21) + " 2",mySkin,"small");
-        clearProfile2.setSize(col_width*2,row_height*2);
+        clearProfile2.setHeight(row_height*2);
         clearProfile2.setPosition(0,row_height* 7.5f);
         clearProfile2.addListener(new ClickListener(){
             @Override
@@ -247,6 +248,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level2", GameData.DEFAULT_LEVEL);
+                host.saveFiles.remove2();
             }
 
         });
@@ -256,7 +258,7 @@ public class SettingsScreen implements Screen {
 
     public void clearProfile3Button () {
         clearProfile3 = new TextButton(host.texts.get(21) + " 3",mySkin,"small");
-        clearProfile3.setSize(col_width*2,row_height*2);
+        clearProfile3.setHeight(row_height*2);
         clearProfile3.setPosition(0, row_height*5);
         clearProfile3.addListener(new ClickListener(){
             @Override
@@ -269,6 +271,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level3", GameData.DEFAULT_LEVEL);
+                host.saveFiles.remove3();
             }
 
         });
@@ -431,7 +434,7 @@ public class SettingsScreen implements Screen {
 
     public void buttonSave() {
         save = new TextButton(host.texts.get(22),mySkin);
-        save.setSize(col_width*2,row_height*2);
+        save.setHeight(row_height*2);
         save.setPosition(0,0);
         save.addListener(new ClickListener(){
             @Override
@@ -623,7 +626,7 @@ public class SettingsScreen implements Screen {
         sliderRow.setWidth(selectBoxSize *2);
         sliderRow.setPosition(col_width *8, row_height * 7);
         rowLengthText = new Label(host.texts.get(37), mySkin,"big");
-        rowLengthText.setPosition(col_width *8 + (selectBoxSize*1.5f) - rowLengthText.getWidth()/2, row_height *8.5f);
+        rowLengthText.setPosition(col_width *8 + (selectBoxSize) - rowLengthText.getWidth()*0.5f/2, row_height *8.5f);
         rowLengthText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRow);
         stage.addActor(rowLengthText);
@@ -636,7 +639,7 @@ public class SettingsScreen implements Screen {
         waitingTime.setWidth(selectBoxSize *2);
         waitingTime.setPosition(col_width*3, row_height * 12);
         selectionWaitingTimeText = new Label(host.texts.get(30), mySkin, "big");
-        selectionWaitingTimeText.setPosition(col_width *3 + (selectBoxSize*1.5f) - selectionWaitingTimeText.getWidth()/2, row_height *13.5f);
+        selectionWaitingTimeText.setPosition(col_width *3 + (selectBoxSize) - selectionWaitingTimeText.getWidth()*0.5f/2, row_height *13.5f);
         selectionWaitingTimeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(waitingTime);
         stage.addActor(selectionWaitingTimeText);
@@ -649,7 +652,7 @@ public class SettingsScreen implements Screen {
         faceShown.setWidth(selectBoxSize *2);
         faceShown.setPosition(col_width * 3, row_height *9);
         faceShownText = new Label(host.texts.get(31), mySkin, "big");
-        faceShownText.setPosition(col_width * 3 + selectBoxSize*1.5f - faceShownText.getWidth()/2, row_height * 10.5f);
+        faceShownText.setPosition(col_width * 3 + selectBoxSize - faceShownText.getWidth()*0.5f/2, row_height * 10.5f);
         faceShownText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(faceShown);
         stage.addActor(faceShownText);
@@ -662,7 +665,7 @@ public class SettingsScreen implements Screen {
         sliderAttribute.setWidth(selectBoxSize *2);
         sliderAttribute.setPosition(col_width *8, row_height * 4);
         sameAttributesText = new Label(host.texts.get(38), mySkin, "big");
-        sameAttributesText.setPosition(col_width *8 + (selectBoxSize*1.5f) - sameAttributesText.getWidth()/2, row_height *5.5f);
+        sameAttributesText.setPosition(col_width *8 + (selectBoxSize) - sameAttributesText.getWidth()*0.5f/2, row_height *5.5f);
         sameAttributesText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderAttribute);
         stage.addActor(sameAttributesText);
@@ -675,7 +678,7 @@ public class SettingsScreen implements Screen {
         sliderRound.setWidth(selectBoxSize *2);
         sliderRound.setPosition(col_width *8, row_height * 12);
         roundsText = new Label(host.texts.get(35), mySkin, "big");
-        roundsText.setPosition(col_width *8 + (selectBoxSize*1.5f) - roundsText.getWidth()/2, row_height *13.5f);
+        roundsText.setPosition(col_width *8 + (selectBoxSize) - roundsText.getWidth()*0.5f/2, row_height *13.5f);
         roundsText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderRound);
         stage.addActor(roundsText);
@@ -688,7 +691,7 @@ public class SettingsScreen implements Screen {
         sliderStaringDifficulty.setWidth(selectBoxSize *2);
         sliderStaringDifficulty.setPosition(col_width *3, row_height * 3);
         startingDifficultyText = new Label(host.texts.get(34), mySkin, "big");
-        startingDifficultyText.setPosition(col_width *3 + (selectBoxSize*1.5f) - startingDifficultyText.getWidth()/2, row_height *4.5f);
+        startingDifficultyText.setPosition(col_width *3 + (selectBoxSize) - startingDifficultyText.getWidth()*0.5f/2, row_height *4.5f);
         startingDifficultyText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderStaringDifficulty);
         stage.addActor(startingDifficultyText);
@@ -715,7 +718,7 @@ public class SettingsScreen implements Screen {
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
         volumeText = new Label(host.texts.get(24), mySkin, "big");
-        volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()*1.5f/2, row_height *14);
+        volumeText.setPosition(col_width *8 + (selectBoxSize) - volumeText.getWidth()*0.5f/2, row_height *14);
         volumeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderV);
         stage.addActor(volumeText);
@@ -865,6 +868,7 @@ public class SettingsScreen implements Screen {
         sliderD.setVisible(false);
         sensitivityGraphImage.setVisible(false);
         save.setVisible(false);
+        host.saveFiles.saveNewFiles();
 
     }
 

@@ -1,6 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class SaveFileSelectScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
+    MyTextInputListener listener;
     Skin mySkin;
     private Stage stage;
     private float row_height;
@@ -27,8 +29,10 @@ public class SaveFileSelectScreen implements Screen {
     TextButton profile1Button;
     TextButton profile2Button;
     TextButton profile3Button;
+    TextButton back;
     int profileUsed;
     GameData gameData;
+    String InputIsValitaded;
 
     public SaveFileSelectScreen(Rikollisentunnistus g) {
         game = g;
@@ -40,6 +44,7 @@ public class SaveFileSelectScreen implements Screen {
         col_width = camera.viewportWidth / 12;
         width = camera.viewportWidth;
         height = camera.viewportHeight;
+        InputIsValitaded = null;
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -50,7 +55,7 @@ public class SaveFileSelectScreen implements Screen {
     }
 
     public void profile1Button() {
-        profile1Button = new TextButton("Player 1", mySkin);
+        profile1Button = new TextButton(game.saveFiles.getString("name1", game.texts.get(46)), mySkin);
         profile1Button.setSize(col_width*3, row_height*1.5f);
         profile1Button.setPosition(col_width*0.75f, height/2 - profile1Button.getHeight()/2);
         profile1Button.addListener(new ClickListener(){
@@ -62,9 +67,18 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                profile1Button.setDisabled(true);
+                profile2Button.setDisabled(true);
+                profile3Button.setDisabled(true);
+                back.setDisabled(true);
                 game.gameData.setProfileUsed(1);
                 SoundManager.stopMenuMusic();
-                game.setCriminalScreen();
+                if (profile1Button.getText().toString().equals(game.texts.get(46))) {
+                    listener = new MyTextInputListener(SaveFileSelectScreen.this, "name1");
+                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                } else {
+                    game.setCriminalScreen();
+                }
             }
 
         });
@@ -73,7 +87,7 @@ public class SaveFileSelectScreen implements Screen {
     }
 
     public void profile2Button() {
-        profile2Button = new TextButton("Player 2",mySkin);
+        profile2Button = new TextButton(game.saveFiles.getString("name2", game.texts.get(46)),mySkin);
         profile2Button.setSize(col_width*3,row_height*1.5f);
         profile2Button.setPosition(col_width*4.5f,height/2 - profile2Button.getHeight()/2);
         profile2Button.addListener(new ClickListener(){
@@ -85,9 +99,18 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                profile1Button.setDisabled(true);
+                profile2Button.setDisabled(true);
+                profile3Button.setDisabled(true);
+                back.setDisabled(true);
                 game.gameData.setProfileUsed(2);
                 SoundManager.stopMenuMusic();
-                game.setCriminalScreen();
+                if (profile2Button.getText().toString().equals(game.texts.get(46))) {
+                    listener = new MyTextInputListener(SaveFileSelectScreen.this, "name2");
+                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                } else {
+                    game.setCriminalScreen();
+                }
             }
 
         });
@@ -96,7 +119,7 @@ public class SaveFileSelectScreen implements Screen {
     }
 
     public void profile3Button() {
-        profile3Button = new TextButton("Player 3",mySkin);
+        profile3Button = new TextButton(game.saveFiles.getString("name3", game.texts.get(46)),mySkin);
         profile3Button.setSize(col_width*3,row_height*1.5f);
         profile3Button.setPosition(col_width*8.25f,height/2 - profile3Button.getHeight()/2);
         profile3Button.addListener(new ClickListener(){
@@ -108,9 +131,18 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                profile1Button.setDisabled(true);
+                profile2Button.setDisabled(true);
+                profile3Button.setDisabled(true);
+                back.setDisabled(true);
                 game.gameData.setProfileUsed(3);
                 SoundManager.stopMenuMusic();
-                game.setCriminalScreen();
+                if (profile3Button.getText().toString().equals(game.texts.get(46))) {
+                    listener = new MyTextInputListener(SaveFileSelectScreen.this, "name3");
+                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                } else {
+                    game.setCriminalScreen();
+                }
             }
 
         });
@@ -119,7 +151,7 @@ public class SaveFileSelectScreen implements Screen {
     }
 
     public void buttonBack() {
-        TextButton back = new TextButton("Back",mySkin,"small");
+        back = new TextButton(game.texts.get(6),mySkin,"small");
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
@@ -144,12 +176,22 @@ public class SaveFileSelectScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);
+        profile1Button.setText(game.saveFiles.getString("name1", game.texts.get(46)));
+        profile2Button.setText(game.saveFiles.getString("name2", game.texts.get(46)));
+        profile3Button.setText(game.saveFiles.getString("name3", game.texts.get(46)));
+        game.saveFiles.saveNewFiles();
+
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(70/255f,130/255f,180/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (InputIsValitaded != null) {
+            game.saveFiles.setString(listener.ID, listener.getText());
+            game.setCriminalScreen();
+            InputIsValitaded = null;
+        }
         stage.act();
         stage.draw();
     }

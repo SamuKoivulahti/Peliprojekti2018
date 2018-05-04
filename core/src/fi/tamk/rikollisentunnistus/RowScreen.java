@@ -27,6 +27,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 /**
  * Created by Essi Supponen on 23/02/2018.
  */
+//TODO: pisteenlasku
+//TODO: INTERMISSIOSCREEN2, rank, pisteenlaskun nollaaminen, ruudusta oikein eteneminen
+//TODO: Controls 1-10, ei 0-10
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;

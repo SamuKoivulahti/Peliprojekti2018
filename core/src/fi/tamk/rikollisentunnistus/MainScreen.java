@@ -173,8 +173,8 @@ public class MainScreen implements Screen {
         });
 
 
-        final ImageButton finnishButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("finnishFlag.png"))));
-        finnishButton.setSize(col_width*1.5f,row_height*1.5f);
+        final ImageButton finnishButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("flag_fi.png"))));
+        finnishButton.setSize(col_width*1.7f,row_height*1.5f);
         finnishButton.setPosition(0,height-finnishButton.getHeight());
         finnishButton.addListener(new ClickListener(){
             @Override
@@ -197,8 +197,8 @@ public class MainScreen implements Screen {
 
         });
 
-        final ImageButton englishButton= new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("britainFlag.png"))));
-        englishButton.setSize(col_width*1.5f,row_height*1.5f);
+        final ImageButton englishButton= new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("flag_gb.png"))));
+        englishButton.setSize(col_width*1.7f,row_height*1.5f);
         englishButton.setPosition(englishButton.getWidth(),height-englishButton.getHeight());
         englishButton.addListener(new ClickListener(){
             @Override

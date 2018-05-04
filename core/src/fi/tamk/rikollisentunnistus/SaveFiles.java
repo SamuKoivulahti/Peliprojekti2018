@@ -51,6 +51,27 @@ public class SaveFiles {
         prefs.putBoolean(key, value);
     }
 
+    public String getString(String key, String defaultValue) {
+        if (!hasKey(key)) {
+            return defaultValue;
+        }
+        return prefs.getString(key);
+    }
+
+    public void setString(String key, String value) {
+        prefs.putString(key, value);
+    }
+
+    public void remove1() {
+        prefs.remove("name1");
+    }
+    public void  remove2() {
+        prefs.remove("name2");
+    }
+    public void remove3() {
+        prefs.remove("name3");
+    }
+
     public void saveNewFiles() {
         prefs.flush();
     }

@@ -98,9 +98,16 @@ public class Rikollisentunnistus extends Game {
     }
 
 	public void language() {
-        Locale locale = new Locale("fi", "FI");
-        Locale defaultLocale = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+	    Locale locale;
+	    I18NBundle myBundle;
+        try {
+            Locale defaultLocale = Locale.getDefault();
+            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), defaultLocale);
+        } catch (Exception e) {
+            locale = new Locale("en", "US");
+            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        }
+
         texts = new ArrayList<String>();
         int i = 0;
 
