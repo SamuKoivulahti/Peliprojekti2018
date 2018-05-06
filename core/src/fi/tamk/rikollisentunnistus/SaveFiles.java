@@ -65,7 +65,7 @@ public class SaveFiles {
     public void remove1() {
         prefs.remove("name1");
     }
-    public void  remove2() {
+    public void remove2() {
         prefs.remove("name2");
     }
     public void remove3() {

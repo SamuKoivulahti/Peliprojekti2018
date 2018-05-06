@@ -41,8 +41,6 @@ public class IntermissionScreen implements Screen {
     Settings settings;
     int points;
     int level;
-    GameData gameData;
-    SaveFiles saveFiles;
 
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
@@ -192,10 +190,10 @@ public class IntermissionScreen implements Screen {
         stage.draw();
 
         if (anyInput() &&
-                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != game.gameData.getLevel()) {
+                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != level) {
             elapsedTime = 0;
             game.resetAll();
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == game.gameData.getLevel() && game.gameData.getProfileUsed() == 0) {
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.getProfileUsed() == 0) {
             if (anyInput()) {
                 gameEnd = true;
                 gameEndText.setVisible(true);
@@ -211,6 +209,11 @@ public class IntermissionScreen implements Screen {
             if (gameEnd && timer(1) && anyInput()) {
                 game.setMainScreen();
                 SoundManager.stopIngameMusic();
+            }
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.getProfileUsed() != 0) {
+            if (anyInput()) {
+                RankScreen rankScreen = new RankScreen(game);
+                game.setScreen(rankScreen);
             }
         }
     }

@@ -113,12 +113,12 @@ public class SettingsScreen implements Screen {
         calibrateText.setPosition(col_width*5 - calibrateText.getWidth()/2, row_height * 13);
 
         savedText = new Label(host.texts.get(39), mySkin, "big");
-        savedText.setPosition(col_width - savedText.getWidth()/2, row_height*2);
+        savedText.setPosition(0, row_height*2);
         savedText.setAlignment(Align.center);
         savedText.setVisible(false);
 
         calibratedText = new Label(host.texts.get(40), mySkin, "big");
-        calibratedText.setPosition(col_width*1.5f - calibratedText.getWidth()/2, row_height*2);
+        calibratedText.setPosition(0, row_height*2);
         calibratedText.setAlignment(Align.center);
         calibratedText.setVisible(false);
 
@@ -169,10 +169,10 @@ public class SettingsScreen implements Screen {
             sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
             sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
         } else {
-            sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
-            sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
-            sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
-            sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+            sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.9f);
+            sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.9f);
+            sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.9f);
+            sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.9f);
         }
 
         horizontalAxis.setChecked(settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS));
@@ -225,6 +225,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level1", GameData.DEFAULT_LEVEL);
+                host.saveFiles.setInteger("rank1", GameData.DEFAULT_RANK);
                 host.saveFiles.remove1();
             }
 
@@ -248,6 +249,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level2", GameData.DEFAULT_LEVEL);
+                host.saveFiles.setInteger("rank2", GameData.DEFAULT_RANK);
                 host.saveFiles.remove2();
             }
 
@@ -271,6 +273,7 @@ public class SettingsScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level3", GameData.DEFAULT_LEVEL);
+                host.saveFiles.setInteger("rank3", GameData.DEFAULT_RANK);
                 host.saveFiles.remove3();
             }
 
@@ -455,10 +458,10 @@ public class SettingsScreen implements Screen {
                     settings.setFloat("sensitivityUp", sliderU.getValue()*0.7f);
                     settings.setFloat("sensitivityDown", sliderD.getValue()*0.3f);
                 } else {
-                    settings.setFloat("sensitivityRight", sliderR.getValue());
-                    settings.setFloat("sensitivityLeft", sliderL.getValue());
-                    settings.setFloat("sensitivityUp", sliderU.getValue());
-                    settings.setFloat("sensitivityDown", sliderD.getValue());
+                    settings.setFloat("sensitivityRight", sliderR.getValue()*0.9f);
+                    settings.setFloat("sensitivityLeft", sliderL.getValue()*0.9f);
+                    settings.setFloat("sensitivityUp", sliderU.getValue()*0.9f);
+                    settings.setFloat("sensitivityDown", sliderD.getValue()*0.9f);
                 }
 
                 settings.setInteger("rowLength", sliderRow.getSelectedIndex()+3);
@@ -547,7 +550,7 @@ public class SettingsScreen implements Screen {
     }
 
     private void sensitivityGraph (Stage stage) {
-        sensitivityGraphTexture = new Texture("sensitivityGraph.png");
+        sensitivityGraphTexture = new Texture("sensitivityGraph1.png");
         sensitivityGraphImage = new Image(sensitivityGraphTexture);
         sensitivityGraphImage.setSize(selectBoxSize *2, selectBoxSize *2);
         sensitivityGraphImage.setOrigin(Align.center);
@@ -576,7 +579,7 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderRight(Stage stage) {
-        sliderR = new Slider(0f,10f,1f,false, mySkin);
+        sliderR = new Slider(1f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderR.setWidth(selectBoxSize);
@@ -586,7 +589,7 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderLeft(Stage stage) {
-        sliderL = new Slider(-10f,0f,1f,false, mySkin);
+        sliderL = new Slider(-10f,-1f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderL.setWidth(selectBoxSize);
@@ -595,7 +598,7 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderUp(Stage stage) {
-        sliderU = new Slider(0f,10f,1f,true, mySkin);
+        sliderU = new Slider(1f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(selectBoxSize);
@@ -604,7 +607,7 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderDown(Stage stage) {
-        sliderD = new Slider(-10f,0f,1f,true, mySkin);
+        sliderD = new Slider(-10f,-1f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(selectBoxSize);

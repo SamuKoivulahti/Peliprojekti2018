@@ -37,8 +37,6 @@ public class MainScreen implements Screen {
     Image tutorial;
     Image title;
 
-    GameData gameData;
-
     public MainScreen(final Rikollisentunnistus host) {
         Gdx.app.log("MainScreen", "Constructor");
         this.host = host;
@@ -174,7 +172,7 @@ public class MainScreen implements Screen {
 
 
         final ImageButton finnishButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("flag_fi.png"))));
-        finnishButton.setSize(col_width*1.7f,row_height*1.5f);
+        finnishButton.setSize(finnishButton.getWidth()/2,finnishButton.getHeight()/2);
         finnishButton.setPosition(0,height-finnishButton.getHeight());
         finnishButton.addListener(new ClickListener(){
             @Override
@@ -198,7 +196,7 @@ public class MainScreen implements Screen {
         });
 
         final ImageButton englishButton= new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("flag_gb.png"))));
-        englishButton.setSize(col_width*1.7f,row_height*1.5f);
+        englishButton.setSize(englishButton.getWidth()/2,englishButton.getHeight()/2);
         englishButton.setPosition(englishButton.getWidth(),height-englishButton.getHeight());
         englishButton.addListener(new ClickListener(){
             @Override

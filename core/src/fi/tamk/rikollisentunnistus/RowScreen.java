@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  */
 //TODO: pisteenlasku
 //TODO: INTERMISSIOSCREEN2, rank, pisteenlaskun nollaaminen, ruudusta oikein eteneminen
-//TODO: Controls 1-10, ei 0-10
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
@@ -47,6 +46,7 @@ public class RowScreen implements Screen {
 
     private Label pointsText;
     private Label levelText;
+    private Label rankText;
     private Label savedText;
     private Label calibratedText;
 
@@ -65,12 +65,12 @@ public class RowScreen implements Screen {
 
     int points;
     int level;
+    int rank;
 
     float elapsedTime;
-
     boolean letMove;
-    float timeToMove;
 
+    float timeToMove;
     Window pauseWindow;
     Window sensitivityWindow;
     Settings settings;
@@ -110,12 +110,15 @@ public class RowScreen implements Screen {
         if (game.gameData.getProfileUsed() == 1) {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level1", GameData.DEFAULT_LEVEL);
+            rank = game.saveFiles.getInteger("rank1", GameData.DEFAULT_RANK);
         } else if (game.gameData.getProfileUsed() == 2) {
             points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level2", GameData.DEFAULT_LEVEL);
+            rank = game.saveFiles.getInteger("rank2", GameData.DEFAULT_RANK);
         } else if (game.gameData.getProfileUsed() == 3) {
             points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level3", GameData.DEFAULT_LEVEL);
+            rank = game.saveFiles.getInteger("rank3", GameData.DEFAULT_RANK);
         } else if (game.gameData.getProfileUsed() == 0) {
             points = game.gameData.getPoints();
             level = game.gameData.getLevel();
@@ -156,6 +159,11 @@ public class RowScreen implements Screen {
         stage.addActor(deskImage);
         stage.addActor(pointsText);
         stage.addActor(levelText);
+        if (game.gameData.getProfileUsed() != 0) {
+            rankText = new Label(game.script.get("Rank"+rank), mySkin);
+            rankText.setPosition(0, height - rankText.getHeight());
+            stage.addActor(rankText);
+        }
         createPauseWindow();
         stage.addActor(savedText);
         stage.addActor(calibratedText);
@@ -260,10 +268,10 @@ public class RowScreen implements Screen {
                         game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.7f);
                         game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.3f);
                     } else {
-                        game.settingsScreen.sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
-                        game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
-                        game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
-                        game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
+                        game.settingsScreen.sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT)/0.9f);
+                        game.settingsScreen.sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT)/0.9f);
+                        game.settingsScreen.sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP)/0.9f);
+                        game.settingsScreen.sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN)/0.9f);
                     }
 
                     game.settingsScreen.sensitivityGraphImage.setPosition(width/5-game.settingsScreen.selectBoxSize, height/2 - game.settingsScreen.selectBoxSize);
@@ -289,10 +297,10 @@ public class RowScreen implements Screen {
                         settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue()*0.7f);
                         settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue()*0.3f);
                     } else {
-                        settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue());
-                        settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue());
-                        settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue());
-                        settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue());
+                        settings.setFloat("sensitivityRight", game.settingsScreen.sliderR.getValue()*0.9f);
+                        settings.setFloat("sensitivityLeft", game.settingsScreen.sliderL.getValue()*0.9f);
+                        settings.setFloat("sensitivityUp", game.settingsScreen.sliderU.getValue()*0.9f);
+                        settings.setFloat("sensitivityDown", game.settingsScreen.sliderD.getValue()*0.9f);
                     }
 
                     settings.saveSettings();
@@ -441,18 +449,27 @@ public class RowScreen implements Screen {
         if (selectedID.equals(rightSuspectID)) {
             win = true;
             if (game.gameData.profileUsed == 1) {
-                game.saveFiles.setInteger("points1", points + 1);
+                game.saveFiles.setInteger("points1", points + 2);
             } else if (game.gameData.profileUsed == 2) {
-                game.saveFiles.setInteger("points2", points + 1);
+                game.saveFiles.setInteger("points2", points + 2);
             } else if (game.gameData.profileUsed == 3) {
-                game.saveFiles.setInteger("points3", points + 1);
+                game.saveFiles.setInteger("points3", points + 2);
+            } else if (game.gameData.profileUsed == 0) {
+                game.gameData.setPoints(points + 1);
             }
             game.saveFiles.saveNewFiles();
-            game.gameData.setPoints(points + 1);
             game.gameData.setWin(true);
 
         } else {
             lose = true;
+            if (game.gameData.profileUsed == 1 && points > 0) {
+                game.saveFiles.setInteger("points1", points - 1);
+            } else if (game.gameData.profileUsed == 2 && points > 0) {
+                game.saveFiles.setInteger("points2", points - 1);
+            } else if (game.gameData.profileUsed == 3 && points > 0) {
+                game.saveFiles.setInteger("points3", points - 1);
+            }
+            game.saveFiles.saveNewFiles();
         }
 
         if (game.useDifficulty && game.increasingDifficulty && game.gameData.getProfileUsed() == 0) {

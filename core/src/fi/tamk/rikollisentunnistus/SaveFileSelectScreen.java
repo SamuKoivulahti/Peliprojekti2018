@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -67,15 +68,15 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                profile1Button.setDisabled(true);
-                profile2Button.setDisabled(true);
-                profile3Button.setDisabled(true);
-                back.setDisabled(true);
+                profile1Button.setTouchable(Touchable.disabled);
+                profile2Button.setTouchable(Touchable.disabled);
+                profile3Button.setTouchable(Touchable.disabled);
+                back.setTouchable(Touchable.disabled);
                 game.gameData.setProfileUsed(1);
                 SoundManager.stopMenuMusic();
                 if (profile1Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name1");
-                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                    Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
                 } else {
                     game.setCriminalScreen();
                 }
@@ -99,15 +100,15 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                profile1Button.setDisabled(true);
-                profile2Button.setDisabled(true);
-                profile3Button.setDisabled(true);
-                back.setDisabled(true);
+                profile1Button.setTouchable(Touchable.disabled);
+                profile2Button.setTouchable(Touchable.disabled);
+                profile3Button.setTouchable(Touchable.disabled);
+                back.setTouchable(Touchable.disabled);
                 game.gameData.setProfileUsed(2);
                 SoundManager.stopMenuMusic();
                 if (profile2Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name2");
-                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                    Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
                 } else {
                     game.setCriminalScreen();
                 }
@@ -131,15 +132,15 @@ public class SaveFileSelectScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                profile1Button.setDisabled(true);
-                profile2Button.setDisabled(true);
-                profile3Button.setDisabled(true);
-                back.setDisabled(true);
+                profile1Button.setTouchable(Touchable.disabled);
+                profile2Button.setTouchable(Touchable.disabled);
+                profile3Button.setTouchable(Touchable.disabled);
+                back.setTouchable(Touchable.disabled);
                 game.gameData.setProfileUsed(3);
                 SoundManager.stopMenuMusic();
                 if (profile3Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name3");
-                    Gdx.input.getTextInput(listener, "Username", "", "Enter Username");
+                    Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
                 } else {
                     game.setCriminalScreen();
                 }
@@ -214,6 +215,10 @@ public class SaveFileSelectScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setCatchBackKey(false);
+        profile1Button.setTouchable(Touchable.enabled);
+        profile2Button.setTouchable(Touchable.enabled);
+        profile3Button.setTouchable(Touchable.enabled);
+        back.setTouchable(Touchable.enabled);
     }
 
     @Override
