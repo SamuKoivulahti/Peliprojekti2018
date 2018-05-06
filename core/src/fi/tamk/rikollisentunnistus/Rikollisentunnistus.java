@@ -20,6 +20,7 @@ public class Rikollisentunnistus extends Game {
     SettingsScreen settingsScreen;
     SplashScreen splashScreen;
     SaveFileSelectScreen saveFileSelectScreen;
+    CutsceneScreen cutsceneScreen;
 
     public Controls controls;
 	SpriteBatch batch;
@@ -56,6 +57,7 @@ public class Rikollisentunnistus extends Game {
         mainScreen = new MainScreen(this);
         settingsScreen = new SettingsScreen(this);
         saveFileSelectScreen = new SaveFileSelectScreen(this);
+        cutsceneScreen = new CutsceneScreen(this);
 
 
         batch = new SpriteBatch();
