@@ -41,6 +41,7 @@ public class Rikollisentunnistus extends Game {
 	boolean increasingDifficulty;
 
 	public ArrayList<String> texts;
+	public I18NBundle script;
 
 	@Override
 	public void create () {
@@ -80,6 +81,8 @@ public class Rikollisentunnistus extends Game {
 	        locale = new Locale("en", "US");
         }
 
+        script = I18NBundle.createBundle(Gdx.files.internal("cutscenes/script"), locale);
+
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
         texts = new ArrayList<String>();
         int i = 0;
@@ -101,11 +104,13 @@ public class Rikollisentunnistus extends Game {
 	    Locale locale;
 	    I18NBundle myBundle;
         try {
-            Locale defaultLocale = Locale.getDefault();
-            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), defaultLocale);
+            locale = Locale.getDefault();
+            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+            script = I18NBundle.createBundle(Gdx.files.internal("cutscenes/script"), locale);
         } catch (Exception e) {
             locale = new Locale("en", "US");
             myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+            script = I18NBundle.createBundle(Gdx.files.internal("cutscenes/script"), locale);
         }
 
         texts = new ArrayList<String>();
