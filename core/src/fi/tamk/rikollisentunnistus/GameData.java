@@ -135,5 +135,7 @@ public class GameData {
     public static final int DEFAULT_RANK = 1;
     public static final boolean DEFAULT_HORIZONTAL_AXIS = false;
     public static final boolean DEFAULT_USE_CHAIR = true;
+    public static final int DEFAULT_DIFFICULTY = 0;
+
 
 }

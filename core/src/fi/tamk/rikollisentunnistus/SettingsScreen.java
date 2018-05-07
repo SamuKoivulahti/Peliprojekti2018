@@ -1,5 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -23,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.lang.reflect.GenericArrayType;
 
 /**
  * Created by Samu Koivulahti on 17.3.2018.
@@ -226,6 +229,7 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("points1", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level1", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank1", GameData.DEFAULT_RANK);
+                host.saveFiles.setInteger("difficulty1", GameData.DEFAULT_DIFFICULTY);
                 host.saveFiles.remove1();
             }
 
@@ -250,6 +254,7 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("points2", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level2", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank2", GameData.DEFAULT_RANK);
+                host.saveFiles.setInteger("difficulty2", GameData.DEFAULT_DIFFICULTY);
                 host.saveFiles.remove2();
             }
 
@@ -274,6 +279,7 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("points3", GameData.DEFAULT_POINTS);
                 host.saveFiles.setInteger("level3", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank3", GameData.DEFAULT_RANK);
+                host.saveFiles.setInteger("difficulty3", GameData.DEFAULT_DIFFICULTY);
                 host.saveFiles.remove3();
             }
 

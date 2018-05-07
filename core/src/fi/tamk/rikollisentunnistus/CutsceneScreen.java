@@ -95,6 +95,16 @@ public class CutsceneScreen implements Screen {
         sceneToAct = 0;
     }
 
+    public void setName() {
+        if (host.gameData.profileUsed == 1) {
+            playerName = host.saveFiles.getString("name1", "");
+        } else if (host.gameData.profileUsed == 2) {
+            playerName = host.saveFiles.getString("name2", "");
+        } else if (host.gameData.profileUsed == 3) {
+            playerName = host.saveFiles.getString("name3", "");
+        }
+    }
+
     private MoveToAction moveAssistantOnscreen() {
         MoveToAction move = new MoveToAction();
         move.setDuration(0.5f);
@@ -132,7 +142,7 @@ public class CutsceneScreen implements Screen {
         text.setPosition(width/2-dialogBoxImage.getWidth()*24/50,dialogBoxImage.getHeight()*1/2f + height/60f);
     }
 
-    private void setScene(int number) {
+    public void setScene(int number) {
         sceneToAct = number;
 
         if(sceneToAct == 1) {
@@ -234,7 +244,8 @@ public class CutsceneScreen implements Screen {
 
         round = 0;
 
-        // host.setScreen(intermissionscreen)
+        RankScreen rankScreen = new RankScreen(host);
+        host.setScreen(rankScreen);
     }
 
     private void actScene() {
@@ -638,7 +649,7 @@ public class CutsceneScreen implements Screen {
 
     @Override
     public void show() {
-
+        setName();
     }
 
     @Override

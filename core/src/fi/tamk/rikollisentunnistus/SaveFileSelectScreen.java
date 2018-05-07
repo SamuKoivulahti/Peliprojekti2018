@@ -57,8 +57,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile1Button() {
         profile1Button = new TextButton(game.saveFiles.getString("name1", game.texts.get(46)), mySkin);
-        profile1Button.setSize(col_width*3, row_height*1.5f);
-        profile1Button.setPosition(col_width*0.75f, height/2 - profile1Button.getHeight()/2);
+        profile1Button.setHeight(row_height*1.5f);
+        profile1Button.setPosition(width/2 - profile1Button.getWidth()/2, row_height*8.5f);
         profile1Button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -89,8 +89,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile2Button() {
         profile2Button = new TextButton(game.saveFiles.getString("name2", game.texts.get(46)),mySkin);
-        profile2Button.setSize(col_width*3,row_height*1.5f);
-        profile2Button.setPosition(col_width*4.5f,height/2 - profile2Button.getHeight()/2);
+        profile2Button.setHeight(row_height*1.5f);
+        profile2Button.setPosition(width/2 - profile2Button.getWidth()/2,height/2 - profile2Button.getHeight()/2);
         profile2Button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,8 +121,8 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile3Button() {
         profile3Button = new TextButton(game.saveFiles.getString("name3", game.texts.get(46)),mySkin);
-        profile3Button.setSize(col_width*3,row_height*1.5f);
-        profile3Button.setPosition(col_width*8.25f,height/2 - profile3Button.getHeight()/2);
+        profile3Button.setHeight(row_height*1.5f);
+        profile3Button.setPosition(width/2 - profile3Button.getWidth()/2, row_height*2);
         profile3Button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

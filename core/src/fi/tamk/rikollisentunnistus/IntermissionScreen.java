@@ -41,6 +41,7 @@ public class IntermissionScreen implements Screen {
     Settings settings;
     int points;
     int level;
+    int difficulty;
 
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
@@ -61,12 +62,15 @@ public class IntermissionScreen implements Screen {
         if (game.gameData.getProfileUsed() == 1) {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level1", GameData.DEFAULT_LEVEL);
+            difficulty = game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY);
         } else if (game.gameData.getProfileUsed() == 2) {
             points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level2", GameData.DEFAULT_LEVEL);
+            difficulty = game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY);
         } else if (game.gameData.getProfileUsed() == 3) {
             points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level3", GameData.DEFAULT_LEVEL);
+            difficulty = game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY);
         } else if (game.gameData.getProfileUsed() == 0) {
             points = game.gameData.getPoints();
             level = game.gameData.getLevel();
@@ -190,7 +194,7 @@ public class IntermissionScreen implements Screen {
         stage.draw();
 
         if (anyInput() &&
-                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != level) {
+                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != level && game.gameData.profileUsed == 0) {
             elapsedTime = 0;
             game.resetAll();
         } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.getProfileUsed() == 0) {
@@ -210,11 +214,14 @@ public class IntermissionScreen implements Screen {
                 game.setMainScreen();
                 SoundManager.stopIngameMusic();
             }
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.getProfileUsed() != 0) {
+        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
             if (anyInput()) {
-                RankScreen rankScreen = new RankScreen(game);
-                game.setScreen(rankScreen);
+                game.cutsceneScreen.setScene(difficulty+2);
+                game.setScreen(game.cutsceneScreen);
             }
+        } else if (anyInput() && points < 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
+            elapsedTime = 0;
+            game.resetAll();
         }
     }
 
