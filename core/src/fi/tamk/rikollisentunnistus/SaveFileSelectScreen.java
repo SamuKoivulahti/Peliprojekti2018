@@ -57,7 +57,7 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile1Button() {
         profile1Button = new TextButton(game.saveFiles.getString("name1", game.texts.get(46)), mySkin);
-        profile1Button.setHeight(row_height*1.5f);
+        profile1Button.setSize(width/2,row_height*1.5f);
         profile1Button.setPosition(width/2 - profile1Button.getWidth()/2, row_height*8.5f);
         profile1Button.addListener(new ClickListener(){
             @Override
@@ -91,7 +91,7 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile2Button() {
         profile2Button = new TextButton(game.saveFiles.getString("name2", game.texts.get(46)),mySkin);
-        profile2Button.setHeight(row_height*1.5f);
+        profile2Button.setSize(width/2,row_height*1.5f);
         profile2Button.setPosition(width/2 - profile2Button.getWidth()/2,height/2 - profile2Button.getHeight()/2);
         profile2Button.addListener(new ClickListener(){
             @Override
@@ -125,7 +125,7 @@ public class SaveFileSelectScreen implements Screen {
 
     public void profile3Button() {
         profile3Button = new TextButton(game.saveFiles.getString("name3", game.texts.get(46)),mySkin);
-        profile3Button.setHeight(row_height*1.5f);
+        profile3Button.setSize(width/2,row_height*1.5f);
         profile3Button.setPosition(width/2 - profile3Button.getWidth()/2, row_height*2);
         profile3Button.addListener(new ClickListener(){
             @Override

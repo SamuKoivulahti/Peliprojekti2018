@@ -33,6 +33,10 @@ public class MyTextInputListener implements Input.TextInputListener {
     }
 
     public String getText() {
-        return newText == null ? "" : newText.toUpperCase();
+        if (newText.length() > 12) {
+            return  newText == null ? "" : newText.substring(0, 12);
+        } else {
+            return newText == null ? "" : newText;
+        }
     }
 }

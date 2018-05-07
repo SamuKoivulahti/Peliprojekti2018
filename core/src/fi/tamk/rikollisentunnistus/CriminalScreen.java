@@ -247,7 +247,6 @@ public class CriminalScreen implements Screen {
                 game.setCriminals();
             }
             waitingTimeText.setText("" + (int)(timeWaiting - elapsedTime +1));
-            //Gdx.app.log("Criminal Screen", "Waiting");
         }
 
         /**

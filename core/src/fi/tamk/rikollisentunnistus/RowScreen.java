@@ -74,6 +74,9 @@ public class RowScreen implements Screen {
     Window pauseWindow;
     Window sensitivityWindow;
     Settings settings;
+    int difficulty;
+    boolean loop;
+    int currentStreak;
 
     public RowScreen(Rikollisentunnistus g) {
         Gdx.app.log("RowScreen", "constructor");
@@ -111,20 +114,29 @@ public class RowScreen implements Screen {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level1", GameData.DEFAULT_LEVEL);
             rank = game.saveFiles.getInteger("rank1", GameData.DEFAULT_RANK);
+            difficulty = game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop1", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak1", GameData.DEFAULT_CURRENT_STREAK);
         } else if (game.gameData.getProfileUsed() == 2) {
             points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level2", GameData.DEFAULT_LEVEL);
             rank = game.saveFiles.getInteger("rank2", GameData.DEFAULT_RANK);
+            difficulty = game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak2", GameData.DEFAULT_CURRENT_STREAK);
         } else if (game.gameData.getProfileUsed() == 3) {
             points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level3", GameData.DEFAULT_LEVEL);
             rank = game.saveFiles.getInteger("rank3", GameData.DEFAULT_RANK);
+            difficulty = game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak3", GameData.DEFAULT_CURRENT_STREAK);
         } else if (game.gameData.getProfileUsed() == 0) {
             points = game.gameData.getPoints();
             level = game.gameData.getLevel();
         }
 
-        pointsText = new Label(game.texts.get(11)+ points, mySkin, "big");
+        pointsText = new Label(game.texts.get(11)+ points + "/" + (5+(int)(difficulty/2)), mySkin, "big");
         pointsText.setFontScale(0.5f);
         pointsText.setPosition(width - pointsText.getWidth()*0.5f - width/100, height - pointsText.getHeight());
         levelText = new Label(game.texts.get(10) + level, mySkin, "big");
@@ -450,10 +462,19 @@ public class RowScreen implements Screen {
             win = true;
             if (game.gameData.profileUsed == 1) {
                 game.saveFiles.setInteger("points1", points + 2);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStreak1", currentStreak+1);
+                }
             } else if (game.gameData.profileUsed == 2) {
                 game.saveFiles.setInteger("points2", points + 2);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStreak2", currentStreak+1);
+                }
             } else if (game.gameData.profileUsed == 3) {
                 game.saveFiles.setInteger("points3", points + 2);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStreak3", currentStreak+1);
+                }
             } else if (game.gameData.profileUsed == 0) {
                 game.gameData.setPoints(points + 1);
             }
@@ -464,10 +485,19 @@ public class RowScreen implements Screen {
             lose = true;
             if (game.gameData.profileUsed == 1 && points > 0) {
                 game.saveFiles.setInteger("points1", points - 1);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStreak1", GameData.DEFAULT_CURRENT_STREAK);
+                }
             } else if (game.gameData.profileUsed == 2 && points > 0) {
                 game.saveFiles.setInteger("points2", points - 1);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStrea2", GameData.DEFAULT_CURRENT_STREAK);
+                }
             } else if (game.gameData.profileUsed == 3 && points > 0) {
                 game.saveFiles.setInteger("points3", points - 1);
+                if (loop) {
+                    game.saveFiles.setInteger("currentStreak3", GameData.DEFAULT_CURRENT_STREAK);
+                }
             }
             game.saveFiles.saveNewFiles();
         }
@@ -552,7 +582,6 @@ public class RowScreen implements Screen {
         } else {
             if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
                 game.gameData.setStillLeaning(true);
-                //Gdx.app.log("RowScreen", ""+game.gameData.getStillLeaning());
             }
         }
 
@@ -585,7 +614,6 @@ public class RowScreen implements Screen {
 
 
         game.batch.setProjectionMatrix(camera.combined);
-        // Gdx.gl.glClearColor(176/255f,179/255f,189/255f,1);
         Gdx.gl.glClearColor(220/255f,223/255f,229/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -627,8 +655,7 @@ public class RowScreen implements Screen {
             );
 
         }
-        //Gdx.app.log("rowscreen", "animation" + animation.getKeyFrameIndex(elapsedTime));
-        //Gdx.app.log("RowScreen", ""+ game.controls.hysteresisRight);
+
         if (delta != 0) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) ||
                     game.controls.moveRight(true)) {
@@ -660,8 +687,6 @@ public class RowScreen implements Screen {
 
         }
         game.batch.end();
-        //Gdx.app.log("RowScreen", ""+game.controls.hysteresisUp);
-
     }
 
     @Override

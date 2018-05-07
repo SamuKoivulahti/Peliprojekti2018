@@ -71,8 +71,6 @@ public class Rikollisentunnistus extends Game {
         } else {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
         }
-
-        //setScreen(mainScreen);
 	}
 
 	public void updateLanguage(String language) {

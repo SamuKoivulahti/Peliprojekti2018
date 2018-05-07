@@ -136,6 +136,10 @@ public class GameData {
     public static final boolean DEFAULT_HORIZONTAL_AXIS = false;
     public static final boolean DEFAULT_USE_CHAIR = true;
     public static final int DEFAULT_DIFFICULTY = 0;
+    public static final boolean DEFAULT_LOOP = false;
+    public static final int DEFAULT_CURRENT_STREAK = 0;
+    public static final int DEFAULT_LONGEST_STREAK = 0;
+
 
 
 }

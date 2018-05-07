@@ -97,21 +97,18 @@ public class Controls {
         hysteresisLeft = moveLeft/2;
         hysteresisUp = moveUp/2;
         hysteresisDown = moveDown/2;
-        //Gdx.app.log("controls", "zero Y: "+settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
-
-
     }
 
     /**
      * gets used Y value
      */
     public float accelerometerY() {
+        //Chooses the correct accelerometer
         if (horizontalAxis) {
             accelY = -Gdx.input.getAccelerometerX() + zeroPointZ;
         } else {
             accelY = Gdx.input.getAccelerometerZ() - zeroPointY;
         }
-            //Gdx.app.log("TAG", "Y:" + accelY);
         return accelY;
     }
 
@@ -120,7 +117,6 @@ public class Controls {
      */
     public float accelerometerX() {
         accelX = Gdx.input.getAccelerometerY() - zeroPointX;
-        //Gdx.app.log("TAG", "X:" + accelX);
         return accelX;
     }
 
@@ -131,13 +127,16 @@ public class Controls {
      */
     public boolean moveRight(boolean isTimed) {
         accelerometerX();
+        //Checks if movement to right has passed the deadzone
         if (accelX > moveRight && isAbleMoveRight) {
             isAbleMoveRight = false;
             timerR = isTimed;
             return !isTimed;
+        //Checks if movement to right has returned inside the deadzone
         } else if (!isAbleMoveRight && accelX < hysteresisRight && accelX > 0) {
             isAbleMoveRight = true;
             elapsedTimeR = 0;
+        //if timer is used, checks if movement to right stays out of deadzone
         } else if (accelX > moveRight && !isAbleMoveRight && timerR) {
             return timerR(timerSides);
         }
@@ -151,16 +150,17 @@ public class Controls {
      */
     public boolean moveLeft(boolean isTimed) {
         accelerometerX();
+        //Checks if movement to left has passed the deadzone
         if (accelX < moveLeft && isAbleMoveLeft) {
             isAbleMoveLeft = false;
             timerL = isTimed;
-            //Gdx.app.log("TAG", "L");
             return !isTimed;
+            //Checks if movement to left has returned inside the deadzone
         } else if (!isAbleMoveLeft && accelX > hysteresisLeft && accelX < 0) {
             isAbleMoveLeft = true;
             elapsedTimeL = 0;
-            //Gdx.app.log("TAG", "Lback");
         }
+        //if timer is used, checks if movement to left stays out of deadzone
         else if (accelX < moveLeft && !isAbleMoveLeft && timerL) {
             return timerL(timerSides);
         }
@@ -173,15 +173,16 @@ public class Controls {
      */
     public boolean moveUp(boolean isTimed) {
         accelerometerY();
+        //Checks if movement to up has passed the deadzone
         if (accelY > moveUp && isAbleMoveUp) {
-            //Gdx.app.log("TAG", "L");
             timerU = isTimed;
             isAbleMoveUp = false;
             return !isTimed;
+            //Checks if movement to up has returned inside the deadzone
         } else if (!isAbleMoveUp && accelY < hysteresisUp && accelY > 0) {
             isAbleMoveUp = true;
             elapsedTimeU = 0;
-            //Gdx.app.log("TAG", "Lback");
+            //if timer is used, checks if movement to up stays out of deadzone
         } else if (accelY > moveUp && !isAbleMoveUp && timerU) {
             return timerU(timerUp);
         }
@@ -194,14 +195,16 @@ public class Controls {
      */
     public boolean moveDown(boolean isTimed) {
         accelerometerY();
+        //Checks if movement to down has passed the deadzone
         if (accelY < moveDown && isAbleMoveDown) {
             timerD = isTimed;
             isAbleMoveDown = false;
             return !isTimed;
-
+        //Checks if movement to down has returned inside the deadzone
         } else if (!isAbleMoveDown && accelY > hysteresisDown && accelY < 0) {
             isAbleMoveDown = true;
             elapsedTimeD = 0;
+        //if timer is used, checks if movement to down stays out of deadzone
         } else if (accelY < moveDown && !isAbleMoveDown && timerD) {
             return timerD(timerDown);
         }
@@ -209,10 +212,11 @@ public class Controls {
     }
 
     /**
-     * timer that counts up in seconds
+     * timer for right that counts up in seconds
      */
     public boolean timerR(float timeLeaned) {
         elapsedTimeR += Gdx.graphics.getDeltaTime();
+        //
         if (elapsedTimeR >= timeLeaned) {
             elapsedTimeR = 0;
             timerR = false;
@@ -221,6 +225,9 @@ public class Controls {
         return false;
     }
 
+   /**
+    * timer for left that counts up in seconds
+    */
     public boolean timerL(float timeLeaned) {
         elapsedTimeL += Gdx.graphics.getDeltaTime();
         if (elapsedTimeL >= timeLeaned) {
@@ -231,6 +238,9 @@ public class Controls {
         return false;
     }
 
+   /**
+    * timer for up that counts up in seconds
+    */
     public boolean timerU(float timeLeaned) {
         elapsedTimeU += Gdx.graphics.getDeltaTime();
         if (elapsedTimeU >= timeLeaned) {
@@ -241,6 +251,9 @@ public class Controls {
         return false;
     }
 
+   /**
+    * timer for right that counts up in seconds
+    */
     public boolean timerD(float timeLeaned) {
         elapsedTimeD += Gdx.graphics.getDeltaTime();
         if (elapsedTimeD >= timeLeaned) {

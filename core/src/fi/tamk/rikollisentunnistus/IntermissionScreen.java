@@ -20,6 +20,8 @@ public class IntermissionScreen implements Screen {
     private Stage stage;
     private Label winText;
     private Label loseText;
+    private Label longestStreakText;
+    private Label currentStreakText;
     private Label pointsText;
     private Label levelText;
     private Label gameEndText;
@@ -42,6 +44,9 @@ public class IntermissionScreen implements Screen {
     int points;
     int level;
     int difficulty;
+    boolean loop;
+    int currentStreak;
+    int longestStreak;
 
     public IntermissionScreen(Rikollisentunnistus g) {
         game = g;
@@ -63,17 +68,40 @@ public class IntermissionScreen implements Screen {
             points = game.saveFiles.getInteger("points1", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level1", GameData.DEFAULT_LEVEL);
             difficulty = game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop1", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak1", GameData.DEFAULT_CURRENT_STREAK);
+            longestStreak = game.saveFiles.getInteger("longestStreak1", GameData.DEFAULT_LONGEST_STREAK);
         } else if (game.gameData.getProfileUsed() == 2) {
             points = game.saveFiles.getInteger("points2", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level2", GameData.DEFAULT_LEVEL);
             difficulty = game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak2", GameData.DEFAULT_CURRENT_STREAK);
+            longestStreak = game.saveFiles.getInteger("longestStreak2", GameData.DEFAULT_LONGEST_STREAK);
         } else if (game.gameData.getProfileUsed() == 3) {
             points = game.saveFiles.getInteger("points3", GameData.DEFAULT_POINTS);
             level = game.saveFiles.getInteger("level3", GameData.DEFAULT_LEVEL);
             difficulty = game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY);
+            loop = game.saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP);
+            currentStreak = game.saveFiles.getInteger("currentStreak3", GameData.DEFAULT_CURRENT_STREAK);
+            longestStreak = game.saveFiles.getInteger("longestStreak3", GameData.DEFAULT_LONGEST_STREAK);
         } else if (game.gameData.getProfileUsed() == 0) {
             points = game.gameData.getPoints();
             level = game.gameData.getLevel();
+        }
+
+        if (currentStreak > longestStreak) {
+            if (game.gameData.profileUsed == 1) {
+                game.saveFiles.setInteger("longestStreak1", currentStreak);
+                longestStreak = currentStreak;
+            } else if (game.gameData.profileUsed == 2) {
+                game.saveFiles.setInteger("longestStreak2", currentStreak);
+                longestStreak = currentStreak;
+            } else if (game.gameData.profileUsed == 3) {
+                game.saveFiles.setInteger("longestStreak3", currentStreak);
+                longestStreak = currentStreak;
+            }
+            game.saveFiles.saveNewFiles();
         }
 
         textPrint();
@@ -84,7 +112,11 @@ public class IntermissionScreen implements Screen {
         winText.setPosition(width/2 - winText.getWidth()/2, height/2 - winText.getHeight() / 2);
         loseText = new Label(game.texts.get(18), mySkin, "big");
         loseText.setPosition(width/2 - loseText.getWidth()/2, height/2 - loseText.getHeight() / 2);
-        pointsText = new Label(game.texts.get(11) + points, mySkin);
+        currentStreakText = new Label(game.script.format("postgame1", currentStreak), mySkin);
+        currentStreakText.setPosition(width/2 - currentStreakText.getWidth()/2, row_height * 2);
+        longestStreakText = new Label(game.script.format("postgame2", longestStreak), mySkin);
+        longestStreakText.setPosition(width/2 - longestStreakText.getWidth()/2, row_height * 1);
+        pointsText = new Label(game.texts.get(11) + points + "/" + (5+(int)(difficulty/2)), mySkin);
         pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
         levelText = new Label(game.texts.get(10) + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
@@ -118,7 +150,12 @@ public class IntermissionScreen implements Screen {
 
         stage.addActor(winText);
         stage.addActor(loseText);
-        stage.addActor(pointsText);
+        if (!loop) {
+            stage.addActor(pointsText);
+        } else {
+            stage.addActor(longestStreakText);
+            stage.addActor(currentStreakText);
+        }
         stage.addActor(levelText);
         stage.addActor(gameEndText);
         stage.addActor(correctCriminalText);
@@ -171,7 +208,6 @@ public class IntermissionScreen implements Screen {
     }
 
     private boolean anyInput() {
-        //Gdx.app.log("intermissionScreen", ""+ game.controls.moveUp);
         return (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
                 game.controls.moveDown(false) || game.controls.moveUp(false) ||
                 game.controls.moveLeft(false) || game.controls.moveRight(false));
@@ -214,10 +250,15 @@ public class IntermissionScreen implements Screen {
                 game.setMainScreen();
                 SoundManager.stopIngameMusic();
             }
-        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
+        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && !loop) {
             if (anyInput()) {
                 game.cutsceneScreen.setScene(difficulty+2);
                 game.setScreen(game.cutsceneScreen);
+            }
+        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && loop ) {
+            // in here Longest streak and current streak
+            if (anyInput()) {
+                game.resetAll();
             }
         } else if (anyInput() && points < 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
             elapsedTime = 0;

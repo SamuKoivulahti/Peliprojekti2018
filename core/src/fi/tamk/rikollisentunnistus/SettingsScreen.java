@@ -230,6 +230,8 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("level1", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank1", GameData.DEFAULT_RANK);
                 host.saveFiles.setInteger("difficulty1", GameData.DEFAULT_DIFFICULTY);
+                host.saveFiles.setBoolean("loop1", GameData.DEFAULT_LOOP);
+                host.saveFiles.setInteger("currentStreak1", GameData.DEFAULT_CURRENT_STREAK);
                 host.saveFiles.remove1();
             }
 
@@ -255,6 +257,8 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("level2", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank2", GameData.DEFAULT_RANK);
                 host.saveFiles.setInteger("difficulty2", GameData.DEFAULT_DIFFICULTY);
+                host.saveFiles.setBoolean("loop2", GameData.DEFAULT_LOOP);
+                host.saveFiles.setInteger("currentStreak2", GameData.DEFAULT_CURRENT_STREAK);
                 host.saveFiles.remove2();
             }
 
@@ -280,6 +284,8 @@ public class SettingsScreen implements Screen {
                 host.saveFiles.setInteger("level3", GameData.DEFAULT_LEVEL);
                 host.saveFiles.setInteger("rank3", GameData.DEFAULT_RANK);
                 host.saveFiles.setInteger("difficulty3", GameData.DEFAULT_DIFFICULTY);
+                host.saveFiles.setBoolean("loop3", GameData.DEFAULT_LOOP);
+                host.saveFiles.setInteger("currentStreak3", GameData.DEFAULT_CURRENT_STREAK);
                 host.saveFiles.remove3();
             }
 
@@ -455,9 +461,6 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
-                //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
-                //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
-                //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
                 if (useChair.isChecked()) {
                     settings.setFloat("sensitivityRight", sliderR.getValue()*0.5f);
                     settings.setFloat("sensitivityLeft", sliderL.getValue()*0.5f);
@@ -587,7 +590,6 @@ public class SettingsScreen implements Screen {
     private void sliderRight(Stage stage) {
         sliderR = new Slider(1f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
         sliderR.setWidth(selectBoxSize);
         sliderR.setPosition(col_width*5, row_height * 8 - sliderR.getHeight()/2);
 
@@ -597,7 +599,6 @@ public class SettingsScreen implements Screen {
     private void sliderLeft(Stage stage) {
         sliderL = new Slider(-10f,-1f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
         sliderL.setWidth(selectBoxSize);
         sliderL.setPosition(col_width*5 - sliderL.getWidth(), row_height * 8 - sliderR.getHeight()/2);
         stage.addActor(sliderL);
@@ -606,7 +607,6 @@ public class SettingsScreen implements Screen {
     private void sliderUp(Stage stage) {
         sliderU = new Slider(1f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
         sliderU.setHeight(selectBoxSize);
         sliderU.setPosition(col_width*5 - sliderU.getWidth()/2, row_height * 8);
         stage.addActor(sliderU);
@@ -615,7 +615,6 @@ public class SettingsScreen implements Screen {
     private void sliderDown(Stage stage) {
         sliderD = new Slider(-10f,-1f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
         sliderD.setHeight(selectBoxSize);
         sliderD.setPosition(col_width*5 - sliderD.getWidth()/2, row_height * 8 - sliderD.getHeight());
         stage.addActor(sliderD);
@@ -723,7 +722,6 @@ public class SettingsScreen implements Screen {
     private void sliderVolume() {
         sliderV = new Slider(0f,100f,1f,false, mySkin);
         sliderV.setAnimateInterpolation(Interpolation.smooth);
-        //slider.setAnimateDuration(0.1f);
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
         volumeText = new Label(host.texts.get(24), mySkin, "big");
