@@ -292,24 +292,10 @@ public class CutsceneScreen implements Screen {
         } else if (round == 2) {
             text.setText(host.script.get("scene1_line3"));
         } else if (round == 3) {
-            text.setText(host.script.get("scene1_line4"));
-        } else if (round == 4) {
-            text.setText(host.script.get("scene1_line5"));
-        } else if (round == 5) {
-            text.setText(host.script.get("scene1_line6"));
-        } else if (round == 6) {
-            text.setText(host.script.get("scene1_line7"));
-        } else if (round == 7) {
-            text.setText(host.script.get("scene1_line8"));
-        } else if (round == 8) {
-            text.setText(host.script.get("scene1_line9"));
-        } else if (round == 9) {
-            text.setText(host.script.get("scene1_line10right"));
-        } else if (round == 10) {
-            text.setText(host.script.get("scene1_line10wrong"));
-        } else if (round == 11) {
+            TutorialScreen tutorialScreen = new TutorialScreen(host);
+            host.setScreen(tutorialScreen);
             text.setText(host.script.get("scene1_line11"));
-        } else {
+        }  else {
             setNextScreen();
         }
     }
@@ -656,6 +642,8 @@ public class CutsceneScreen implements Screen {
     @Override
     public void show() {
         setName();
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -688,7 +676,7 @@ public class CutsceneScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override
