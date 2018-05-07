@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-//TODO Lisää fonttiin heittomerkki!!
-
 /**
  * Created by Essi Supponen on 06/05/2018.
  */
@@ -39,6 +37,8 @@ public class CutsceneScreen implements Screen {
     int sceneToAct;
     int round;
     String playerName;
+
+    float elapsedTime;
 
     public CutsceneScreen(Rikollisentunnistus host) {
         this.host = host;
@@ -93,6 +93,8 @@ public class CutsceneScreen implements Screen {
 
         round = 1;
         sceneToAct = 0;
+
+        elapsedTime = 0;
     }
 
     public void setName() {
@@ -647,6 +649,10 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    private boolean timer(float timeToPass) {
+        return timeToPass >= elapsedTime;
+    }
+
     @Override
     public void show() {
         setName();
@@ -657,9 +663,12 @@ public class CutsceneScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (Gdx.input.isTouched() && timer(0.5f))) {
             actScene();
+            elapsedTime = 0;
         }
+
+        elapsedTime += delta;
     }
 
     @Override

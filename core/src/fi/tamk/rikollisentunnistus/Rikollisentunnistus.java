@@ -144,18 +144,34 @@ public class Rikollisentunnistus extends Game {
 
         Gdx.app.log("Rikollisentunnistus", "update settings");
 
-        if (useDifficulty) {
+        if (gameData.getProfileUsed() == 0 && useDifficulty) {
             criminals = rowConstructor.makeRowDifficulty(difficulty);
-        } else {
+        } else if (gameData.getProfileUsed() == 0) {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+        } else {
+            if (gameData.getProfileUsed() == 1) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
+            } else if (gameData.getProfileUsed() == 2) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
+            } else if (gameData.getProfileUsed() == 3) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+            }
         }
     }
 
     public void resetAll() {
-        if (useDifficulty) {
+        if (gameData.getProfileUsed() == 0 && useDifficulty) {
             criminals = rowConstructor.makeRowDifficulty(difficulty);
-        } else {
+        } else if (gameData.getProfileUsed() == 0) {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+        } else {
+            if (gameData.getProfileUsed() == 1) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
+            } else if (gameData.getProfileUsed() == 2) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
+            } else if (gameData.getProfileUsed() == 3) {
+                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+            }
         }
 
 	    criminalScreen = new CriminalScreen(this, criminals[0]);

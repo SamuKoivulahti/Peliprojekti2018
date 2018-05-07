@@ -42,22 +42,28 @@ public class RankScreen implements Screen {
         if (game.gameData.getProfileUsed() == 1) {
             game.saveFiles.setInteger("points1", 0);
             rank = game.saveFiles.getInteger("rank1", GameData.DEFAULT_RANK);
-            game.saveFiles.setInteger("difficulty1", game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)+1);
-            if (rank != 15) {
+            if (rank == 0) {
+                game.saveFiles.setInteger("rank1", rank + 1);
+            } else if (rank != 15) {
+                game.saveFiles.setInteger("difficulty1", game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank1", rank + 1);
             }
         } else if (game.gameData.getProfileUsed() == 2) {
             game.saveFiles.setInteger("points2", 0);
             rank = game.saveFiles.getInteger("rank2", GameData.DEFAULT_RANK);
-            game.saveFiles.setInteger("difficulty2", game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)+1);
-            if (rank != 15) {
+            if (rank == 0) {
+                game.saveFiles.setInteger("rank2", rank + 1);
+            } else if (rank != 15) {
+                game.saveFiles.setInteger("difficulty2", game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank2", rank + 1);
             }
         } else if (game.gameData.getProfileUsed() == 3) {
             game.saveFiles.setInteger("points3", 0);
             rank = game.saveFiles.getInteger("rank3", GameData.DEFAULT_RANK);
-            game.saveFiles.setInteger("difficulty3", game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)+1);
-            if (rank != 15) {
+            if (rank == 0) {
+                game.saveFiles.setInteger("rank3", rank + 1);
+            } else if (rank != 15) {
+                game.saveFiles.setInteger("difficulty3", game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank3", rank + 1);
             }
         }

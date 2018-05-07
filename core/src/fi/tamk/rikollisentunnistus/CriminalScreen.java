@@ -130,20 +130,32 @@ public class CriminalScreen implements Screen {
      * difficulty, takes the values from preferences-file.
      */
     public void updateWaitingTimes() {
-        if (game.useDifficulty) {
-            float timeToShowAtMost = 5;
-            float timeToShowAtLeast = 1.25f;
-            float timeToWaitAtMost = 8;
-            float timeToWaitAtLeast = 1.5f;
+        float timeToShowAtMost = 5;
+        float timeToShowAtLeast = 1.25f;
+        float timeToWaitAtMost = 8;
+        float timeToWaitAtLeast = 1.5f;
 
+        if (game.useDifficulty && game.gameData.getProfileUsed() == 0) {
             timeShown = timeToShowAtMost - (game.difficulty*(timeToShowAtMost - timeToShowAtLeast))/14;
             timeWaiting = timeToWaitAtLeast + (game.difficulty*(timeToWaitAtMost - timeToWaitAtLeast))/14;
-        } else {
+        } else if (!game.useDifficulty && game.gameData.getProfileUsed() == 0) {
             timeShown = settings.getInteger("faceShown", GameData.DEFAULT_FACE_SHOWN);
             timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
+        } else if (game.gameData.getProfileUsed() != 0) {
+            if (game.gameData.getProfileUsed() == 1) {
+                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+            } else if (game.gameData.getProfileUsed() == 2) {
+                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+            } else if (game.gameData.getProfileUsed() == 3) {
+                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+            }
         }
 
-        Gdx.app.log("Time shown:", " " + timeShown );
+
+            Gdx.app.log("Time shown:", " " + timeShown );
         Gdx.app.log("Time waiting:", " " + timeWaiting);
     }
 

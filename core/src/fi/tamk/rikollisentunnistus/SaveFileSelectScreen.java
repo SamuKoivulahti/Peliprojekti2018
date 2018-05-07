@@ -77,7 +77,9 @@ public class SaveFileSelectScreen implements Screen {
                 if (profile1Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name1");
                     Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
+                    game.updateSettings();
                 } else {
+                    game.updateSettings();
                     game.setCriminalScreen();
                 }
             }
@@ -109,7 +111,9 @@ public class SaveFileSelectScreen implements Screen {
                 if (profile2Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name2");
                     Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
+                    game.updateSettings();
                 } else {
+                    game.updateSettings();
                     game.setCriminalScreen();
                 }
             }
@@ -141,7 +145,9 @@ public class SaveFileSelectScreen implements Screen {
                 if (profile3Button.getText().toString().equals(game.texts.get(46))) {
                     listener = new MyTextInputListener(SaveFileSelectScreen.this, "name3");
                     Gdx.input.getTextInput(listener, game.texts.get(47), "", game.texts.get(48));
+                    game.updateSettings();
                 } else {
+                    game.updateSettings();
                     game.setCriminalScreen();
                 }
             }
@@ -190,7 +196,8 @@ public class SaveFileSelectScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (InputIsValitaded != null) {
             game.saveFiles.setString(listener.ID, listener.getText());
-            game.setCriminalScreen();
+            game.cutsceneScreen.setScene(1);
+            game.setScreen(game.cutsceneScreen);
             InputIsValitaded = null;
         }
         stage.act();
