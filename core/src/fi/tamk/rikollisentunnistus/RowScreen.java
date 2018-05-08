@@ -138,8 +138,12 @@ public class RowScreen implements Screen {
             points = game.gameData.getPoints();
             level = game.gameData.getLevel();
         }
-
-        pointsText = new Label(game.texts.get(11)+ points + "/" + (5+(int)(difficulty/2)), mySkin);
+        Settings settings = Settings.getInstance();
+        if (game.gameData.profileUsed == 0) {
+            pointsText = new Label(game.texts.get(11) + points + "/" + settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT), mySkin);
+        } else {
+            pointsText = new Label(game.texts.get(11) + points + "/" + (5 + (int) (difficulty / 2)), mySkin);
+        }
         pointsText.setPosition(width - pointsText.getWidth() - width/100, height - pointsText.getHeight());
         currentStreakText = new Label(game.texts.get(50) + currentStreak, mySkin);
         currentStreakText.setPosition(width - currentStreakText.getWidth() - width/100, height - currentStreakText.getHeight());

@@ -116,7 +116,11 @@ public class IntermissionScreen implements Screen {
         currentStreakText.setPosition(width/2 - currentStreakText.getWidth()/2, row_height * 2);
         longestStreakText = new Label(game.script.format("postgame2", longestStreak), mySkin);
         longestStreakText.setPosition(width/2 - longestStreakText.getWidth()/2, row_height * 1);
-        pointsText = new Label(game.texts.get(11) + points + "/" + (5+(int)(difficulty/2)), mySkin);
+        if (game.gameData.profileUsed == 0) {
+            pointsText = new Label(game.texts.get(11) + points + "/" + settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT), mySkin);
+        } else {
+            pointsText = new Label(game.texts.get(11) + points + "/" + (5+(int)(difficulty/2)), mySkin);
+        }
         pointsText.setPosition(width/2 - pointsText.getWidth()/2, row_height * 5);
         levelText = new Label(game.texts.get(10) + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 10);
@@ -209,7 +213,7 @@ public class IntermissionScreen implements Screen {
 
     private boolean anyInput() {
         return (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
-                game.controls.moveDown(false) || game.controls.moveUp(false) ||
+                game.controls.moveUp(false) ||
                 game.controls.moveLeft(false) || game.controls.moveRight(false));
     }
 
