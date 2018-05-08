@@ -1,7 +1,11 @@
 package fi.tamk.rikollisentunnistus;
 
 /**
- * Created by Samu Koivulahti on 25.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 25.3.2018
+ *
+ * Saves data that is used during game
  */
 
 public class GameData {

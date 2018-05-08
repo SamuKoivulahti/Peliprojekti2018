@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 4.5.2018
+ *
+ * Gets users text input
  */
 
 public class MyTextInputListener implements Input.TextInputListener {

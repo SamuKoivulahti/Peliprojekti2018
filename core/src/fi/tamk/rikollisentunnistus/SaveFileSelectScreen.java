@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 20.4.2018
+ *
+ * Ables player to choose the profile he wants
  */
 
 public class SaveFileSelectScreen implements Screen {

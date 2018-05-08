@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 4.5.2018
+ *
+ * Tells player their rank
  */
 
 public class RankScreen implements Screen {

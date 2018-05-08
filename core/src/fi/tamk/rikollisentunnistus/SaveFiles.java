@@ -7,6 +7,8 @@ import com.badlogic.gdx.Preferences;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 19.4.2018
+ *
+ * Saves all information of game profiles
  */
 
 public class SaveFiles {

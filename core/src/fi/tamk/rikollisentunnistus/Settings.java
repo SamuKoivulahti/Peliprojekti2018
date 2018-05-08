@@ -8,6 +8,8 @@ import com.badlogic.gdx.Preferences;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 24.3.2018
+ *
+ * Keeps track of all of the settings
  */
 
 public class Settings {

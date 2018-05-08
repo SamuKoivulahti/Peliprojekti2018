@@ -21,8 +21,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 17.3.2018
+ *
+ * Introduces the game. Ables player to navigate to settings or game
  */
-
 public class MainScreen implements Screen {
     private float row_height;
     private float col_width;

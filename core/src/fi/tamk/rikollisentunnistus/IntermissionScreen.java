@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 25.3.2018
+ *
+ * Tells player information from last round
  */
 
 public class IntermissionScreen implements Screen {

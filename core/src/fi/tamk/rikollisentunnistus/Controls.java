@@ -10,7 +10,6 @@ import com.badlogic.gdx.Gdx;
  *
  * Controls take the accelerometer values and makes player able to play the game
  */
-
 public class Controls {
 
     public float accelY;

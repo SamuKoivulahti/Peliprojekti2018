@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Samu Koivulahti
  * @version 1.6
  * @since 26.3.2018
+ *
+ * Shows logos of people involved with this game
  */
 
 public class SplashScreen implements Screen {
