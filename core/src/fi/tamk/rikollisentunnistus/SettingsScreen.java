@@ -1,10 +1,7 @@
 package fi.tamk.rikollisentunnistus;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,10 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import java.lang.reflect.GenericArrayType;
-
 /**
- * Created by Samu Koivulahti on 17.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 17.3.2018
+ *
+ * Makes able to change different settings within the game/gameplay
  */
 public class SettingsScreen implements Screen {
 
@@ -154,6 +153,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(calibratedText);
     }
 
+   /**
+    * Sets settings values to their correct positions
+    */
     public void settingValues () {
         settings = Settings.getInstance();
 
@@ -200,6 +202,10 @@ public class SettingsScreen implements Screen {
         sliderUseDifficulty.setChecked(settings.getBoolean("useDifficulty", GameData.DEFAULT_USE_DIFFICULTY));
     }
 
+    /**
+     * Ables access to certain methods outside settingsScreen
+     * @param stage takes in the used stage
+     */
     public void externalSensitivityWindow(Stage stage) {
 
         Table table = new Table();
@@ -213,6 +219,9 @@ public class SettingsScreen implements Screen {
         sliderDown(stage);
     }
 
+    /**
+     * Sets default values to profile1 if clicked
+     */
     public void clearProfile1Button () {
         clearProfile1 = new TextButton(host.texts.get(21) + " 1",mySkin,"small");
         clearProfile1.setHeight(row_height*2);
@@ -240,6 +249,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(clearProfile1);
     }
 
+    /**
+     * Sets default values to profile2 if clicked
+     */
     public void clearProfile2Button () {
         clearProfile2 = new TextButton(host.texts.get(21) + " 2",mySkin,"small");
         clearProfile2.setHeight(row_height*2);
@@ -267,6 +279,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(clearProfile2);
     }
 
+    /**
+     * Sets default values to profile3 if clicked
+     */
     public void clearProfile3Button () {
         clearProfile3 = new TextButton(host.texts.get(21) + " 3",mySkin,"small");
         clearProfile3.setHeight(row_height*2);
@@ -294,6 +309,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(clearProfile3);
     }
 
+    /**
+     * Shows all general settings buttons and hides freeplay buttons if clicked
+     */
     public void gameSettingsButton() {
         general = new TextButton(host.texts.get(8),mySkin,"small");
         general.setHeight(row_height*2);
@@ -355,6 +373,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(general);
     }
 
+    /**
+     * Shows all freeplay settings and hides general settings if clicked
+     */
     public void freePlaySettingsButton() {
         freePlay = new TextButton(host.texts.get(9),mySkin,"small");
         freePlay.setHeight(row_height*2);
@@ -415,7 +436,9 @@ public class SettingsScreen implements Screen {
 
         stage.addActor(freePlay);
     }
-
+    /**
+     * Goes back one step or goes to main menu if clicked
+     */
     public void buttonBack() {
         back = new TextButton(host.texts.get(7),mySkin,"small");
         back.setSize(col_width*2,row_height*2);
@@ -447,6 +470,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(back);
     }
 
+    /**
+     * Saves all the values of settingsScreen if clicked
+     */
     public void buttonSave() {
         save = new TextButton(host.texts.get(22),mySkin);
         save.setHeight(row_height*2);
@@ -519,6 +545,9 @@ public class SettingsScreen implements Screen {
         save.setVisible(false);
     }
 
+    /**
+     * Calibrates the movement if clicked
+     */
     public void buttonCalibrate() {
         calibrate = new TextButton(host.texts.get(13), mySkin, "small");
         calibrate.setSize(selectBoxSize*2, row_height*2);
@@ -544,6 +573,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(calibrate);
     }
 
+    /**
+     * Sets new zero point values
+     */
     public void setZeroPoint() {
         settings = Settings.getInstance();
 
@@ -558,6 +590,9 @@ public class SettingsScreen implements Screen {
         Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
     }
 
+    /**
+     * Creates image of sensitivityGraph
+     */
     private void sensitivityGraph (Stage stage) {
         sensitivityGraphTexture = new Texture("sensitivityGraph1.png");
         sensitivityGraphImage = new Image(sensitivityGraphTexture);
@@ -567,26 +602,45 @@ public class SettingsScreen implements Screen {
         stage.addActor(sensitivityGraphImage);
     }
 
+    /**
+     * Sets correct stage
+     */
     public void sensitivityGraph () {
         sensitivityGraph(stage);
     }
 
+    /**
+     * Sets correct stage
+     */
     public void sliderRight() {
         sliderRight(stage);
     }
 
+    /**
+     * Sets correct stage
+     */
     public void sliderLeft() {
         sliderLeft(stage);
     }
 
+    /**
+     * Sets correct stage
+     */
     public void sliderUp() {
         sliderUp(stage);
     }
 
+    /**
+     * Sets correct stage
+     */
     public void sliderDown() {
         sliderDown(stage);
     }
 
+    /**
+     * Sets sensitivity of right movement
+     * @param stage gets the correct stage
+     */
     private void sliderRight(Stage stage) {
         sliderR = new Slider(1f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
@@ -596,6 +650,10 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderR);
     }
 
+    /**
+     * Sets sensitivity of left movement
+     * @param stage gets the correct stage
+     */
     private void sliderLeft(Stage stage) {
         sliderL = new Slider(-10f,-1f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
@@ -604,6 +662,10 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderL);
     }
 
+    /**
+     * Sets sensitivity of up movement
+     * @param stage gets the correct stage
+     */
     private void sliderUp(Stage stage) {
         sliderU = new Slider(1f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
@@ -612,6 +674,10 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderU);
     }
 
+    /**
+     * Sets sensitivity of down movement
+     * @param stage gets the correct stage
+     */
     private void sliderDown(Stage stage) {
         sliderD = new Slider(-10f,-1f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
@@ -620,6 +686,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderD);
     }
 
+    /**
+     * Checks if accessories are used
+     */
     public void assetSlider() {
         sliderA = new CheckBox(host.texts.get(36), mySkin);
         sliderA.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -627,6 +696,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderA);
     }
 
+    /**
+     * Creates a selectbox for rowLength
+     */
     public void rowSlider() {
         sliderRow = new SelectBox(mySkin);
         String[] array = {"3","4","5","6"};
@@ -640,6 +712,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(rowLengthText);
     }
 
+    /**
+     * Creates a selectBox for waiting time
+     */
     public void waitingTime() {
         waitingTime = new SelectBox(mySkin);
         String[] array = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -653,6 +728,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(selectionWaitingTimeText);
     }
 
+    /**
+     * Creates a selectbox for face shown time
+     */
     public void faceShownTime () {
         faceShown = new SelectBox(mySkin);
         String[] array = {"1", "2", "3", "4", "5"};
@@ -666,6 +744,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(faceShownText);
     }
 
+    /**
+     * Creates selectBox for attributes
+     */
     public void attributeSlider() {
         sliderAttribute = new SelectBox(mySkin);
         String[] array = {"0", "1", "2", "3", "4"};
@@ -679,6 +760,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sameAttributesText);
     }
 
+    /**
+     * Creates selectbox for round amount
+     */
     public void roundSlider() {
         sliderRound = new SelectBox(mySkin);
         String[] array = {"5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
@@ -692,6 +776,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(roundsText);
     }
 
+    /**
+     * Creates a selectBox for starting difficulty
+     */
     public void startingDifficultySlider() {
         sliderStaringDifficulty= new SelectBox(mySkin);
         String[] array = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
@@ -705,6 +792,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(startingDifficultyText);
     }
 
+    /**
+     * Checks if difficulty is used
+     */
     public void useDifficultySlider() {
         sliderUseDifficulty = new CheckBox(host.texts.get(32), mySkin);
         sliderUseDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -712,6 +802,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderUseDifficulty);
     }
 
+    /**
+     * Checks if increasing difficulty used
+     */
     public void increasingDifficultySlider() {
         sliderIncreasingDifficulty = new CheckBox(host.texts.get(33), mySkin);
         sliderIncreasingDifficulty.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -719,6 +812,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderIncreasingDifficulty);
     }
 
+    /**
+     * Creates volumeSlider
+     */
     private void sliderVolume() {
         sliderV = new Slider(0f,100f,1f,false, mySkin);
         sliderV.setAnimateInterpolation(Interpolation.smooth);
@@ -731,6 +827,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(volumeText);
     }
 
+    /**
+     * Creates checkbox for soundeffects
+     */
     public void soundEffects() {
         soundEffects = new CheckBox(host.texts.get(25), mySkin);
         soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -738,6 +837,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(soundEffects);
     }
 
+    /**
+     * Creates selectBox for timer of side movement
+     */
     public void timerSides() {
         timerSides = new SelectBox(mySkin);
         String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
@@ -751,6 +853,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(timerSidesText);
     }
 
+    /**
+     * Creates selectBox for timer of up movement
+     */
     public void timerUp() {
         timerUp = new SelectBox(mySkin);
         String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
@@ -764,6 +869,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(timerUpText);
     }
 
+    /**
+     * Creates selectBox for timer of down movement
+     */
     public void timerDown() {
         timerDown = new SelectBox(mySkin);
         String[] array = {host.texts.get(45), "1", "2", "3", "4", "5"};
@@ -777,6 +885,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(timerDownText);
     }
 
+    /**
+     * Creates checkbox for horizontal axis use
+     */
     public void horizontalAxis() {
         horizontalAxis = new CheckBox(host.texts.get(29), mySkin);
         horizontalAxis.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -784,6 +895,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(horizontalAxis);
     }
 
+    /**
+     * Creates checkbox for is chair used
+     */
     public void useChair() {
         useChair = new CheckBox(host.texts.get(23), mySkin);
         useChair.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
@@ -791,6 +905,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(useChair);
     }
 
+    /**
+     * Hides all but starting buttons
+     */
     public void hideSettings() {
         sliderR.setVisible(false);
         sliderL.setVisible(false);

@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 
 
 /**
- * Created by Koivulahti on 5.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 5.3.2018
+ *
+ * Controls take the accelerometer values and makes player able to play the game
  */
 
 public class Controls {

@@ -32,6 +32,7 @@ public class RankScreen implements Screen {
 
     Label rankText;
     Label oldRankText;
+    Label continueText;
     MoveToAction rankToRight;
     MoveToAction oldRankToRight;
 
@@ -92,6 +93,11 @@ public class RankScreen implements Screen {
         }
         game.saveFiles.saveNewFiles();
 
+        continueText = new Label(game.texts.get(49), mySkin);
+        continueText.setPosition(width/2 - continueText.getWidth()/2, row_height*2);
+        continueText.setVisible(false);
+        stage.addActor(continueText);
+
         if (rank != 0 && rank < 15) {
             rankText = new Label(game.script.get("Rank" + (rank + 1)), mySkin, "big");
             rankText.setPosition(0 - rankText.getWidth(), height/2 - rankText.getHeight()/2);
@@ -127,7 +133,7 @@ public class RankScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isTouched()) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isTouched()) && elapsedTime > 3.5f) {
             game.resetAll();
         }
         elapsedTime += delta;
@@ -135,6 +141,10 @@ public class RankScreen implements Screen {
         if (elapsedTime >= 2 && rank != 0 && rank != 15) {
             rankText.addAction(rankToRight);
             oldRankText.addAction(oldRankToRight);
+        }
+
+        if (elapsedTime > 3.5f) {
+            continueText.setVisible(true);
         }
     }
 
