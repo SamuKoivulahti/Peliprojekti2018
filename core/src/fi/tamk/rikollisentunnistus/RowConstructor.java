@@ -10,6 +10,14 @@ import com.badlogic.gdx.math.MathUtils;
  * Created by Essi Supponen on 16/03/2018.
  */
 
+/**
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-03-16
+ *
+ * Constructs criminalsRows.
+ */
+
 public class RowConstructor {
     private int rowLength;          // 3 - 6 people
     private int sameFeatures;       // 0 - 4 same features

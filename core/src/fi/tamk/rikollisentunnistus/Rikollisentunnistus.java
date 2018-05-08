@@ -234,8 +234,8 @@ public class Rikollisentunnistus extends Game {
      * Generates totally random values for rowLenght, sameAttributes and accessories.
      */
     private void makeRandomRow() {
-	    rowLength = MathUtils.random(3, 6);
-	    sameAttributes = MathUtils.random(0, 4);
+	    rowLength = MathUtils.random(4, 6);
+	    sameAttributes = MathUtils.random(1, 4);
 
 	    if (MathUtils.random(0f,1f) <= 0.5f) {
 	        accessories = true;

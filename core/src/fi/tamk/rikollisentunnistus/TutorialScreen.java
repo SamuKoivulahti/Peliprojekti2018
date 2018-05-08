@@ -19,7 +19,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Essi Supponen on 07/05/2018.
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-05-07
+ *
+ * Plays tutorial.
  */
 
 public class TutorialScreen implements Screen {
@@ -90,6 +94,11 @@ public class TutorialScreen implements Screen {
         mode = SHOWING;
     }
 
+    /**
+     * Makes own "criminalScreen" for single use.
+     *
+     * Takes a lot of assets and code for a single use "criminalScreen".
+     */
     private void prepareCriminalPart() {
         backgroundImageCriminal = new Image(new Texture("criminalscreenbackground.jpg"));
         backgroundImageCriminal.setBounds(0,0,width,height);
@@ -128,7 +137,8 @@ public class TutorialScreen implements Screen {
         timeWaiting = 2.5f;
 
         waitingTimeText = new Label("" + (timeWaiting), mySkin, "big");
-        waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2, height/2 - waitingTimeText.getHeight()/2);
+        waitingTimeText.setPosition(width/2 - waitingTimeText.getWidth()/2,
+                height/2 - waitingTimeText.getHeight()/2);
         waitingTimeText.setVisible(false);
         waitingTimeText.setAlignment(Align.center);
 
@@ -139,6 +149,11 @@ public class TutorialScreen implements Screen {
         stage.addActor(criminal);
     }
 
+    /**
+     * Makes own "rowScreen" for single use.
+     *
+     * Takes a lot of assets and code for a single use "rowScreen".
+     */
     private void setChoosingPart() {
         stage.clear();
 
@@ -172,6 +187,9 @@ public class TutorialScreen implements Screen {
         setText(game.script.get("scene1_line6"));
     }
 
+    /**
+     * Sets criminals to "rowScreen".
+     */
     private void setCriminals() {
         float separation = width / 5;
         float xCrd = separation*1.5f;
@@ -202,6 +220,11 @@ public class TutorialScreen implements Screen {
         criminalRow[startpoint].toggleActive();
     }
 
+    /**
+     * Changes explaining textlines forward.
+     *
+     * @param round
+     */
     private void explain(int round) {
         if (round == 0) {
             setText(game.script.get("scene1_line7"));
@@ -215,6 +238,11 @@ public class TutorialScreen implements Screen {
         }
     }
 
+    /**
+     * Sets given string.
+     *
+     * @param string
+     */
     private void setText(String string) {
         text.setText(string);
         text.setPosition(width/2-dialogBoxImage.getWidth()*24/50,dialogBoxImage.getHeight()*1/2f + height/60f);
@@ -230,6 +258,9 @@ public class TutorialScreen implements Screen {
         return timeToPass <= elapsedTime;
     }
 
+    /**
+     * Moves selection right if possible.
+     */
     public void moveRight() {
         int help = 0;
 
@@ -253,6 +284,9 @@ public class TutorialScreen implements Screen {
         }
     }
 
+    /**
+     * Moves selection left if possible.
+     */
     public void moveLeft() {
         int help = 0;
 
@@ -276,6 +310,9 @@ public class TutorialScreen implements Screen {
         }
     }
 
+    /**
+     * Checks if selected criminal was the right one.
+     */
     private void select() {
         String selectedID = "";
         for (Face criminal : criminalRow) {
@@ -301,6 +338,9 @@ public class TutorialScreen implements Screen {
         stage.act();
         stage.draw();
 
+        /**
+         * Shows the criminal.
+         */
         if (mode == SHOWING) {
             if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
                 setText(game.script.get("scene1_line5"));
@@ -310,6 +350,9 @@ public class TutorialScreen implements Screen {
             }
         }
 
+        /**
+         * Waits for the rowScreen.
+         */
         if (mode == WAITING) {
             MoveToAction move = new MoveToAction();
             move.setPosition(width/2, -height);
@@ -334,6 +377,9 @@ public class TutorialScreen implements Screen {
             }
         }
 
+        /**
+         * Explains the controls of rowScreen.
+         */
         if (mode == EXPLAINING) {
             if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
                 elapsedTime = 0;
@@ -341,6 +387,9 @@ public class TutorialScreen implements Screen {
             }
         }
 
+        /**
+         * Lets player choose the suspect.
+         */
         if (mode == CHOOSING) {
             if (game.settingsScreen.horizontalAxis.isChecked()) {
                 if (game.controls.accelerometerY() > game.controls.hysteresisUp) {
@@ -422,6 +471,9 @@ public class TutorialScreen implements Screen {
             game.batch.end();
         }
 
+        /**
+         * Changes screen back to cutscene.
+         */
         if (mode == READY) {
             if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
                 game.setScreen(game.cutsceneScreen);

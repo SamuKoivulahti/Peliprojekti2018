@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -146,20 +147,42 @@ public class CriminalScreen implements Screen {
             timeWaiting = settings.getInteger("waitingTime", GameData.DEFAULT_WAITING_TIME);
         } else if (game.gameData.getProfileUsed() != 0) {
             if (game.gameData.getProfileUsed() == 1) {
-                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
-                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                if (game.saveFiles.getBoolean("loop1", GameData.DEFAULT_LOOP)) {
+                    setRandomWaitingTimes();
+                } else {
+                    timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                    timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                }
             } else if (game.gameData.getProfileUsed() == 2) {
-                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
-                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                if (game.saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP)) {
+                    setRandomWaitingTimes();
+                } else {
+                    timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                    timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                }
             } else if (game.gameData.getProfileUsed() == 3) {
-                timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
-                timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                if (game.saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP)) {
+                    setRandomWaitingTimes();
+                } else {
+                    timeShown = timeToShowAtMost - (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToShowAtMost - timeToShowAtLeast))/14;
+                    timeWaiting = timeToWaitAtLeast + (game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)*(timeToWaitAtMost - timeToWaitAtLeast))/14;
+                }
             }
         }
 
 
             Gdx.app.log("Time shown:", " " + timeShown );
         Gdx.app.log("Time waiting:", " " + timeWaiting);
+    }
+
+    private void setRandomWaitingTimes() {
+        float timeToShowAtMost = 5;
+        float timeToShowAtLeast = 1.25f;
+        float timeToWaitAtMost = 8;
+        float timeToWaitAtLeast = 1.5f;
+
+        timeShown = MathUtils.random(timeToShowAtLeast, timeToShowAtMost -2f);
+        timeWaiting = MathUtils.random(timeToWaitAtLeast +3f, timeToWaitAtMost);
     }
 
     /**

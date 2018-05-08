@@ -25,10 +25,12 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Essi Supponen on 23/02/2018.
+ * @author Essi Supponen, Samu Koivulahti
+ * @version 1.6
+ * @since 2018-02-23
+ *
+ * Shows criminal to be memorized and sets RowScreen.
  */
-//TODO: pisteenlasku
-//TODO: INTERMISSIOSCREEN2, rank, pisteenlaskun nollaaminen, ruudusta oikein eteneminen
 
 public class RowScreen implements Screen {
     private Rikollisentunnistus game;
@@ -375,6 +377,16 @@ public class RowScreen implements Screen {
         stage.addActor(sensitivityWindow);
     }
 
+    /**
+     * Sets Face-actors to the stage and gives them MoveToAction to move to the screen.
+     *
+     * Sets criminals to the screen based on how many actors there are in the lineUp. Scales
+     * actors to the right size to fit on the screen. Also chooses active criminal in the middle
+     * of the row.
+     *
+     * @param criminals
+     * @param suspectID
+     */
     public void setCriminals(Face[] criminals, String suspectID) {
         criminalRow = criminals;
         rightSuspectID = suspectID;
@@ -444,6 +456,12 @@ public class RowScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
     }
 
+    /**
+     * Checks if player selected the right criminal and sets intermissionScreen.
+     *
+     * Compares rightCriminalId to the Id of the chosen criminal. If storymode is used and
+     * the story is finished, updates current and longest streak.
+     */
     public void select() {
         String selectedID = "";
         for (Face criminal : criminalRow) {
@@ -454,10 +472,6 @@ public class RowScreen implements Screen {
             }
         }
 
-        Gdx.app.log("RowScreen", "Correct suspect id: " + rightSuspectID);
-        Gdx.app.log("RowScreen", "Selected suspect id: "+ selectedID);
-
-        Gdx.app.log("RowScreen", "selected");
         if (selectedID.equals(rightSuspectID)) {
             win = true;
             if (game.gameData.profileUsed == 1) {
@@ -509,14 +523,12 @@ public class RowScreen implements Screen {
         setInterMissionScreen();
     }
 
-    public void cancel() {
-        stage.clear();
-        game.resetAll();
-        MainScreen mainScreen = new MainScreen(game);
-        game.setScreen(mainScreen);
-        Gdx.app.log("Cancel", "cancelled");
-    }
-
+    /**
+     * Moves the selection right.
+     *
+     * Checks if the selection can be moved right. If it can, moves the selections, else does
+     * nothing.
+     */
     public void moveRight() {
         int help = 0;
 
@@ -540,6 +552,12 @@ public class RowScreen implements Screen {
         }
     }
 
+    /**
+     * Moves the selection left.
+     *
+     * Checks if the selection can be moved left. If it can, moves the selections, else does
+     * nothing.
+     */
     public void moveLeft() {
         int help = 0;
 
@@ -563,6 +581,9 @@ public class RowScreen implements Screen {
         }
     }
 
+    /**
+     * Sets intermissionScreen.
+     */
     public void setInterMissionScreen() {
         InterMissionScreen = new IntermissionScreen(game);
         game.setScreen(InterMissionScreen);
@@ -618,6 +639,9 @@ public class RowScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+        /**
+         * Makes sure criminals that are not chosen are the right size.
+         */
         for (Face criminal : criminalRow) {
             if (criminal.active && !criminal.hasActions() && letMove) {
                 MoveToAction moveSpotlight = new MoveToAction();
@@ -672,10 +696,6 @@ public class RowScreen implements Screen {
                 SoundManager.stopSelectionBarSound(game.soundEffectsOn);
                 select();
             }
-
-            /*if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || game.controls.moveDown(true)) {
-                cancel();
-            }*/
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
                     Gdx.input.isKeyJustPressed(Input.Keys.BACK) ||

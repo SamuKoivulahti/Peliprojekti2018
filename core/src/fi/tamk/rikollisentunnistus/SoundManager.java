@@ -5,7 +5,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 /**
- * Created by Essi Supponen on 19/04/2018.
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-04-19
+ *
+ * Takes care of sounds.
  */
 
 public class SoundManager {
@@ -86,6 +90,11 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Changes volume to all music tracks.
+     *
+     * @param volume
+     */
     public static void changeVolume(float volume) {
         menuMusic.setVolume(volume);
         ingameMusic.setVolume(volume);
