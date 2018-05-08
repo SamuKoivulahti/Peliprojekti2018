@@ -6,7 +6,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Created by Essi Supponen on 23/02/2018.
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-02-23
+ *
+ * Plays the cutscenes of the game and calls the TutorialScreen.
  */
 
 public class Face extends Actor {

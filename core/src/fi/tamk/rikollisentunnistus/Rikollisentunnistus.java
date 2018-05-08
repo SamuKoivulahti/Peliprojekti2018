@@ -3,7 +3,6 @@ package fi.tamk.rikollisentunnistus;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -11,7 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
+
+/**
+ * @author Essi Supponen, Samu Koivulahti
+ * @version 1.6
+ * @since 2018-02
+ *
+ * Manages screens and all those things.
+ */
 
 public class Rikollisentunnistus extends Game {
     CriminalScreen criminalScreen;
@@ -73,6 +79,14 @@ public class Rikollisentunnistus extends Game {
         }
 	}
 
+    /**
+     * Updates the language of the game.
+     *
+     * Checks if given string is "FI". If it is, sets Finnish as the game language. If not, sets
+     * English.
+     *
+     * @param language
+     */
 	public void updateLanguage(String language) {
 	    Locale locale;
 	    if (language.equals("FI")) {
@@ -100,6 +114,9 @@ public class Rikollisentunnistus extends Game {
         settingsScreen = new SettingsScreen(this);
     }
 
+    /**
+     * Sets language using defaultLocale.
+     */
 	public void language() {
 	    Locale locale;
 	    I18NBundle myBundle;
@@ -128,6 +145,9 @@ public class Rikollisentunnistus extends Game {
 
     }
 
+    /**
+     * Gets settings and sets them.
+     */
     public void updateSettings() {
         Settings settings = Settings.getInstance();
 
@@ -152,14 +172,14 @@ public class Rikollisentunnistus extends Game {
                     makeRandomRow();
                     criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
                 } else {
-                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
                 }
             } else if (gameData.getProfileUsed() == 2) {
                 if (saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP)) {
                     makeRandomRow();
                     criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
                 } else {
-                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
                 }
             } else if (gameData.getProfileUsed() == 3) {
                 if (saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP)) {
@@ -172,6 +192,9 @@ public class Rikollisentunnistus extends Game {
         }
     }
 
+    /**
+     * Resets current criminalRow and sets criminalScreen.
+     */
     public void resetAll() {
         if (gameData.getProfileUsed() == 0 && useDifficulty) {
             criminals = rowConstructor.makeRowDifficulty(difficulty);
@@ -183,14 +206,14 @@ public class Rikollisentunnistus extends Game {
                     makeRandomRow();
                     criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
                 } else {
-                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
                 }
             } else if (gameData.getProfileUsed() == 2) {
                 if (saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP)) {
                     makeRandomRow();
                     criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
                 } else {
-                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
                 }
             } else if (gameData.getProfileUsed() == 3) {
                 if (saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP)) {
@@ -207,6 +230,9 @@ public class Rikollisentunnistus extends Game {
 	    setScreen(criminalScreen);
     }
 
+    /**
+     * Generates totally random values for rowLenght, sameAttributes and accessories.
+     */
     private void makeRandomRow() {
 	    rowLength = MathUtils.random(3, 6);
 	    sameAttributes = MathUtils.random(0, 4);
@@ -218,29 +244,49 @@ public class Rikollisentunnistus extends Game {
         }
     }
 
+    /**
+     * Sets rowScreen.
+     */
     public void setRowScreen() {
         rowScreen = new RowScreen(this);
         setScreen(rowScreen);
     }
 
+    /**
+     * Sets criminalScreen.
+     */
     public void setCriminalScreen() {
         criminalScreen = new CriminalScreen(this, criminals[0]);
         criminalScreen.updateWaitingTimes();
         setScreen(criminalScreen);
     }
 
+    /**
+     * Sets mainScreen.
+     */
     public void setMainScreen() {
 	    setScreen(mainScreen);
     }
 
+    /**
+     * Sets settingScreen.
+     */
     public void setSettingsScreen() {
 	    setScreen(settingsScreen);
     }
 
+    /**
+     * Sets fileSelectScreen.
+     */
     public void setSaveFileSelectScreen() {
 	    setScreen(saveFileSelectScreen);
 	}
 
+    /**
+     * Sets criminals to the rowScreen.
+     *
+     * Also adds accesories and suffles the rows.
+     */
     public void setCriminals() {
 	    String rightId = criminals[0].getIdCode();
 	    accessories = rowConstructor.getAccessories();
@@ -255,10 +301,14 @@ public class Rikollisentunnistus extends Game {
         rowScreen.setCriminals(criminals,rightId);
     }
 
-    public void resetCriminalScreen() {
-	    criminalScreen.reset();
-    }
-
+    /**
+     * Suffles given array.
+     *
+     * Sets given array to a arraylist, then it can be suffled with Collections.suffle()
+     *
+     * @param array
+     * @return      same array but suffled
+     */
     public Face[] shuffleArray(Face[] array) {
         List<Face> list = new ArrayList();
         for (Face i : array) {
