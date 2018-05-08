@@ -13,7 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Essi Supponen on 06/05/2018.
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-05-06
+ *
+ * Plays the cutscenes of the game and calls the TutorialScreen.
  */
 
 public class CutsceneScreen implements Screen {
@@ -101,6 +105,11 @@ public class CutsceneScreen implements Screen {
         elapsedTime = 0;
     }
 
+    /**
+     * Sets the name of the player.
+     *
+     * Gets the name of the player from savefiles and sets it to playerName
+     */
     public void setName() {
         if (host.gameData.profileUsed == 1) {
             playerName = host.saveFiles.getString("name1", "");
@@ -111,6 +120,11 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Makes MoveToAction for assistant to move onscreen.
+     *
+     * @return MoveToAction
+     */
     private MoveToAction moveAssistantOnscreen() {
         MoveToAction move = new MoveToAction();
         move.setDuration(0.5f);
@@ -119,6 +133,11 @@ public class CutsceneScreen implements Screen {
         return move;
     }
 
+    /**
+     * Makes MoveToAction for assistant to move offscreen.
+     *
+     * @return MoveToAction
+     */
     private MoveToAction moveAssistantOffscreen() {
         MoveToAction move = new MoveToAction();
         move.setDuration(0.5f);
@@ -127,6 +146,11 @@ public class CutsceneScreen implements Screen {
         return move;
     }
 
+    /**
+     * Makes MoveToAction for chief to move onscreen.
+     *
+     * @return MoveToAction
+     */
     private MoveToAction moveChiefOnscreen() {
         MoveToAction move = new MoveToAction();
         move.setDuration(0.5f);
@@ -135,6 +159,11 @@ public class CutsceneScreen implements Screen {
         return move;
     }
 
+    /**
+     * Makes MoveToAction for chief to move offscreen.
+     *
+     * @return MoveToAction
+     */
     private MoveToAction moveChiefOffscreen() {
         MoveToAction move = new MoveToAction();
         move.setDuration(0.5f);
@@ -143,11 +172,21 @@ public class CutsceneScreen implements Screen {
         return move;
     }
 
+    /**
+     * Sets dialog text.
+     *
+     * @param string    text to be set
+     */
     private void setText(String string) {
         text.setText(string);
         text.setPosition(width/2-dialogBoxImage.getWidth()*24/50,dialogBoxImage.getHeight()*1/2f + height/60f);
     }
 
+    /**
+     * Sets first part of given scene.
+     *
+     * @param number    Scene number
+     */
     public void setScene(int number) {
         sceneToAct = number;
 
@@ -231,6 +270,9 @@ public class CutsceneScreen implements Screen {
         round = 1;
     }
 
+    /**
+     * Resets everything and sets rankScreen.
+     */
     private void setNextScreen() {
         assistantImage1.setVisible(false);
         assistantImage1.setPosition(width*5/4f - assistantImage1.getWidth()/2, 0);
@@ -256,6 +298,9 @@ public class CutsceneScreen implements Screen {
         host.setScreen(rankScreen);
     }
 
+    /**
+     * Checks which scene to act and acts it.
+     */
     private void actScene() {
         if(sceneToAct == 1) {
             actScene1();
@@ -292,6 +337,9 @@ public class CutsceneScreen implements Screen {
         round++;
     }
 
+    /**
+     * Acts scene 1 and plays tutorial
+     */
     private void actScene1() {
         if (round == 1) {
             text.setText(host.script.get("scene1_line2"));
@@ -306,6 +354,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 2
+     */
     private void actScene2() {
         if (round == 1) {
             setText(host.script.get("scene2_line2"));
@@ -319,6 +370,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 3
+     */
     private void actScene3() {
         if (round == 1) {
             assistantImage1.setVisible(false);
@@ -334,6 +388,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 4
+     */
     private void actScene4() {
         if (round == 1) {
             MoveToAction moveChief = moveChiefOffscreen();
@@ -392,6 +449,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 5
+     */
     private void actScene5() {
         if (round == 1) {
             assistantImage1.setVisible(false);
@@ -411,6 +471,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 6
+     */
     public void actScene6() {
         if (round == 1) {
             assistantImage3.setVisible(false);
@@ -428,6 +491,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 7
+     */
     public void actScene7() {
         if (round == 1) {
             assistantImage3.setVisible(false);
@@ -452,6 +518,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 8
+     */
     public void actScene8() {
         if (round == 1) {
             setText(host.script.get("scene8_line2"));
@@ -465,6 +534,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 9
+     */
     public void actScene9() {
         if (round == 1) {
             setText(host.script.get("scene9_line2"));
@@ -483,6 +555,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 10
+     */
     public void actScene10() {
         if (round == 1) {
             setText(host.script.get("scene10_line2"));
@@ -502,6 +577,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 11
+     */
     public void actScene11() {
         if (round == 1) {
             setText(host.script.get("scene11_line2"));
@@ -519,6 +597,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 12
+     */
     public void actScene12() {
         if (round == 1) {
             setText(host.script.get("scene12_line2"));
@@ -542,6 +623,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 13
+     */
     public void actScene13() {
         if (round == 1) {
             assistantImage3.setPosition(assistantImage1.getX(), 0);
@@ -562,6 +646,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 14
+     */
     public void actScene14() {
         if (round == 1) {
             assistantImage1.setPosition(assistantImage3.getX(), 0);
@@ -581,6 +668,9 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Acts scene 15
+     */
     public void actScene15() {
         if (round == 1) {
             setText(host.script.get("scene15_line2"));
@@ -641,6 +731,11 @@ public class CutsceneScreen implements Screen {
         }
     }
 
+    /**
+     * Checks if given time has passed.
+     *
+     * @return      true if given time has passed
+     */
     private boolean timer(float timeToPass) {
         return timeToPass <= elapsedTime;
     }

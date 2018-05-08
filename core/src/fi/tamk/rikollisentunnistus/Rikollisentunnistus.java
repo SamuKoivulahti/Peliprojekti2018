@@ -148,11 +148,26 @@ public class Rikollisentunnistus extends Game {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
         } else {
             if (gameData.getProfileUsed() == 1) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop1", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             } else if (gameData.getProfileUsed() == 2) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             } else if (gameData.getProfileUsed() == 3) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             }
         }
     }
@@ -164,17 +179,43 @@ public class Rikollisentunnistus extends Game {
             criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
         } else {
             if (gameData.getProfileUsed() == 1) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop1", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             } else if (gameData.getProfileUsed() == 2) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop2", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             } else if (gameData.getProfileUsed() == 3) {
-                criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                if (saveFiles.getBoolean("loop3", GameData.DEFAULT_LOOP)) {
+                    makeRandomRow();
+                    criminals = rowConstructor.makeRow(rowLength, sameAttributes, accessories);
+                } else {
+                    criminals = rowConstructor.makeRowDifficulty(saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY));
+                }
             }
         }
 
 	    criminalScreen = new CriminalScreen(this, criminals[0]);
         criminalScreen.updateWaitingTimes();
 	    setScreen(criminalScreen);
+    }
+
+    private void makeRandomRow() {
+	    rowLength = MathUtils.random(3, 6);
+	    sameAttributes = MathUtils.random(0, 4);
+
+	    if (MathUtils.random(0f,1f) <= 0.5f) {
+	        accessories = true;
+        } else {
+	        accessories = false;
+        }
     }
 
     public void setRowScreen() {

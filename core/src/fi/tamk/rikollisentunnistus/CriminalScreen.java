@@ -16,7 +16,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Essi Supponen on 23/02/2018.
+ * @author Essi Supponen
+ * @version 1.6
+ * @since 2018-02-23
+ *
+ * Shows criminal to be memorized and sets RowScreen.
  */
 
 public class CriminalScreen implements Screen {
