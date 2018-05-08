@@ -62,7 +62,7 @@ public class RankScreen implements Screen {
             rank = game.saveFiles.getInteger("rank1", GameData.DEFAULT_RANK);
             if (rank == 0) {
                 game.saveFiles.setInteger("rank1", rank + 1);
-            } else if (rank != 15) {
+            } else if (rank < 14) {
                 game.saveFiles.setInteger("difficulty1", game.saveFiles.getInteger("difficulty1", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank1", rank + 1);
             } else {
@@ -73,7 +73,7 @@ public class RankScreen implements Screen {
             rank = game.saveFiles.getInteger("rank2", GameData.DEFAULT_RANK);
             if (rank == 0) {
                 game.saveFiles.setInteger("rank2", rank + 1);
-            } else if (rank != 15) {
+            } else if (rank < 14) {
                 game.saveFiles.setInteger("difficulty2", game.saveFiles.getInteger("difficulty2", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank2", rank + 1);
             } else {
@@ -84,7 +84,7 @@ public class RankScreen implements Screen {
             rank = game.saveFiles.getInteger("rank3", GameData.DEFAULT_RANK);
             if (rank == 0) {
                 game.saveFiles.setInteger("rank3", rank + 1);
-            } else if (rank != 15) {
+            } else if (rank < 14) {
                 game.saveFiles.setInteger("difficulty3", game.saveFiles.getInteger("difficulty3", GameData.DEFAULT_DIFFICULTY)+1);
                 game.saveFiles.setInteger("rank3", rank + 1);
             } else {
@@ -138,7 +138,7 @@ public class RankScreen implements Screen {
         }
         elapsedTime += delta;
 
-        if (elapsedTime >= 2 && rank != 0 && rank != 15) {
+        if (elapsedTime >= 2 && rank != 0 && rank < 15) {
             rankText.addAction(rankToRight);
             oldRankText.addAction(oldRankToRight);
         }

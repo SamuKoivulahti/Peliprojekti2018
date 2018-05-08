@@ -53,7 +53,11 @@ public class MainScreen implements Screen {
         background.setSize(width,height);
         background.setPosition(0,0);
 
-        tutorial = new Image(new Texture("tutorialpicture.jpg"));
+        if (host.texts.get(0).equals("EN")) {
+            tutorial = new Image(new Texture("tutorialpicture.jpg"));
+        } else {
+            tutorial = new Image(new Texture("tutorialpicturefi.jpg"));
+        }
         tutorial.setSize(width,height);
         tutorial.setPosition(0,0);
         tutorial.setVisible(false);
@@ -189,7 +193,10 @@ public class MainScreen implements Screen {
                 settings.setText(host.texts.get(3));
                 tutorialButton.setText(host.texts.get(4));
                 exit.setText(host.texts.get(5));
-
+                tutorial = new Image(new Texture("tutorialpicturefi.jpg"));
+                stage.addActor(tutorial);
+                tutorial.setVisible(false);
+                tutorialButton.toFront();
 
             }
 
@@ -213,6 +220,10 @@ public class MainScreen implements Screen {
                 settings.setText(host.texts.get(3));
                 tutorialButton.setText(host.texts.get(4));
                 exit.setText(host.texts.get(5));
+                tutorial = new Image(new Texture("tutorialpicture.jpg"));
+                stage.addActor(tutorial);
+                tutorial.setVisible(false);
+                tutorialButton.toFront();
             }
 
         });

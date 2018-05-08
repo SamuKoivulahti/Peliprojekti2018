@@ -21,12 +21,14 @@ public class SplashScreen implements Screen {
     Texture exerium;
     Texture tiko;
     Texture ihanPihalla;
+    Texture tamk;
     Stage stage;
     private OrthographicCamera camera;
     float elapsedTime;
     private Image splashImageExerium;
     private Image splashImageTiko;
     private Image splashImageIhanPihalla;
+    private Image splashImageTamk;
     private int splashScreenTime;
 
 
@@ -38,7 +40,7 @@ public class SplashScreen implements Screen {
 
         exerium = new Texture("exerium_logo.png");
         splashImageExerium = new Image(exerium);
-        splashImageExerium.setPosition(camera.viewportWidth/4-exerium.getWidth()/2, camera.viewportHeight/4 *3 - exerium.getHeight()/2);
+        splashImageExerium.setPosition(camera.viewportWidth/4*3-exerium.getWidth()/2, camera.viewportHeight/4 *2 - exerium.getHeight()/2);
         splashImageExerium.setSize(exerium.getWidth(), exerium.getHeight());
 
         tiko = new Texture("tiko_musta_fin.png");
@@ -46,16 +48,23 @@ public class SplashScreen implements Screen {
         splashImageTiko.setPosition(camera.viewportWidth/4*3-tiko.getWidth()*0.5f/2, camera.viewportHeight/4 *3 - tiko.getHeight()*0.5f/2);
         splashImageTiko.setSize(tiko.getWidth()*0.5f, tiko.getHeight()*0.5f);
 
+        tamk = new Texture("tamk.png");
+        splashImageTamk = new Image(tamk);
+        splashImageTamk.setPosition(camera.viewportWidth/4*3-tamk.getWidth()*0.18f/2, camera.viewportHeight/4*1 - tamk.getHeight()*0.18f/2);
+        splashImageTamk.setSize(tamk.getWidth()*0.18f, tamk.getHeight()*0.18f);
+
         ihanPihalla = new Texture("ihanpihalla_logo.png");
         splashImageIhanPihalla = new Image(ihanPihalla);
-        splashImageIhanPihalla.setPosition(camera.viewportWidth/2 - ihanPihalla.getWidth()*0.65f/2, camera.viewportHeight/12);
-        splashImageIhanPihalla.setSize(ihanPihalla.getWidth()*0.65f,ihanPihalla.getHeight()*0.65f);
+        splashImageIhanPihalla.setPosition(camera.viewportWidth/4 - ihanPihalla.getWidth()/2, camera.viewportHeight/12);
+        splashImageIhanPihalla.setSize(ihanPihalla.getWidth(),ihanPihalla.getHeight());
 
         splashImageExerium.addAction(Actions.sequence(Actions.alpha(0f),
                  Actions.fadeIn(1.0f), Actions.delay(0.5f)));
         splashImageTiko.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
         splashImageIhanPihalla.addAction(Actions.sequence(Actions.alpha(0f),
+                Actions.fadeIn(1.0f), Actions.delay(0.5f)));
+        splashImageTamk.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
 
         elapsedTime = 0;
@@ -65,6 +74,7 @@ public class SplashScreen implements Screen {
         stage.addActor(splashImageExerium);
         stage.addActor(splashImageTiko);
         stage.addActor(splashImageIhanPihalla);
+        stage.addActor(splashImageTamk);
     }
 
     @Override

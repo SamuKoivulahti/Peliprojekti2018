@@ -47,6 +47,7 @@ public class RowScreen implements Screen {
     boolean lose;
 
     private Label pointsText;
+    private Label currentStreakText;
     private Label levelText;
     private Label rankText;
     private Label savedText;
@@ -138,9 +139,10 @@ public class RowScreen implements Screen {
             level = game.gameData.getLevel();
         }
 
-        pointsText = new Label(game.texts.get(11)+ points + "/" + (5+(int)(difficulty/2)), mySkin, "big");
-        pointsText.setFontScale(0.5f);
-        pointsText.setPosition(width - pointsText.getWidth()*0.5f - width/100, height - pointsText.getHeight());
+        pointsText = new Label(game.texts.get(11)+ points + "/" + (5+(int)(difficulty/2)), mySkin);
+        pointsText.setPosition(width - pointsText.getWidth() - width/100, height - pointsText.getHeight());
+        currentStreakText = new Label(game.texts.get(50) + currentStreak, mySkin);
+        currentStreakText.setPosition(width - currentStreakText.getWidth() - width/100, height - currentStreakText.getHeight());
         levelText = new Label(game.texts.get(10) + level, mySkin, "big");
         levelText.setPosition(width/2 - levelText.getWidth()/2, row_height * 11);
         levelText.setColor(Color.BLACK);
@@ -172,6 +174,14 @@ public class RowScreen implements Screen {
         stage.addActor(spotlightImage);
         stage.addActor(deskImage);
         stage.addActor(pointsText);
+        stage.addActor(currentStreakText);
+        if (loop) {
+            currentStreakText.setVisible(true);
+            pointsText.setVisible(false);
+        } else {
+            currentStreakText.setVisible(false);
+            pointsText.setVisible(true);
+        }
         stage.addActor(levelText);
         if (game.gameData.getProfileUsed() != 0) {
             rankText = new Label(game.script.get("Rank"+rank), mySkin);
