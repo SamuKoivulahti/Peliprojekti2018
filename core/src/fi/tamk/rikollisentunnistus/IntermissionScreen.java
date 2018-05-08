@@ -229,11 +229,12 @@ public class IntermissionScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (anyInput() &&
-                settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != level && game.gameData.profileUsed == 0) {
-            elapsedTime = 0;
-            game.resetAll();
-        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.getProfileUsed() == 0) {
+        if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) != level && game.gameData.profileUsed == 0) {
+            if (anyInput()) {
+                elapsedTime = 0;
+                game.resetAll();
+            }
+        } else if (settings.getInteger("roundAmount", GameData.DEFAULT_ROUND_AMOUNT) == level && game.gameData.profileUsed == 0) {
             if (anyInput()) {
                 gameEnd = true;
                 gameEndText.setVisible(true);
@@ -247,22 +248,26 @@ public class IntermissionScreen implements Screen {
             }
 
             if (gameEnd && timer(1) && anyInput()) {
+                elapsedTime = 0;
                 game.setMainScreen();
                 SoundManager.stopIngameMusic();
             }
-        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && !loop) {
+        } else if (points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && !loop) {
             if (anyInput()) {
-                game.cutsceneScreen.setScene(difficulty+2);
+                elapsedTime = 0;
+                game.cutsceneScreen.setScene(difficulty + 2);
                 game.setScreen(game.cutsceneScreen);
             }
-        } else if (anyInput() && points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && loop ) {
-            // in here Longest streak and current streak
+        } else if (points >= 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0 && loop ) {
             if (anyInput()) {
+                elapsedTime = 0;
                 game.resetAll();
             }
-        } else if (anyInput() && points < 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
-            elapsedTime = 0;
-            game.resetAll();
+        } else if (points < 5 + (int)(difficulty/2) && game.gameData.profileUsed != 0) {
+            if (anyInput()) {
+                elapsedTime = 0;
+                game.resetAll();
+            }
         }
     }
 
