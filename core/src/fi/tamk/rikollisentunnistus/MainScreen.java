@@ -31,7 +31,6 @@ public class MainScreen implements Screen {
     Rikollisentunnistus host;
     ShapeRenderer shapeRenderer;
     OrthographicCamera camera;
-
     Skin mySkin;
     Stage stage;
     Image background;
