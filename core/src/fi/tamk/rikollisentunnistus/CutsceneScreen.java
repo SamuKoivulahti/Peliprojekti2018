@@ -25,6 +25,7 @@ public class CutsceneScreen implements Screen {
 
     Label text;
     Skin mySkin;
+    boolean soundEffectsOn;
 
     Image assistantImage1;
     Image assistantImage2;
@@ -52,6 +53,9 @@ public class CutsceneScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
         text = new Label("", mySkin);
+
+        Settings settings = Settings.getInstance();
+        soundEffectsOn = settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS);
 
         Image backgroundImage = new Image(new Texture("cutscenes/background-office.jpg"));
         assistantImage1 = new Image(new Texture("cutscenes/assistent1.png"));
@@ -247,6 +251,8 @@ public class CutsceneScreen implements Screen {
         round = 0;
 
         RankScreen rankScreen = new RankScreen(host);
+        SoundManager.stopMenuMusic();
+        SoundManager.stopLastCutsceneMusic();
         host.setScreen(rankScreen);
     }
 
@@ -636,7 +642,7 @@ public class CutsceneScreen implements Screen {
     }
 
     private boolean timer(float timeToPass) {
-        return timeToPass >= elapsedTime;
+        return timeToPass <= elapsedTime;
     }
 
     @Override
@@ -644,6 +650,16 @@ public class CutsceneScreen implements Screen {
         setName();
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);
+
+        Settings settings = Settings.getInstance();
+        soundEffectsOn = settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS);
+
+        SoundManager.stopIngameMusic();
+        if (sceneToAct == 15) {
+            SoundManager.playLastCutsceneMusic();
+        } else {
+            SoundManager.playMenuMusic();
+        }
     }
 
     @Override
@@ -653,6 +669,7 @@ public class CutsceneScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (Gdx.input.isTouched() && timer(0.5f))) {
             actScene();
+            SoundManager.playButtonPushSound(soundEffectsOn);
             elapsedTime = 0;
         }
 
@@ -671,7 +688,7 @@ public class CutsceneScreen implements Screen {
 
     @Override
     public void resume() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

@@ -52,7 +52,6 @@ public class TutorialScreen implements Screen {
     Animation<TextureRegion> animation;
 
     float elapsedTime;
-    boolean letMove;
 
     private int explainingRound;
 
@@ -337,11 +336,42 @@ public class TutorialScreen implements Screen {
 
         if (mode == EXPLAINING) {
             if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
+                elapsedTime = 0;
                 explain(explainingRound);
             }
         }
 
         if (mode == CHOOSING) {
+            if (game.settingsScreen.horizontalAxis.isChecked()) {
+                if (game.controls.accelerometerY() > game.controls.hysteresisUp) {
+                    game.gameData.setStillLeaning(true);
+                }
+            } else {
+                if (game.controls.accelerometerY() < game.controls.hysteresisUp) {
+                    game.gameData.setStillLeaning(true);
+                }
+            }
+
+            if (((game.controls.elapsedTimeU != 0)
+                    && !game.controls.isAbleMoveUp && game.gameData.getStillLeaning())
+                    || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                if (game.controls.elapsedTimeU > elapsedTime) {
+                    elapsedTime += delta;
+                }
+
+                if (!SoundManager.isSelectionBarSoundPlaying()) {
+                    SoundManager.playSelectionBarSound(game.soundEffectsOn);
+                }
+
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    elapsedTime += delta;
+                }
+            } else if (game.controls.elapsedTimeU == 0
+                    || !Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                SoundManager.stopSelectionBarSound(game.soundEffectsOn);
+                elapsedTime = 0;
+            }
+
             for (Face criminal : criminalRow) {
                 if (criminal.active && !criminal.hasActions()) {
                     MoveToAction moveSpotlight = new MoveToAction();
@@ -375,10 +405,6 @@ public class TutorialScreen implements Screen {
                     || (game.controls.moveUp(true) && game.gameData.getStillLeaning())) {
                 SoundManager.stopSelectionBarSound(game.soundEffectsOn);
                 select();
-            }
-
-            if (!(Gdx.input.isKeyPressed(Input.Keys.UP) || (game.controls.moveUp(true) && game.gameData.getStillLeaning()))) {
-                elapsedTime = 0;
             }
 
             dialogBoxImage.toFront();
