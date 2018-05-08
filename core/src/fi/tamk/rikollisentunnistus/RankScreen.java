@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Samu Koivulahti on 4.5.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 4.5.2018
  */
 
 public class RankScreen implements Screen {

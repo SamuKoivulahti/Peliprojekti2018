@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Samu Koivulahti on 25.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 25.3.2018
  */
 
 public class IntermissionScreen implements Screen {
@@ -107,6 +109,9 @@ public class IntermissionScreen implements Screen {
         textPrint();
     }
 
+    /**
+     * Prints all labels used in screen
+     */
     public void textPrint() {
         winText = new Label(game.texts.get(19), mySkin, "big");
         winText.setPosition(width/2 - winText.getWidth()/2, height/2 - winText.getHeight() / 2);
@@ -197,6 +202,11 @@ public class IntermissionScreen implements Screen {
 
     }
 
+    /**
+     * Timer that counts up in seconds
+     * @param timeToPass
+     * @return if timer has fulfilled its duty
+     */
     public boolean timer(int timeToPass) {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= timeToPass) {
@@ -211,6 +221,10 @@ public class IntermissionScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
     }
 
+    /**
+     * Checks if player leans to any direction or touches the screen
+     * @return if any value is true
+     */
     private boolean anyInput() {
         return (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
                 game.controls.moveUp(false) ||
@@ -304,7 +318,6 @@ public class IntermissionScreen implements Screen {
             game.gameData.setLevel(game.gameData.getLevel() + 1);
         }
         game.saveFiles.saveNewFiles();
-
     }
 
     @Override

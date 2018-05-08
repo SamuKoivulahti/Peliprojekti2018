@@ -1,7 +1,6 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Koivulahti on 20.4.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 20.4.2018
  */
 
 public class SaveFileSelectScreen implements Screen {
@@ -55,6 +56,9 @@ public class SaveFileSelectScreen implements Screen {
         buttonBack();
     }
 
+    /**
+     * creates profilebutton1
+     */
     public void profile1Button() {
         profile1Button = new TextButton(game.saveFiles.getString("name1", game.texts.get(46)), mySkin);
         profile1Button.setSize(width/2,row_height*1.5f);
@@ -89,6 +93,9 @@ public class SaveFileSelectScreen implements Screen {
         stage.addActor(profile1Button);
     }
 
+    /**
+     * creates profilebutton2
+     */
     public void profile2Button() {
         profile2Button = new TextButton(game.saveFiles.getString("name2", game.texts.get(46)),mySkin);
         profile2Button.setSize(width/2,row_height*1.5f);
@@ -123,6 +130,9 @@ public class SaveFileSelectScreen implements Screen {
         stage.addActor(profile2Button);
     }
 
+    /**
+     * creates profilebutton3
+     */
     public void profile3Button() {
         profile3Button = new TextButton(game.saveFiles.getString("name3", game.texts.get(46)),mySkin);
         profile3Button.setSize(width/2,row_height*1.5f);
@@ -157,6 +167,9 @@ public class SaveFileSelectScreen implements Screen {
         stage.addActor(profile3Button);
     }
 
+    /**
+     * creates back button
+     */
     public void buttonBack() {
         back = new TextButton(game.texts.get(6),mySkin,"small");
         back.setSize(col_width*2,row_height*2);

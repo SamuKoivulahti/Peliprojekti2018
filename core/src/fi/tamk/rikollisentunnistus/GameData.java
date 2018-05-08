@@ -15,6 +15,7 @@ public class GameData {
 
    /**
     * getter for points
+    * @return points
     */
     public int getPoints() {
         return points;
@@ -22,6 +23,7 @@ public class GameData {
 
    /**
     * setter for points
+    * @param points
     */
     public void setPoints(int points) {
         this.points = points;
@@ -29,6 +31,7 @@ public class GameData {
 
    /**
     * getter for win
+    * @return win
     */
     public boolean getWin() {
         return win;
@@ -36,6 +39,7 @@ public class GameData {
 
    /**
     * setter for win
+    * @param win
     */
     public void setWin(boolean win) {
         this.win = win;
@@ -43,6 +47,7 @@ public class GameData {
 
    /**
     * getter for level
+    * @return level
     */
     public int getLevel() {
         return level;
@@ -50,6 +55,7 @@ public class GameData {
 
    /**
     * setter for level
+    * @param level
     */
     public void setLevel(int level) {
         this.level = level;
@@ -57,6 +63,7 @@ public class GameData {
 
    /**
     * getter for stillLeaning
+    * @return stillLeaning
     */
     public boolean getStillLeaning() {
         return stillLeaning;
@@ -64,6 +71,7 @@ public class GameData {
 
    /**
     * setter for stillLeaning
+    * @param stillLeaning
     */
     public void setStillLeaning(boolean stillLeaning) {
         this.stillLeaning = stillLeaning;
@@ -71,6 +79,7 @@ public class GameData {
 
     /**
      * getter for ChosenCriminal
+     * @return chosenCriminal
      */
     public Face getChosenCriminal() {
         return chosenCriminal;
@@ -78,6 +87,7 @@ public class GameData {
 
     /**
      * setter for ChosenCriminal
+     * @param criminal
      */
     public void setChosenCriminal(Face criminal) {
         this.chosenCriminal = criminal;
@@ -85,6 +95,7 @@ public class GameData {
 
     /**
      * getter for CorrectCriminal
+     * @return correctCriminal
      */
     public Face getCorrectCriminal() {
         return correctCriminal;
@@ -92,15 +103,24 @@ public class GameData {
 
     /**
      * setter for CorrectCriminal
+     * @param criminal
      */
     public void setCorrectCriminal(Face criminal) {
         correctCriminal = criminal;
     }
 
+    /**
+     * getter for profileUsed
+     * @return profileUsed
+     */
     public int getProfileUsed() {
         return  profileUsed;
     }
 
+    /**
+     * setter for profileUsed
+     * @param profileUsed
+     */
     public void setProfileUsed(int profileUsed) {
         this.profileUsed = profileUsed;
     }
@@ -139,7 +159,4 @@ public class GameData {
     public static final boolean DEFAULT_LOOP = false;
     public static final int DEFAULT_CURRENT_STREAK = 0;
     public static final int DEFAULT_LONGEST_STREAK = 0;
-
-
-
 }

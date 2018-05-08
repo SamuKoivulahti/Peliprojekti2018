@@ -4,7 +4,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
- * Created by Koivulahti on 4.5.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 4.5.2018
  */
 
 public class MyTextInputListener implements Input.TextInputListener {
@@ -32,6 +34,10 @@ public class MyTextInputListener implements Input.TextInputListener {
 
     }
 
+    /**
+     * Gets the input value and shortens it if its over 8 char long
+     * @return players input
+     */
     public String getText() {
         if (newText.length() > 12) {
             return  newText == null ? "" : newText.substring(0, 12);

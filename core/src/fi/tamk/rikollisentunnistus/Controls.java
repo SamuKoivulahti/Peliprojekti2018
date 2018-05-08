@@ -16,7 +16,6 @@ public class Controls {
     public float accelY;
     public float accelX;
 
-
     public float moveRight;
     public float moveLeft;
     public float moveUp;
@@ -67,7 +66,6 @@ public class Controls {
         elapsedTimeU = 0;
         elapsedTimeD = 0;
 
-
         isAbleMoveLeft = true;
         isAbleMoveRight = true;
         isAbleMoveUp = true;
@@ -77,9 +75,6 @@ public class Controls {
         timerL = false;
         timerU = false;
         timerD = false;
-
-
-
     }
     /**
      * Gets all control values
@@ -124,7 +119,6 @@ public class Controls {
         return accelX;
     }
 
-
     /**
      * gets value of movement to the right
      * @param isTimed is timer used or not
@@ -146,7 +140,6 @@ public class Controls {
         }
         return false;
     }
-
 
     /**
      * gets value of movement to the left

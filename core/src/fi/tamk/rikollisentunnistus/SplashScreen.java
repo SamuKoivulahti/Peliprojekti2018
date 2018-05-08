@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Samu Koivulahti on 26.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 26.3.2018
  */
 
 public class SplashScreen implements Screen {
@@ -103,7 +105,6 @@ public class SplashScreen implements Screen {
         }
         return false;
     }
-
 
     @Override
     public void resize(int width, int height) {

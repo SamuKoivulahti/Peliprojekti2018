@@ -19,7 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Created by Samu Koivulahti on 17.3.2018.
+ * @author Samu Koivulahti
+ * @version 1.6
+ * @since 17.3.2018
  */
 
 public class MainScreen implements Screen {
@@ -86,7 +88,6 @@ public class MainScreen implements Screen {
             }
 
         });
-
 
         final TextButton freePlay = new TextButton(host.texts.get(2),mySkin,"small");
         freePlay.setSize(col_width*1.8f,row_height*1.5f);
@@ -174,7 +175,6 @@ public class MainScreen implements Screen {
 
         });
 
-
         final ImageButton finnishButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("flag_fi.png"))));
         finnishButton.setSize(finnishButton.getWidth()/2,finnishButton.getHeight()/2);
         finnishButton.setPosition(0,height-finnishButton.getHeight());
@@ -197,7 +197,6 @@ public class MainScreen implements Screen {
                 stage.addActor(tutorial);
                 tutorial.setVisible(false);
                 tutorialButton.toFront();
-
             }
 
         });
@@ -225,7 +224,6 @@ public class MainScreen implements Screen {
                 tutorial.setVisible(false);
                 tutorialButton.toFront();
             }
-
         });
 
         stage.addActor(background);
@@ -238,7 +236,6 @@ public class MainScreen implements Screen {
         stage.addActor(englishButton);
         stage.addActor(tutorial);
         stage.addActor(tutorialButton);
-
     }
 
     @Override
