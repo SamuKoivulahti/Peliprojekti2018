@@ -169,10 +169,6 @@ public class CriminalScreen implements Screen {
                 }
             }
         }
-
-
-            Gdx.app.log("Time shown:", " " + timeShown );
-        Gdx.app.log("Time waiting:", " " + timeWaiting);
     }
 
     private void setRandomWaitingTimes() {
@@ -273,20 +269,6 @@ public class CriminalScreen implements Screen {
                 game.setCriminals();
             }
             waitingTimeText.setText("" + (int)(timeWaiting - elapsedTime +1));
-        }
-
-        /**
-         * For cheating, shhh...
-         */
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == SHOWING) {
-            SoundManager.playTimerSound(game.soundEffectsOn);
-            status = WAITING;
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && status == WAITING) {
-            SoundManager.stopTimerSound();
-            game.setRowScreen();
-            criminal.setVisible(true);
-            criminal.clearActions();
-            game.setCriminals();
         }
 
         game.batch.end();
