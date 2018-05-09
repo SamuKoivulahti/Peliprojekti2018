@@ -342,7 +342,7 @@ public class TutorialScreen implements Screen {
          * Shows the criminal.
          */
         if (mode == SHOWING) {
-            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
+            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
                 setText(game.script.get("scene1_line5"));
                 elapsedTime = 0;
                 mode = WAITING;
@@ -381,7 +381,7 @@ public class TutorialScreen implements Screen {
          * Explains the controls of rowScreen.
          */
         if (mode == EXPLAINING) {
-            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
+            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
                 elapsedTime = 0;
                 explain(explainingRound);
             }
@@ -464,7 +464,7 @@ public class TutorialScreen implements Screen {
             game.batch.draw(
                     frame,
                     (width - frame.getRegionWidth()) / 2,
-                    height * 9/12,
+                    height * 3/4,
                     frame.getRegionWidth(),
                     frame.getRegionHeight()
             );
@@ -475,7 +475,7 @@ public class TutorialScreen implements Screen {
          * Changes screen back to cutscene.
          */
         if (mode == READY) {
-            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))) {
+            if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
                 game.setScreen(game.cutsceneScreen);
             }
         }

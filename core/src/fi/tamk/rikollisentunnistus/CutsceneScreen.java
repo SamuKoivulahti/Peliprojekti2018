@@ -762,7 +762,7 @@ public class CutsceneScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (Gdx.input.isTouched() && timer(0.5f))) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || (Gdx.input.isTouched() && timer(0.5f))) {
             actScene();
             SoundManager.playButtonPushSound(soundEffectsOn);
             elapsedTime = 0;
