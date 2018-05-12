@@ -37,6 +37,7 @@ public class TutorialScreen implements Screen {
 
     private Label text;
     private Image dialogBoxImage;
+    private Label helpText;
 
     private Face criminal;
     private Image criminalFrame;
@@ -79,6 +80,8 @@ public class TutorialScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
         text = new Label("", mySkin);
+        helpText = new Label(host.texts.get(49), mySkin);
+        helpText.setPosition(width/2 - helpText.getWidth()/2, helpText.getHeight()/2);
 
         dialogBoxImage = new Image(new Texture("cutscenes/dialogbox.png"));
         dialogBoxImage.setPosition(width/2 - dialogBoxImage.getWidth()/2,height/60f);
@@ -87,6 +90,7 @@ public class TutorialScreen implements Screen {
 
         stage.addActor(dialogBoxImage);
         stage.addActor(text);
+        stage.addActor(helpText);
 
         explainingRound = 0;
 
@@ -183,6 +187,7 @@ public class TutorialScreen implements Screen {
         setCriminals();
         stage.addActor(dialogBoxImage);
         stage.addActor(text);
+        stage.addActor(helpText);
 
         setText(game.script.get("scene1_line6"));
     }
@@ -234,6 +239,7 @@ public class TutorialScreen implements Screen {
             explainingRound++;
         } else if (round == 2) {
             setText(game.script.get("scene1_line9"));
+            helpText.setVisible(false);
             mode = CHOOSING;
         }
     }
@@ -325,6 +331,8 @@ public class TutorialScreen implements Screen {
 
         if (selectedID.equals(rightSuspectID)) {
             setText(game.script.get("scene1_line10right"));
+            helpText.setVisible(true);
+            helpText.toFront();
             mode = READY;
         } else {
             setText(game.script.get("scene1_line10wrong"));
@@ -342,11 +350,13 @@ public class TutorialScreen implements Screen {
          * Shows the criminal.
          */
         if (mode == SHOWING) {
+
             if (timer(0.5f) && (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
                 setText(game.script.get("scene1_line5"));
                 elapsedTime = 0;
                 mode = WAITING;
                 waitingTimeText.setVisible(true);
+                helpText.setVisible(false);
             }
         }
 
@@ -373,6 +383,8 @@ public class TutorialScreen implements Screen {
 
             if (timer(timeWaiting)) {
                 setChoosingPart();
+                helpText.setVisible(true);
+                helpText.toFront();
                 mode = EXPLAINING;
             }
         }
@@ -458,6 +470,7 @@ public class TutorialScreen implements Screen {
 
             dialogBoxImage.toFront();
             text.toFront();
+            helpText.toFront();
 
             game.batch.begin();
             TextureRegion frame = animation.getKeyFrame(elapsedTime, false);

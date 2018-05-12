@@ -187,6 +187,7 @@ public class MainScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.updateLanguage("FI");
+                host.cutsceneScreen.updateLanguage();
                 play.setText(host.texts.get(1));
                 freePlay.setText(host.texts.get(2));
                 settings.setText(host.texts.get(3));
@@ -213,6 +214,7 @@ public class MainScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 host.updateLanguage("EN");
+                host.cutsceneScreen.updateLanguage();
                 play.setText(host.texts.get(1));
                 freePlay.setText(host.texts.get(2));
                 settings.setText(host.texts.get(3));

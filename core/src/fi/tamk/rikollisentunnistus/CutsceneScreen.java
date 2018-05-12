@@ -38,12 +38,14 @@ public class CutsceneScreen implements Screen {
     Image chiefImage2;
     Image chiefImage3;
     Image dialogBoxImage;
+    Label helpText;
 
     int sceneToAct;
     int round;
     String playerName;
 
     float elapsedTime;
+    final float TIME_TO_WAIT = 4.0f;
 
     public CutsceneScreen(Rikollisentunnistus host) {
         this.host = host;
@@ -57,6 +59,10 @@ public class CutsceneScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
         text = new Label("", mySkin);
+
+        helpText = new Label(host.texts.get(49), mySkin);
+        helpText.setPosition(width/2 - helpText.getWidth()/2, helpText.getHeight()/2);
+        helpText.setVisible(false);
 
         Settings settings = Settings.getInstance();
         soundEffectsOn = settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS);
@@ -98,11 +104,20 @@ public class CutsceneScreen implements Screen {
         stage.addActor(chiefImage3);
         stage.addActor(dialogBoxImage);
         stage.addActor(text);
+        stage.addActor(helpText);
 
         round = 1;
         sceneToAct = 0;
 
         elapsedTime = 0;
+    }
+
+    /**
+     * Updates language of helpText;
+     */
+    public void updateLanguage() {
+        helpText.setText(host.texts.get(49));
+        helpText.setPosition(width/2 - helpText.getWidth()/2, helpText.getHeight()/2);
     }
 
     /**
@@ -762,9 +777,14 @@ public class CutsceneScreen implements Screen {
         stage.act();
         stage.draw();
 
+        if (elapsedTime >= TIME_TO_WAIT) {
+            helpText.setVisible(true);
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || (Gdx.input.isTouched() && timer(0.5f))) {
             actScene();
             SoundManager.playButtonPushSound(soundEffectsOn);
+            helpText.setVisible(false);
             elapsedTime = 0;
         }
 
