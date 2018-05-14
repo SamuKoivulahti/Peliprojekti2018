@@ -289,6 +289,12 @@ public class IntermissionScreen implements Screen {
                 game.resetAll();
             }
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.resetAll();
+            game.setMainScreen();
+            SoundManager.stopIngameMusic();
+        }
     }
 
     @Override

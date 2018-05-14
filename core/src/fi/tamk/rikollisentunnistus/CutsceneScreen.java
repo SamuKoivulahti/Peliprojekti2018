@@ -5,11 +5,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -30,6 +35,9 @@ public class CutsceneScreen implements Screen {
     Label text;
     Skin mySkin;
     boolean soundEffectsOn;
+
+    Window pauseWindow;
+    boolean paused;
 
     Image assistantImage1;
     Image assistantImage2;
@@ -106,10 +114,63 @@ public class CutsceneScreen implements Screen {
         stage.addActor(text);
         stage.addActor(helpText);
 
+        createPauseWindow();
+
         round = 1;
         sceneToAct = 0;
 
         elapsedTime = 0;
+    }
+
+    private void createPauseWindow() {
+        pauseWindow = new Window(host.texts.get(43), mySkin);
+        pauseWindow.setVisible(false);
+        pauseWindow.setResizable(false);
+        pauseWindow.setMovable(false);
+
+        TextButton continueButton = new TextButton(host.texts.get(12), mySkin);
+        continueButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        SoundManager.playButtonPushSound(host.soundEffectsOn);
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        pauseWindow.setVisible(false);
+                        paused = false;
+                    }
+
+                });
+
+        TextButton menuButton = new TextButton(host.texts.get(15), mySkin);
+        menuButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        SoundManager.playButtonPushSound(host.soundEffectsOn);
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        paused = false;
+                        host.resetAll();
+                        host.setMainScreen();
+                        SoundManager.stopIngameMusic();
+                    }
+
+                });
+
+        pauseWindow.add(continueButton).pad(10).row();
+        pauseWindow.add(menuButton).pad(10).row();
+        pauseWindow.pack();
+
+        pauseWindow.setPosition((width - pauseWindow.getWidth()) / 2, (height - pauseWindow.getHeight()) / 2);
+
+        stage.addActor(pauseWindow);
     }
 
     /**
@@ -781,14 +842,21 @@ public class CutsceneScreen implements Screen {
             helpText.setVisible(true);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || (Gdx.input.isTouched() && timer(0.5f))) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || (Gdx.input.isTouched() && timer(0.5f) && !paused)) {
             actScene();
             SoundManager.playButtonPushSound(soundEffectsOn);
             helpText.setVisible(false);
             elapsedTime = 0;
         }
 
-        elapsedTime += delta;
+        if (!paused) {
+            elapsedTime += delta;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseWindow.setVisible(true);
+            paused = true;
+        }
     }
 
     @Override

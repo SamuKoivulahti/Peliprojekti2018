@@ -1,16 +1,21 @@
 package fi.tamk.rikollisentunnistus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -26,6 +31,9 @@ public class CriminalScreen implements Screen {
     private Rikollisentunnistus game;
     private OrthographicCamera camera;
     private boolean status;
+
+    private Window pauseWindow;
+    private boolean paused;
 
     private Stage stage;
     private Face criminal;
@@ -123,6 +131,62 @@ public class CriminalScreen implements Screen {
         stage.addActor(criminalFrame);
         stage.addActor(criminalText);
         stage.addActor(criminal);
+
+        createPauseWindow();
+    }
+
+    /**
+     * Creates window with continue- and exit-buttons.
+     */
+    private void createPauseWindow() {
+        pauseWindow = new Window(game.texts.get(43), mySkin);
+        pauseWindow.setVisible(false);
+        pauseWindow.setResizable(false);
+        pauseWindow.setMovable(false);
+
+        TextButton continueButton = new TextButton(game.texts.get(12), mySkin);
+        continueButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        SoundManager.playButtonPushSound(game.soundEffectsOn);
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        pauseWindow.setVisible(false);
+                        paused = false;
+                    }
+
+                });
+
+        TextButton menuButton = new TextButton(game.texts.get(15), mySkin);
+        menuButton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        SoundManager.playButtonPushSound(game.soundEffectsOn);
+                        return true;
+                    }
+
+                    @Override
+                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        paused = false;
+                        game.resetAll();
+                        game.setMainScreen();
+                        SoundManager.stopIngameMusic();
+                    }
+
+                });
+
+        pauseWindow.add(continueButton).pad(10).row();
+        pauseWindow.add(menuButton).pad(10).row();
+        pauseWindow.pack();
+
+        pauseWindow.setPosition((width - pauseWindow.getWidth()) / 2, (height - pauseWindow.getHeight()) / 2);
+
+        stage.addActor(pauseWindow);
     }
 
     /**
@@ -223,7 +287,12 @@ public class CriminalScreen implements Screen {
 
         game.batch.begin();
 
-        if (status == SHOWING) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            paused = true;
+            pauseWindow.setVisible(true);
+        }
+
+        if (status == SHOWING && !paused) {
             /**
              * While status is showing, counts waiting time. When the time is up, changes the
              * status to waiting.
@@ -235,7 +304,7 @@ public class CriminalScreen implements Screen {
                 SoundManager.playTimerSound(game.soundEffectsOn);
             }
 
-        } else if (status == WAITING) {
+        } else if (status == WAITING && !paused) {
             /**
              * Starts counting down the waiting time and updates it every frame. Gives criminal and
              * the criminalFrame action to move out of screen. When the waiting time is over sets

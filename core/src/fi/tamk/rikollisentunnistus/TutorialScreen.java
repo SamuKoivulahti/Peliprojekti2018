@@ -8,13 +8,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -477,7 +481,7 @@ public class TutorialScreen implements Screen {
             game.batch.draw(
                     frame,
                     (width - frame.getRegionWidth()) / 2,
-                    height * 3/4,
+                    height - frame.getRegionHeight()*2,
                     frame.getRegionWidth(),
                     frame.getRegionHeight()
             );
@@ -518,6 +522,6 @@ public class TutorialScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
